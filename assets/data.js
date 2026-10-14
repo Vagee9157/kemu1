@@ -462,14 +462,11 @@ const CHAPTERS = [
           <li>路侧<b>黄色虚线</b>：禁止长时停车；路侧<b>黄色实线</b>：禁止停车（含临时停车）。</li>
         </ul>`, tip: '白分同向黄分对向，虚线能过实线不能；虚实线看自己这一侧。' },
       { t: '交警手势（8 种）', hot: 1, body: `
-        <div class="sign-row"><figure><div class="illus" data-sign="h_stop"></div><figcaption>停止</figcaption></figure><figure><div class="illus" data-sign="h_straight"></div><figcaption>直行</figcaption></figure><figure><div class="illus" data-sign="h_left"></div><figcaption>左转弯</figcaption></figure><figure><div class="illus" data-sign="h_left_wait"></div><figcaption>左转弯待转</figcaption></figure><figure><div class="illus" data-sign="h_right"></div><figcaption>右转弯</figcaption></figure><figure><div class="illus" data-sign="h_lane"></div><figcaption>变道</figcaption></figure><figure><div class="illus" data-sign="h_slow"></div><figcaption>减速慢行</figcaption></figure><figure><div class="illus" data-sign="h_pull"></div><figcaption>靠边停车</figcaption></figure></div>
-        <p><b>停止、直行、左转弯、左转弯待转、右转弯、变道、减速慢行、示意车辆靠边停车</b>，共 8 种。</p>
+        <div class="gest-grid" data-gest></div>
         <ul>
+          <li>共 <b>8 种</b>：停止、直行、左转弯、左转弯待转、右转弯、变道、减速慢行、示意车辆靠边停车。</li>
           <li>判断方向一律以<b>交警本人的左右</b>为准，不要按自己（驾驶人）视角。</li>
-          <li><b>停止</b>：左臂向前上方直伸，掌心向前。</li>
-          <li><b>直行</b>：左臂向左平伸、右臂向右平伸，掌心向前，然后右臂向左摆动。</li>
-          <li><b>左转弯</b>：右臂向前平伸，掌心向前，左臂与手掌平直向右前方摆动。</li>
-          <li><b>右转弯</b>：左臂向前平伸，掌心向前，右臂与手掌平直向左前方摆动。</li>
+          <li>记法：<b>左转弯 = 右臂前伸 + 左臂摆</b>；<b>右转弯 = 左臂前伸 + 右臂摆</b>；一只手举高 = 停止，再加右臂前伸 = 靠边停车。</li>
         </ul>`, tip: '左转：右臂前伸 + 左臂摆；右转：左臂前伸 + 右臂摆。' },
     ],
   },

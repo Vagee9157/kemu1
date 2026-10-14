@@ -327,3 +327,11 @@ svg.il{display:block;width:100%;max-width:520px;height:auto;margin:12px auto 4px
 .search-hint{font-size:12.5px;color:var(--ink-dim);margin:-6px 0 12px}
 .ch-nav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:18px;padding-top:16px;border-top:1px dashed var(--line)}
 .ch-nav .btn{max-width:48%;overflow:hidden;text-overflow:ellipsis}
+
+/* 手势网格 */
+.gest-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin:12px 0 6px}
+.gest-grid figure{margin:0;background:var(--paper-2);border-radius:12px;padding:8px 8px 10px;text-align:center}
+.gest-grid svg{width:100%;max-width:150px;height:auto;display:block;margin:0 auto 8px;border-radius:10px}
+.gest-grid figcaption b{display:block;font-size:13.5px;font-weight:800;margin-bottom:3px}
+.gest-grid figcaption span{display:block;font-size:11.5px;color:var(--ink-soft);line-height:1.5}
+@media (max-width:719px){.gest-grid{grid-template-columns:1fr 1fr;gap:10px}}
