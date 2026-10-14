@@ -341,3 +341,10 @@ svg.il{display:block;width:100%;max-width:520px;height:auto;margin:12px auto 4px
 .lamp{display:block;aspect-ratio:1;background:#1c1f24;border-radius:18%;position:relative;overflow:hidden}
 .lamp::before{content:"";position:absolute;inset:15%;background:var(--lc,#fff);-webkit-mask:var(--m) center/contain no-repeat;mask:var(--m) center/contain no-repeat}
 .lamp-red{--lc:#ff4d3d}.lamp-yellow{--lc:#ffb400}.lamp-green{--lc:#4ade80}.lamp-blue{--lc:#5aa9ff}
+
+/* 手势实拍照片：竖版 2:3 */
+img.photo{aspect-ratio:2/3;object-fit:cover;border-radius:10px;background:#1e5aa8}
+.qsign img.photo{width:auto;height:200px}
+.sign-row img.photo{width:auto;height:84px}
+.wrong-item img.photo{width:auto;height:72px}
+.gest-grid img.photo{max-width:none;width:100%;height:auto}

@@ -26,7 +26,7 @@
     root.querySelectorAll('.illus[data-illus]').forEach((el) => { const [name, arg] = el.dataset.illus.split(':'); const f = window.ILLUS && ILLUS[name]; if (f) el.outerHTML = f(arg); });
     root.querySelectorAll('.illus[data-sign]').forEach((el) => { el.outerHTML = SIGNS[el.dataset.sign] || ''; });
     root.querySelectorAll('[data-gest]').forEach((el) => {
-      el.innerHTML = (window.PICS ? PICS.GESTURE_CATALOG : []).map((g) => `<figure>${g.svg}<figcaption><b>${esc(g.name)}</b><span>${esc(g.desc)}</span></figcaption></figure>`).join('');
+      el.innerHTML = (window.PICS ? PICS.GESTURE_CATALOG : []).map((g) => `<figure>${SIGNS[g.key] || g.svg}<figcaption><b>${esc(g.name)}</b><span>${esc(g.desc)}</span></figcaption></figure>`).join('');
     });
   }
 
