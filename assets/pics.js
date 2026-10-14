@@ -56,7 +56,7 @@
     { key: 'w_rail_n', name: '无人看守铁路道口', cat: 'warn', svg: warn(`<rect x="30" y="40" width="32" height="26" rx="4" fill="${K}"/><rect x="62" y="48" width="12" height="18" fill="${K}"/><circle cx="38" cy="72" r="5" fill="${K}"/><circle cx="54" cy="72" r="5" fill="${K}"/><circle cx="68" cy="72" r="5" fill="${K}"/>`) },
     { key: 'w_signal', name: '注意信号灯', cat: 'warn', svg: warn(`<g transform="translate(0,4) scale(.85) translate(9,8)">${trafficLight()}</g>`) },
     { key: 'w_slow', name: '慢行', cat: 'warn', svg: warn(txt('慢', 50, 76, 36)) },
-    { key: 'w_work', name: '施工', cat: 'warn', svg: warn(`<path d="M34 80 L44 56 M54 50 L72 32" ${st(K, 6)}/><circle cx="50" cy="40" r="6" fill="${K}"/><path d="M40 46 L56 46 L60 70 H36 Z" fill="${K}"/><path d="M60 72 L70 80 H26 Z" fill="${K}"/>`) },
+    { key: 'w_work', name: '施工', cat: 'warn', svg: warn(`<circle cx="36" cy="34" r="6" fill="${K}"/><path d="M28 44 L44 42 L58 56 L52 62 L44 56 L40 80 H28 Z" fill="${K}"/><path d="M50 56 L66 70" ${st(K, 5)}/><path d="M62 68 L74 64 L78 76 L68 80 Z" fill="${K}"/><path d="M48 80 Q64 68 82 80 Z" fill="${K}"/>`) },
     { key: 'w_accident', name: '事故易发路段', cat: 'warn', svg: warn(`${car(K, 34, 62, .6)}${car(K, 66, 62, .6)}<path d="M50 36 L54 48 L62 46 L56 54 L60 62 L50 56 L40 62 L44 54 L38 46 L46 48 Z" fill="${K}"/>`) },
     { key: 'w_tunnel', name: '隧道', cat: 'warn', svg: warn(`<path d="M28 80 V52 Q28 34 50 34 Q72 34 72 52 V80 Z" fill="${K}"/><path d="M36 80 V54 Q36 42 50 42 Q64 42 64 54 V80 Z" fill="${Y}"/>`) },
     { key: 'w_water', name: '注意积水', cat: 'warn', svg: warn(`${car(K, 50, 48, .8)}<path d="M22 66 Q30 58 38 66 T54 66 T70 66 T86 66 M22 76 Q30 68 38 76 T54 76 T70 76 T86 76" ${st(K, 4)}/>`) },
@@ -64,7 +64,7 @@
     { key: 'w_wind', name: '注意横风', cat: 'warn', svg: warn(`<path d="M30 80 V34" ${st(K, 6)}/><path d="M30 36 L74 44 L30 54 Z" fill="${K}"/>`) },
     { key: 'w_ice', name: '注意雨（雪）天', cat: 'warn', svg: warn(`<path d="M34 40 Q50 24 66 40 Q76 48 62 52 H36 Q24 48 34 40 Z" fill="${K}"/><path d="M40 60 L36 72 M50 60 L46 72 M60 60 L56 72" ${st(K, 5)}/>`) },
     { key: 'w_danger', name: '注意危险', cat: 'warn', svg: warn(`<rect x="45" y="30" width="10" height="32" rx="2" fill="${K}"/><circle cx="50" cy="72" r="5.5" fill="${K}"/>`) },
-    { key: 'w_merge', name: '车辆汇入（右侧）', cat: 'warn', svg: warn(`<path d="M40 82 V30 M62 82 V66 Q62 56 52 52" ${st(K, 8)}/><polygon points="40,26 30,40 50,40" fill="${K}"/>`) },
+    { key: 'w_merge', name: '注意合流（右侧）', cat: 'warn', svg: warn(`<path d="M40 82 V30 M62 82 V66 Q62 56 52 52" ${st(K, 8)}/><polygon points="40,26 30,40 50,40" fill="${K}"/>`) },
 
     // —— 禁令标志 ——
     { key: 'p_noentry', name: '禁止驶入', cat: 'ban', svg: banRed(`<rect x="18" y="41" width="64" height="18" fill="${W}"/>`) },
@@ -85,14 +85,13 @@
     { key: 'p_stop', name: '停车让行', cat: 'ban', svg: svg(`<polygon points="30,4 70,4 96,30 96,70 70,96 30,96 4,70 4,30" fill="${R}" stroke="${W}" stroke-width="3"/>${txt('停', 50, 66, 44, W)}`) },
     { key: 'p_yield', name: '减速让行', cat: 'ban', svg: svg(`<polygon points="4,8 96,8 50,94" fill="${W}" stroke="${R}" stroke-width="9" stroke-linejoin="round"/>${txt('让', 50, 52, 30)}`) },
     { key: 'p_meet', name: '会车让行', cat: 'ban', svg: ban(`<g transform="translate(-12,0)">${arrowUp(R, 50, 76, 30, 8)}</g><g transform="translate(12,0) rotate(180 50 53)">${arrowUp(K, 50, 76, 30, 8)}</g>`, false) },
-    { key: 'p_noparking', name: '禁止停车', cat: 'ban', svg: svg(`<circle cx="50" cy="50" r="42" fill="${B}" stroke="${R}" stroke-width="9"/><line x1="22" y1="22" x2="78" y2="78" stroke="${R}" stroke-width="9"/><line x1="78" y1="22" x2="22" y2="78" stroke="${R}" stroke-width="9"/>`) },
-    { key: 'p_nolong', name: '禁止长时停车', cat: 'ban', svg: svg(`<circle cx="50" cy="50" r="42" fill="${B}" stroke="${R}" stroke-width="9"/><line x1="22" y1="22" x2="78" y2="78" stroke="${R}" stroke-width="9"/>`) },
+    { key: 'p_noparking', name: '禁止车辆临时或长时停放', cat: 'ban', svg: svg(`<circle cx="50" cy="50" r="42" fill="${B}" stroke="${R}" stroke-width="9"/><line x1="22" y1="22" x2="78" y2="78" stroke="${R}" stroke-width="9"/><line x1="78" y1="22" x2="22" y2="78" stroke="${R}" stroke-width="9"/>`) },
+    { key: 'p_nolong', name: '禁止车辆长时停放', cat: 'ban', svg: svg(`<circle cx="50" cy="50" r="42" fill="${B}" stroke="${R}" stroke-width="9"/><line x1="22" y1="22" x2="78" y2="78" stroke="${R}" stroke-width="9"/>`) },
     { key: 'p_speed', name: '限制速度 60', cat: 'ban', svg: ban(txt('60', 50, 63, 36), false) },
     { key: 'p_endspeed', name: '解除限制速度', cat: 'ban', svg: endSign(txt('40', 50, 63, 36, '#9a9a9a')) },
-    { key: 'p_noebike', name: '禁止电动自行车驶入', cat: 'ban', svg: ban(`${bike(K, 50, 56, .8)}<path d="M44 30 L52 18 L50 28 L58 26 L48 40 L50 32 Z" fill="${K}"/>`) },
+    { key: 'p_noebike', name: '禁止电动自行车进入', cat: 'ban', svg: ban(`${bike(K, 50, 56, .8)}<path d="M44 30 L52 18 L50 28 L58 26 L48 40 L50 32 Z" fill="${K}"/>`) },
     { key: 'p_notruck', name: '禁止载货汽车驶入', cat: 'ban', svg: ban(`<path d="M24 62 V36 H58 V48 H74 L80 58 V62 Z" fill="${K}"/><circle cx="34" cy="66" r="6" fill="${K}"/><circle cx="68" cy="66" r="6" fill="${K}"/>`) },
     { key: 'p_check', name: '停车检查', cat: 'ban', svg: ban(txt('检查', 50, 60, 26), false) },
-    { key: 'p_endall', name: '解除禁令', cat: 'ban', svg: endSign('') },
 
     // —— 指示标志 ——
     { key: 'i_straight', name: '直行', cat: 'ind', svg: ind(arrowUp(W, 50, 82, 18)) },
@@ -111,9 +110,9 @@
     { key: 'i_horn', name: '鸣喇叭', cat: 'ind', svg: ind(horn(W)) },
     { key: 'i_minspeed', name: '最低限速 60', cat: 'ind', svg: ind(txt('60', 50, 63, 36, W)) },
     { key: 'i_oneway', name: '单行路（直行）', cat: 'ind', svg: indSq(`<path d="M50 82 V32" ${st(W, 10)}/><polygon points="50,14 34,36 66,36" fill="${W}"/>`) },
-    { key: 'i_crossing', name: '人行横道', cat: 'ind', svg: indSq(`<polygon points="50,8 92,50 50,92 8,50" fill="${W}"/><g fill="${B}"><rect x="30" y="62" width="40" height="4"/><rect x="30" y="70" width="40" height="4"/><rect x="30" y="78" width="40" height="4"/></g>${person(B, 50, 52, .75)}`) },
+    { key: 'i_crossing', name: '人行横道', cat: 'ind', svg: indSq(`<polygon points="50,8 94,88 6,88" fill="${W}"/><g fill="${K}"><rect x="30" y="66" width="40" height="4"/><rect x="26" y="74" width="48" height="4"/><rect x="22" y="82" width="56" height="4"/></g>${person(K, 50, 58, .7)}`) },
     { key: 'i_bus', name: '公交线路专用车道', cat: 'ind', svg: indSq(`<rect x="22" y="30" width="56" height="34" rx="6" fill="${W}"/><rect x="28" y="36" width="44" height="12" fill="${B}"/><circle cx="34" cy="70" r="6" fill="${W}"/><circle cx="66" cy="70" r="6" fill="${W}"/>`) },
-    { key: 'i_parking', name: '停车场（停车位）', cat: 'ind', svg: indSq(txt('P', 50, 70, 60, W)) },
+    { key: 'i_parking', name: '停车位', cat: 'ind', svg: indSq(txt('P', 50, 70, 60, W)) },
 
     // —— 指路 / 其他 ——
     { key: 'g_exit', name: '高速公路出口预告', cat: 'guide', svg: board(G, `${txt('出口', 60, 36, 18, W)}${txt('2 km', 60, 62, 16, W, 500)}`) },
@@ -122,6 +121,13 @@
     { key: 'm_accident', name: '前方交通事故（事故管理区）', cat: 'guide', svg: board('#e8609a', `${txt('前方事故', 60, 38, 17, W)}${txt('减速慢行', 60, 62, 15, W, 500)}`) },
     { key: 'g_tourist', name: '旅游区方向', cat: 'guide', svg: board('#7a4a1d', `${txt('某某风景区', 60, 48, 18, W)}`) },
     { key: 'g_hospital', name: '医院（告示标志）', cat: 'guide', svg: board('#2f6fbf', `<rect x="52" y="22" width="16" height="36" fill="${W}"/><rect x="42" y="32" width="36" height="16" fill="${W}"/>`) },
+    // —— 补充常考 ——
+    { key: 'w_narrow_l', name: '左侧变窄', cat: 'warn', svg: warn(`<path d="M66 80 V30 M30 80 L42 48 V30" ${st(K, 8)}/>`) },
+    { key: 'w_icy', name: '注意路面结冰', cat: 'warn', svg: warn(`<g transform="translate(50,56)" ${st(K, 5)}><path d="M0 -26 V26 M-22 -13 L22 13 M-22 13 L22 -13"/><path d="M-7 -19 L0 -13 L7 -19 M-7 19 L0 13 L7 19 M-22 -1 L-14 -4 L-16 -13 M22 -1 L14 -4 L16 -13 M-22 1 L-14 4 L-16 13 M22 1 L14 4 L16 13"/></g>`) },
+    { key: 'p_nosl', name: '禁止直行和向左转弯', cat: 'ban', svg: ban(`<g transform="translate(10,0)">${arrowUp(K, 50, 82, 20, 8)}</g><path d="M60 60 H42" ${st(K, 8)}/><polygon points="24,60 42,48 42,72" fill="${K}"/>`) },
+    { key: 'p_nolr', name: '禁止向左向右转弯', cat: 'ban', svg: ban(`<path d="M50 82 V54 Q50 44 40 44 H34 M50 54 Q50 44 60 44 H66" ${st(K, 8)}/><polygon points="20,44 36,34 36,54" fill="${K}"/><polygon points="80,44 64,34 64,54" fill="${K}"/>`) },
+    { key: 'p_axle', name: '限制轴重 10 吨', cat: 'ban', svg: ban(`${txt('10t', 50, 52, 24)}<rect x="24" y="60" width="52" height="6" fill="${K}"/><circle cx="32" cy="74" r="7" fill="${K}"/><circle cx="68" cy="74" r="7" fill="${K}"/>`, false) },
+    { key: 'i_meet', name: '会车先行', cat: 'ind', svg: ind(`<g transform="translate(12,0)">${arrowUp(W, 50, 82, 20, 9)}</g><g transform="translate(-12,0) rotate(180 50 55)">${arrowUp(R, 50, 76, 34, 7)}</g>`) },
   ];
 
   /* ================= 道路标线 ================= */
@@ -160,7 +166,7 @@
   const CR = '#ff4d3d', CY = '#ffb400', CG = '#4ade80', CB = '#5aa9ff', CW = '#dfe6ee';
   const lamp = (c, down) => `<path d="M30 40 Q30 28 44 28 H56 Q66 28 66 40 V60 Q66 72 56 72 H44 Q30 72 30 60 Z" fill="${c}" stroke="none"/>${[36, 50, 64].map((y) => `<line x1="70" y1="${y}" x2="92" y2="${down ? y + 6 : y}" stroke="${c}" stroke-width="4" stroke-linecap="round"/>`).join('')}`;
   const DASH_CATALOG = [
-    { key: 'd_oil', name: '机油压力报警灯', color: 'red', svg: panel(`<path d="M22 62 H70 Q82 62 82 52 L86 44 M70 62 L70 44 H62 L56 36 H44 L40 44 H30 V62 M18 70 H74" fill="none" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="86" cy="70" r="4" stroke="none"/>`, CR) },
+    { key: 'd_oil', name: '机油压力报警灯', color: 'red', svg: panel(`<path d="M16 52 H66 L82 38 L88 44 L72 58 V70 Q72 76 66 76 H16 Z" stroke="none"/><path d="M30 52 V46 Q30 40 36 40 H48 Q54 40 54 46 V52" fill="none" stroke-width="5" stroke-linecap="round"/><circle cx="88" cy="66" r="4" stroke="none"/>`, CR) },
     { key: 'd_battery', name: '蓄电池充电指示灯', color: 'red', svg: panel(`<rect x="18" y="34" width="64" height="40" rx="4" fill="none" stroke-width="5"/><rect x="30" y="26" width="12" height="8" stroke="none"/><rect x="58" y="26" width="12" height="8" stroke="none"/><path d="M30 54 H44 M37 47 V61 M56 54 H70" stroke-width="5" stroke-linecap="round"/>`, CR) },
     { key: 'd_coolant', name: '冷却液温度报警灯', color: 'red', svg: panel(`<rect x="44" y="18" width="12" height="40" rx="6" fill="none" stroke-width="5"/><circle cx="50" cy="60" r="10" stroke="none"/><path d="M20 76 Q30 68 40 76 T60 76 T80 76 M20 88 Q30 80 40 88 T60 88 T80 88" fill="none" stroke-width="4" stroke-linecap="round"/>`, CR) },
     { key: 'd_brake', name: '制动系统故障灯', color: 'red', svg: panel(`<circle cx="50" cy="50" r="22" fill="none" stroke-width="5"/><path d="M18 36 Q10 50 18 64 M82 36 Q90 50 82 64" fill="none" stroke-width="5" stroke-linecap="round"/><rect x="46" y="36" width="8" height="18" rx="2" stroke="none"/><circle cx="50" cy="62" r="4" stroke="none"/>`, CR) },

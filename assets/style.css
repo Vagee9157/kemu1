@@ -165,9 +165,9 @@ details[open] .caret{transform:rotate(90deg);color:var(--brand)}
 .tag.ok{background:var(--ok-soft);color:var(--ok)}
 .tag.ok svg.i{font-size:12px;stroke-width:3}
 .pt-body{padding:2px 18px 16px;border-top:1px dashed var(--line);font-size:14.5px}
-.pt-body ul{padding-left:1.1em;margin:10px 0}
-.pt-body li{margin:5px 0}
-.pt-body li::marker{color:var(--brand)}
+.pt-body ul{list-style:none;padding-left:0;margin:10px 0}
+.pt-body li{margin:6px 0;padding-left:16px;position:relative}
+.pt-body li::before{content:"";position:absolute;left:1px;top:.72em;width:6px;height:6px;border-radius:50%;background:var(--brand)}
 .pt-body p{margin:10px 0}
 .pt-body b{color:var(--brand-deep);font-weight:700}
 .pt-body table,.num-table,.cmp-table{width:100%;border-collapse:collapse;margin:10px 0;font-size:13.5px}

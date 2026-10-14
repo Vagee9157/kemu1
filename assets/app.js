@@ -328,6 +328,9 @@
   });
 
   /* ---------- 启动 ---------- */
+  // 页首文案里的数量跟着题库走
+  const setTxt = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+  setTxt('cntPts', totalPts); setTxt('cntQ', QUESTIONS.length); setTxt('cntPic', Math.floor(QUESTIONS.filter((q) => q.sign).length / 10) * 10);
   renderOutline(); renderNumbers(); refreshStat();
   const start = location.hash.slice(1);
   show(VIEWS.includes(start) ? start : 'outline');
