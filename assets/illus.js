@@ -24,7 +24,8 @@
 
   const ILLUS = {
     /* 记分五档阶梯 */
-    points_ladder() {
+    points_ladder(hl) {
+      hl = hl ? +hl : 0;
       const steps = [
         [12, 'var(--red)', ['酒驾', '事故逃逸致伤亡', '假牌套牌', '高速逆行倒车掉头', '高速超速 50%+', '超员 100%+', '买卖分']],
         [9, '#e8640c', ['高速违停', '遮挡 / 不挂号牌', '准驾不符', '7 座以上超员 50%']],
@@ -34,10 +35,10 @@
       ];
       const W = 360, colW = 68, base = 88;
       return svg(W, 144, steps.map(([n, c, items], i) => {
-        const x = 6 + i * (colW + 4), h = 22 + (4 - i) * 10;
-        return `<rect x="${x}" y="${base - h}" width="${colW}" height="${h}" rx="6" fill="${c}"/>
+        const x = 6 + i * (colW + 4), h = 22 + (4 - i) * 10, dim = hl && hl !== n;
+        return `<g opacity="${dim ? .28 : 1}"><rect x="${x}" y="${base - h}" width="${colW}" height="${h}" rx="6" fill="${c}"/>${hl === n ? `<rect x="${x - 3}" y="${base - h - 3}" width="${colW + 6}" height="${h + 6}" rx="8" fill="none" stroke="${c}" stroke-width="2"/>` : ''}
           <text x="${x + colW / 2}" y="${base - h + 18}" font-size="15" text-anchor="middle" font-weight="800" fill="#fff" style="${F}">${n} 分</text>
-          ${items.slice(0, 4).map((t, j) => T(x + colW / 2, base + 14 + j * 11, t, 7.5, 'opacity:.85')).join('')}`;
+          ${items.slice(0, 4).map((t, j) => T(x + colW / 2, base + 14 + j * 11, t, 7.5, 'opacity:.85')).join('')}</g>`;
       }).join('') + `<line x1="4" y1="${base}" x2="${W - 4}" y2="${base}" stroke="currentColor" stroke-opacity=".2"/>`, 'il-ladder');
     },
 
@@ -185,6 +186,133 @@
         <line x1="236" y1="40" x2="306" y2="40" stroke="currentColor" stroke-opacity=".5"/>${T(271, 50, '车后 50–100 m', 9.5)}
         ${TL(6, 76, '高速公路', 10.5, 'font-weight:700')}${road(70, 60, 280, 30, 'none')}${car(320, 75, 'var(--red)')}${tri(130, 75)}
         <line x1="136" y1="94" x2="306" y2="94" stroke="currentColor" stroke-opacity=".5"/>${T(221, 100, '来车方向 150 m 以外 · 人撤到护栏外', 9.5)}`);
+    },
+
+    /* ---- 第二批 ---- */
+    exam_rules() {
+      const tile = (x, big, small, c) => `<rect x="${x}" y="8" width="106" height="78" rx="12" fill="${c}" fill-opacity=".12"/><text x="${x + 53}" y="50" font-size="26" text-anchor="middle" font-weight="800" fill="${c}" style="${F}">${big}</text>${T(x + 53, 72, small, 10)}`;
+      return svg(360, 122, `${tile(6, '100 题', '45 分钟', 'var(--brand)')}${tile(127, '90 分', '及格', 'var(--ok)')}${tile(248, '补考 1 次', '当场', 'var(--amber)')}
+        ${T(180, 112, '单选约 60 + 判断约 40 · 科二科三各最多约 5 次 · 学车证明 3 年', 9.5, 'opacity:.75')}`);
+    },
+    license_classes() {
+      const box = (x, y, w, h, c, label, sub) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="10" fill="${c}" fill-opacity=".14" stroke="${c}" stroke-width="1.5"/><text x="${x + 10}" y="${y + 18}" font-size="12" font-weight="800" fill="${c}" style="${F}">${label}</text>${sub ? TL(x + 10, y + 32, sub, 9) : ''}`;
+      return svg(360, 120, `${box(6, 6, 190, 108, 'var(--brand)', 'C1 小型汽车', '手动 + 自动都能开')}${box(28, 46, 150, 56, 'var(--ok)', 'C2 小型自动挡', '只能开自动挡')}
+        ${box(212, 6, 142, 48, 'var(--amber)', 'C6 轻型牵引挂车', '要单独考，C1 不含')}${box(212, 66, 142, 48, 'var(--red)', 'B / A 大中型', '含 C1、C2，年龄 20–63')}
+        `);
+    },
+    ban_years() {
+      const rows = [['隐瞒 / 虚假材料', 1], ['考试作弊', 1], ['一般吊销', 2], ['欺骗贿赂取得', 3], ['吸毒', 3], ['醉驾 / 酒驾营运', 5], ['醉驾营运', 10], ['逃逸犯罪 / 酒驾重大事故', '终生']];
+      return svg(360, 150, rows.map(([n, y], i) => { const yy = 10 + i * 17, w = y === '终生' ? 150 : y * 14; const c = y === '终生' ? 'var(--red)' : y >= 5 ? '#e8640c' : y >= 2 ? 'var(--amber)' : 'var(--brand)';
+        return `${TL(4, yy + 9, n, 9.5)}<rect x="126" y="${yy}" width="${w}" height="12" rx="6" fill="${c}"/>${TL(132 + w, yy + 9.5, y === '终生' ? '终生不得' : y + ' 年', 9.5, 'font-weight:700')}`; }).join(''));
+    },
+    full_points_flow() {
+      const step = (x, t, c = 'var(--brand)') => `<rect x="${x}" y="22" width="70" height="36" rx="10" fill="${c}" fill-opacity=".14" stroke="${c}" stroke-width="1.2"/>${T(x + 35, 44, t, 10, 'font-weight:700')}`;
+      const arr = (x) => `<path d="M${x} 40 h14" stroke="currentColor" stroke-opacity=".4" stroke-width="2" marker-end="url(#ilah)"/>`;
+      return svg(360, 112, `<defs><marker id="ilah" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="currentColor" fill-opacity=".5"/></marker></defs>
+        ${step(4, '记满 12 分', 'var(--red)')}${arr(76)}${step(94, '扣留驾驶证')}${arr(166)}${step(184, '学习 7 天')}${arr(256)}${step(274, '考科目一', 'var(--ok)')}
+        ${T(180, 80, '一个周期内 2 次满分 / 累积 24 分 → 加考科目三', 10)}${T(180, 98, '3 次以上 / 累积 36 分 → 科目二、三都考', 10)}`);
+    },
+    minus_points() {
+      const tile = (x, t, v, c) => `<rect x="${x}" y="8" width="108" height="64" rx="12" fill="${c}" fill-opacity=".12"/>${T(x + 54, 34, t, 10.5, 'font-weight:700')}<text x="${x + 54}" y="60" font-size="18" text-anchor="middle" font-weight="800" fill="${c}" style="${F}">${v}</text>`;
+      return svg(360, 100, `${tile(4, '网上学习 30 分钟', '−1 分', 'var(--brand)')}${tile(126, '现场学习 1 小时', '−2 分', 'var(--ok)')}${tile(248, '公益活动 1 小时', '−1 分', 'var(--amber)')}
+        ${T(180, 92, '一个周期最多减 6 分 · 实习期、扣证期间不能减', 9.5, 'opacity:.8')}`);
+    },
+    fines() {
+      const rows = [['一般违规', '20–200 元', 1, 'var(--brand)'], ['无证 / 借车给无证 / 超速 50% / 逃逸', '200–2000 元', 2.2, 'var(--amber)'], ['伪造变造 / 套用牌证', '2000–5000 元', 3.4, 'var(--red)'], ['未买交强险', '保费 × 2', 1.8, '#e8640c']];
+      return svg(360, 104, rows.map(([n, v, w, c], i) => { const y = 8 + i * 24; return `${TL(4, y + 11, n, 9)}<rect x="190" y="${y}" width="${w * 28}" height="14" rx="7" fill="${c}"/>${TL(196 + w * 28, y + 11, v, 9.5, 'font-weight:700')}`; }).join(''));
+    },
+    must_have() {
+      const item = (x, glyph, t) => `<rect x="${x}" y="6" width="64" height="64" rx="12" fill="currentColor" fill-opacity=".06"/>${glyph}${T(x + 32, 90, t, 9.5)}`;
+      const plate = (x) => `<rect x="${x + 12}" y="28" width="40" height="18" rx="3" fill="#1d4fb8"/><text x="${x + 32}" y="41" font-size="8" text-anchor="middle" fill="#fff" font-weight="700" style="${F}">京A·12345</text>`;
+      const card = (x, c) => `<rect x="${x + 14}" y="24" width="36" height="26" rx="4" fill="${c}"/><rect x="${x + 18}" y="30" width="10" height="12" rx="2" fill="#fff" opacity=".8"/><rect x="${x + 31}" y="31" width="14" height="2.5" fill="#fff" opacity=".8"/><rect x="${x + 31}" y="37" width="14" height="2.5" fill="#fff" opacity=".8"/>`;
+      const shield = (x) => `<path d="M${x + 32} 22 l16 6 v12 q0 12 -16 18 q-16 -6 -16 -18 v-12 z" fill="var(--ok)"/><path d="M${x + 25} 40 l5 5 l10 -10" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/>`;
+      const tag = (x) => `<circle cx="${x + 32}" cy="38" r="14" fill="var(--amber)"/><text x="${x + 32}" y="42" font-size="9" text-anchor="middle" font-weight="800" fill="#3a2300" style="${F}">检验</text>`;
+      return svg(360, 100, `${item(10, plate(10), '号牌（前后）')}${item(96, card(96, 'var(--brand)'), '行驶证')}${item(182, card(182, '#5b3fb8'), '驾驶证')}${item(268, shield(268), '交强险')}`);
+    },
+    registration() {
+      return svg(360, 96, `
+        <rect x="6" y="8" width="168" height="80" rx="12" fill="var(--brand)" fill-opacity=".1"/>${T(90, 28, '变更登记', 11, 'font-weight:800')}
+        ${car(50, 56, '#d7262b')}<path d="M72 56 h16" stroke="currentColor" stroke-opacity=".5" stroke-width="2"/>${car(110, 56, 'var(--brand)')}${T(90, 82, '改颜色 / 换发动机 / 换车身车架', 8.5, 'opacity:.8')}
+        <rect x="186" y="8" width="168" height="80" rx="12" fill="var(--ok)" fill-opacity=".1"/>${T(270, 28, '转移登记', 11, 'font-weight:800')}
+        ${car(230, 56, 'var(--ok)')}<path d="M252 56 h16" stroke="currentColor" stroke-opacity=".5" stroke-width="2"/><circle cx="292" cy="50" r="7" fill="currentColor" fill-opacity=".5"/><path d="M280 68 q12 -14 24 0" fill="currentColor" fill-opacity=".5"/>${T(270, 82, '车换了主人（过户）', 8.5, 'opacity:.8')}`);
+    },
+    inspection() {
+      const yrs = [2, 4, 6, 8, 10, 11, 12];
+      return svg(360, 100, `<line x1="20" y1="44" x2="340" y2="44" stroke="currentColor" stroke-opacity=".25" stroke-width="3"/>
+        ${yrs.map((y, i) => { const x = 30 + i * 50, on = y === 6 || y === 10 || y > 10; return `<circle cx="${x}" cy="44" r="${on ? 9 : 6}" fill="${on ? 'var(--red)' : 'var(--ok)'}"/>${T(x, 28, '第 ' + y + ' 年', 9)}${T(x, 70, on ? '上线检验' : '免上线领标', 8.5, on ? 'font-weight:700' : 'opacity:.7')}`; }).join('')}
+        ${T(180, 94, '私家车 10 年内只上线 2 次（第 6、10 年）；10 年以上每年 1 次', 9.5)}`);
+    },
+    overtake() {
+      return svg(360, 110, `${road(10, 20, 340, 60, 'dash')}
+        ${car(250, 65, 'var(--ink-dim)')}${car(120, 65)}
+        <path d="M140 60 q40 -30 90 -25" fill="none" stroke="var(--ok)" stroke-width="3" stroke-dasharray="6 4"/><path d="M230 35 q30 0 60 25" fill="none" stroke="var(--ok)" stroke-width="3" stroke-dasharray="6 4" marker-end="url(#ilah2)"/>
+        <defs><marker id="ilah2" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="var(--ok)"/></marker></defs>
+        ${chip(70, 36, 54, '左转向灯')}${chip(300, 36, 54, '右转向灯')}
+        ${T(180, 100, '从前车左侧超越 · 拉开距离后开右灯回原道', 9.5)}`);
+    },
+    fatigue() {
+      return svg(360, 92, `
+        <circle cx="46" cy="46" r="30" fill="currentColor" fill-opacity=".06" stroke="currentColor" stroke-opacity=".3" stroke-width="3"/><path d="M46 46 V22 M46 46 L62 56" stroke="var(--red)" stroke-width="4" stroke-linecap="round"/>
+        ${chip(130, 36, 110, '连续驾驶 ≤ 4 小时', 'var(--red)')}${chip(130, 62, 110, '停车休息 ≥ 20 分钟', 'var(--ok)')}
+        <rect x="236" y="20" width="22" height="40" rx="4" fill="currentColor" fill-opacity=".5"/><line x1="226" y1="68" x2="270" y2="14" stroke="var(--red)" stroke-width="4" stroke-linecap="round"/>
+        ${T(300, 36, '不打手持电话', 9.5, 'font-weight:700')}${T(300, 52, '不看视频', 9.5)}${T(300, 68, '下坡不空挡滑行', 9.5)}`);
+    },
+    ramp() {
+      return svg(360, 142, `${road(10, 20, 340, 40, 'dash')}
+        <path d="M10 60 L120 60 L60 100 L10 100 Z" fill="#4a4f57"/><path d="M350 60 L240 60 L300 100 L350 100 Z" fill="#4a4f57"/>
+        ${car(40, 85)}<path d="M55 82 q30 -10 60 -32" fill="none" stroke="var(--ok)" stroke-width="3" stroke-dasharray="6 4"/>
+        ${car(320, 85, 'var(--ink-dim)', true)}<path d="M245 50 q30 10 60 32" fill="none" stroke="var(--amber)" stroke-width="3" stroke-dasharray="6 4"/>
+        ${chip(80, 128, 136, '驶入：左转向灯 + 加速车道')}${chip(280, 128, 136, '驶离：右转向灯 + 减速车道', 'var(--amber)', '#3a2300')}
+        ${T(180, 40, '错过出口 → 继续往前，下一个出口再出', 9.5, 'fill:#fff;opacity:.9')}`);
+    },
+    traffic_light() {
+      const lamp = (x, c) => `<circle cx="${x}" cy="30" r="15" fill="${c}"/>`;
+      const cap = (x, a, b, c2) => `${T(x, 66, a, 10.5, 'font-weight:800')}${T(x, 81, b, 8.5)}${T(x, 93, c2, 8.5)}`;
+      return svg(360, 150, `
+        <rect x="6" y="8" width="348" height="44" rx="12" fill="#222"/>
+        ${lamp(60, '#e53935')}${lamp(180, '#fdd835')}${lamp(300, '#43a047')}
+        ${cap(60, '红灯 停', '右转弯可通行', '（不妨碍放行车辆行人）')}${cap(180, '黄灯 警示', '已过停止线的可继续', '没过线的停')}${cap(300, '绿灯 行', '转弯让直行', '让被放行的行人')}
+        <rect x="6" y="106" width="348" height="38" rx="10" fill="currentColor" fill-opacity=".06"/>
+        <circle cx="26" cy="125" r="9" fill="#fdd835"/>${TL(42, 121, '黄灯持续闪烁：注意瞭望，确认安全后通过', 9)}${TL(42, 136, '红叉 / 红箭头 = 本车道禁行；有交警指挥一律听交警', 9)}`);
+    },
+    accident_flow() {
+      const step = (x, y, t, c) => `<rect x="${x}" y="${y}" width="64" height="30" rx="8" fill="${c}" fill-opacity=".14" stroke="${c}" stroke-width="1.2"/>${T(x + 32, y + 19, t, 9.5, 'font-weight:700')}`;
+      const arr = (x, y) => `<path d="M${x} ${y} h10" stroke="currentColor" stroke-opacity=".4" stroke-width="2" marker-end="url(#ilah)"/>`;
+      return svg(360, 110, `<defs><marker id="ilah" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="currentColor" fill-opacity=".5"/></marker></defs>
+        ${TL(4, 24, '有人伤', 10, 'font-weight:800;fill:var(--red)')}${step(44, 8, '停车 + 双闪', 'var(--brand)')}${arr(110, 23)}${step(122, 8, '放三角牌', 'var(--brand)')}${arr(188, 23)}${step(200, 8, '救人 + 报警', 'var(--red)')}${arr(266, 23)}${step(278, 8, '标明位置', 'var(--amber)')}
+        ${TL(4, 74, '轻微剐蹭', 10, 'font-weight:800;fill:var(--ok)')}${step(64, 58, '拍照取证', 'var(--ok)')}${arr(130, 73)}${step(142, 58, '先撤离现场', 'var(--ok)')}${arr(208, 73)}${step(220, 58, '自行协商', 'var(--ok)')}
+        ${T(180, 104, '逃逸 / 破坏现场 = 全责 · 损失先由交强险赔', 9.5, 'opacity:.85')}`);
+    },
+    blowout() {
+      const tile = (x, t, sub, c, glyph) => `<rect x="${x}" y="6" width="112" height="90" rx="12" fill="${c}" fill-opacity=".12"/>${glyph}${T(x + 56, 72, t, 10.5, 'font-weight:700')}${T(x + 56, 88, sub, 8.5, 'opacity:.8')}`;
+      const wheel = (x) => `<circle cx="${x + 56}" cy="38" r="20" fill="none" stroke="var(--brand)" stroke-width="5"/><circle cx="${x + 56}" cy="38" r="5" fill="var(--brand)"/><path d="M${x + 38} 38 h13 M${x + 61} 38 h13 M${x + 56} 43 v15" stroke="var(--brand)" stroke-width="4"/>`;
+      const pedal = (x) => `<rect x="${x + 44}" y="22" width="24" height="34" rx="4" fill="var(--ok)" transform="rotate(-12 ${x + 56} 40)"/><path d="M${x + 30} 30 l10 10" stroke="var(--ok)" stroke-width="4" stroke-linecap="round"/>`;
+      const ban = (x) => `<rect x="${x + 44}" y="22" width="24" height="34" rx="4" fill="var(--red)" opacity=".5"/><circle cx="${x + 56}" cy="40" r="22" fill="none" stroke="var(--red)" stroke-width="4"/><line x1="${x + 40}" y1="56" x2="${x + 72}" y2="24" stroke="var(--red)" stroke-width="4"/>`;
+      return svg(360, 104, `${tile(4, '紧握方向盘', '保持直线', 'var(--brand)', wheel(4))}${tile(124, '松开油门', '让车自己慢下来', 'var(--ok)', pedal(124))}${tile(244, '别急刹', '车速降下来再轻踩', 'var(--red)', ban(244))}`);
+    },
+    brake_fail() {
+      const step = (x, t, sub, c) => `<rect x="${x}" y="10" width="106" height="60" rx="12" fill="${c}" fill-opacity=".14" stroke="${c}" stroke-width="1.2"/>${T(x + 53, 36, t, 12, 'font-weight:800')}${T(x + 53, 56, sub, 9, 'opacity:.8')}`;
+      return svg(360, 98, `${step(4, '① 抢挡减速', '高挡换低挡，发动机制动', 'var(--brand)')}${step(127, '② 缓拉手刹', '不能一下拉死', 'var(--amber)')}${step(250, '③ 避险车道', '或靠山体 / 障碍物', 'var(--red)')}
+        ${T(180, 90, '全程先控制方向，别慌着跳车', 9.5, 'opacity:.8')}`);
+    },
+    emergencies() {
+      const tile = (x, t, a, b, c) => `<rect x="${x}" y="6" width="84" height="92" rx="12" fill="${c}" fill-opacity=".12"/>${T(x + 42, 28, t, 11, 'font-weight:800')}${T(x + 42, 52, a, 8.5)}${T(x + 42, 66, b, 8.5)}`;
+      return svg(360, 106, `${tile(4, '侧翻', '抓紧方向盘', '脚勾踏板 不跳车', 'var(--amber)')}${tile(94, '落水', '解安全带', '砸侧窗边角', 'var(--brand)')}${tile(184, '着火', '熄火断电', '别开机盖', 'var(--red)')}${tile(274, '正面碰撞', '撞自己这侧：', '躲开方向盘', '#e8640c')}`);
+    },
+    posture() {
+      return svg(360, 110, `
+        <circle cx="70" cy="56" r="40" fill="none" stroke="currentColor" stroke-opacity=".5" stroke-width="7"/><circle cx="70" cy="56" r="9" fill="currentColor" fill-opacity=".5"/>
+        <circle cx="34" cy="48" r="8" fill="var(--brand)"/><circle cx="106" cy="48" r="8" fill="var(--brand)"/>
+        ${T(28, 12, '9–10 点', 9, 'font-weight:700')}${T(112, 12, '3–4 点', 9, 'font-weight:700')}${T(70, 106, '双手握盘位置', 9.5, 'opacity:.8')}
+        ${chip(230, 24, 150, '头枕对准后脑中部 / 耳朵上沿', 'var(--brand-soft)', 'var(--brand-deep)', 9.5)}
+        ${chip(230, 52, 150, 'ABS 急刹：一脚踩到底不松', 'var(--brand-soft)', 'var(--brand-deep)', 9.5)}
+        ${chip(230, 80, 150, '儿童坐后排 + 安全座椅', 'var(--brand-soft)', 'var(--brand-deep)', 9.5)}`);
+    },
+    towing() {
+      return svg(360, 86, `${road(10, 14, 340, 40, 'none')}${car(70, 34)}${car(230, 34, 'var(--ink-dim)')}
+        <line x1="92" y1="34" x2="208" y2="34" stroke="var(--amber)" stroke-width="3"/>
+        ${chip(150, 70, 150, '软连接 4–10 m · 最高 30 km/h', 'var(--amber)', '#3a2300', 9.5)}
+        ${T(300, 74, '制动失效 → 硬连接', 9.5, 'font-weight:700')}`);
     },
   };
 

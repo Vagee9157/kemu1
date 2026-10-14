@@ -47,6 +47,7 @@ const CHAPTERS = [
     intro: '每次必出 8–10 题，全是"数字题"，背准就是白送分。',
     points: [
       { t: '科目一怎么考', hot: 1, body: `
+        <div class="illus" data-illus="exam_rules"></div>
         <ul>
           <li><b>100 题、45 分钟、90 分及格</b>，每题 1 分；通常是单选题 60 道 + 判断题 40 道，电脑上机、交卷即出成绩。</li>
           <li>一次考试不合格，<b>当场可补考一次</b>；补考仍不合格，本次考试结束，需重新预约。</li>
@@ -54,6 +55,7 @@ const CHAPTERS = [
           <li>科目二、科目三（道路驾驶）<b>每个科目预约考试次数不超过 5 次</b>，第 5 次仍不合格，已考合格的其他科目成绩作废。</li>
         </ul>`, tip: '100 题 45 分钟 90 分；学车证明 3 年；二三科各 5 次。' },
       { t: '准驾车型（C1 / C2 必背）', hot: 2, body: `
+        <div class="illus" data-illus="license_classes"></div>
         <table>
           <tr><th>代号</th><th>车型</th><th>准驾的其他车型</th></tr>
           <tr><td>C1</td><td>小型汽车</td><td>C2、C3、C4</td></tr>
@@ -66,6 +68,7 @@ const CHAPTERS = [
         </table>
         <p>驾驶<b>与准驾车型不符</b>的机动车：一次记 <b>9 分</b>。</p>`, tip: 'C1 能开 C2，C2 不能开 C1。' },
       { t: '申领条件与"多少年内不得申领"', hot: 2, body: `
+        <div class="illus" data-illus="ban_years"></div>
         <ul>
           <li>申请小型汽车（C1/C2）：<b>年满 18 周岁、没有年龄上限</b>；70 周岁以上申领需通过记忆力、判断力、反应力等<b>能力测试</b>。</li>
           <li>普通二轮、三轮摩托车：18–<b>70</b> 周岁；大型客车、重型牵引挂车：22–<b>63</b> 周岁；中型客车、大型货车、城市公交车：20–63 周岁。63 周岁以上通过能力测试可申请延长大中型客货车准驾资格，最长 3 年（公安部令第 172 号，2025-01-01 起施行，老题库里的"60 周岁"已经过时）。</li>
@@ -118,6 +121,7 @@ const CHAPTERS = [
           <li>情节轻微、给予<b>警告</b>处罚的，免予记分。</li>
         </ul>`, tip: '12 个月一周期，12 分封顶；12-9-6-3-1 五档。' },
       { t: '记满 12 分怎么办', hot: 1, body: `
+        <div class="illus" data-illus="full_points_flow"></div>
         <ul>
           <li>交管部门<b>扣留驾驶证</b>，参加为期 <b>7 天</b>的道路交通安全法律法规学习（现场+网络累计不少于 5 天，其中现场不少于 2 天）。</li>
           <li>学习后参加<b>科目一考试</b>，不合格的 10 日后可预约重考。</li>
@@ -125,12 +129,14 @@ const CHAPTERS = [
           <li><b>三次以上</b>记满或累积 36 分以上：科目二、科目三都要考。</li>
         </ul>`, tip: '满分 → 扣证 + 7 天学习 + 考科目一；两次加考科目三，三次科目二三都考。' },
       { t: '学习减分', hot: 1, body: `
+        <div class="illus" data-illus="minus_points"></div>
         <ul>
           <li>处理完违法后累积未满 12 分，可参加交通安全教育<b>扣减记分</b>，一个周期最多扣减 <b>6 分</b>。</li>
           <li>网上学习 3 日内累计满 30 分钟且考试合格：扣 1 分；现场学习满 1 小时且考试合格：扣 2 分；参加交通安全公益活动满 1 小时：扣 1 分。</li>
           <li><b>实习期内</b>、驾驶证被扣留/暂扣期间、近 3 个周期有酒驾/逃逸/套牌/买卖分记录的，不能减分。</li>
         </ul>`, tip: '一个周期最多减 6 分；实习期不能减。' },
       { t: '一次记 12 分（小车相关）', hot: 2, body: `
+        <div class="illus" data-illus="points_ladder:12"></div>
         <ul>
           <li><b>饮酒后</b>驾驶机动车。</li>
           <li>造成致人<b>轻伤以上或死亡</b>的事故后<b>逃逸</b>，尚不构成犯罪。</li>
@@ -141,6 +147,7 @@ const CHAPTERS = [
           <li>代替实际驾驶人接受处罚和记分<b>牟取经济利益</b>（买卖分）。</li>
         </ul>`, tip: '酒、逃、假、超员翻倍、高速超速五成、高速倒逆掉、卖分。' },
       { t: '一次记 9 分', hot: 1, body: `
+        <div class="illus" data-illus="points_ladder:9"></div>
         <ul>
           <li>在<b>高速公路或城市快速路</b>上<b>违法停车</b>。</li>
           <li>驾驶<b>未悬挂号牌</b>或<b>故意遮挡、污损号牌</b>的机动车上路。</li>
@@ -149,6 +156,7 @@ const CHAPTERS = [
           <li><b>未取得校车驾驶资格</b>驾驶校车。</li>
         </ul>`, tip: '高速违停、遮挡号牌、准驾不符 → 9 分。' },
       { t: '一次记 6 分', hot: 2, body: `
+        <div class="illus" data-illus="points_ladder:6"></div>
         <ul>
           <li><b>不按交通信号灯指示通行</b>（闯红灯）。</li>
           <li>驾驶证<b>被暂扣或扣留期间</b>驾驶机动车。</li>
@@ -158,6 +166,7 @@ const CHAPTERS = [
           <li>其他载客汽车载人超员 <b>50% 以上未达 100%</b>。</li>
         </ul>`, tip: '闯红灯 6 分；高速"违停 9、占应急车道行驶 6"别混。' },
       { t: '一次记 3 分', hot: 2, body: `
+        <div class="illus" data-illus="points_ladder:3"></div>
         <ul>
           <li>在<b>高速公路或城市快速路</b>上<b>不按规定车道行驶</b>。</li>
           <li><b>不按规定超车、让行</b>，或在普通道路上<b>逆行</b>。</li>
@@ -171,6 +180,7 @@ const CHAPTERS = [
           <li>小车在<b>普通道路</b>超速 <b>20% 以上未达 50%</b>；载人超员 20% 以上未达 50%。</li>
         </ul>`, tip: '打手机、不让行人、不让校车、加塞、高速低于最低速 → 3 分。' },
       { t: '一次记 1 分', hot: 1, body: `
+        <div class="illus" data-illus="points_ladder:1"></div>
         <ul>
           <li><b>不按规定会车</b>，或在普通道路上<b>不按规定倒车、掉头</b>。</li>
           <li><b>不按规定使用灯光</b>。</li>
@@ -192,6 +202,7 @@ const CHAPTERS = [
           <tr><td>饮酒/醉酒驾驶发生重大事故构成犯罪</td><td>吊销，刑责，<b>终生</b>不得重新取得</td></tr>
         </table>`, tip: '20 饮酒 80 醉；饮酒扣 6 月罚 1–2 千；醉驾吊销 5 年。' },
       { t: '其他高频罚则', hot: 1, body: `
+        <div class="illus" data-illus="fines"></div>
         <ul>
           <li>一般违反通行规定：<b>警告或 20–200 元</b>罚款。</li>
           <li>违法停车、驾驶人<b>不在现场</b>：20–200 元罚款，可<b>拖移车辆</b>。</li>
@@ -207,6 +218,7 @@ const CHAPTERS = [
     intro: '题少但稳定，记住"哪些情况要登记、多少天内"。',
     points: [
       { t: '上路必备', hot: 1, body: `
+        <div class="illus" data-illus="must_have"></div>
         <ul>
           <li>机动车经<b>公安机关交通管理部门登记</b>后，方可上道路行驶；尚未登记的需临时上路，应取得<b>临时通行牌证</b>。</li>
           <li>上路应当悬挂机动车号牌，放置检验合格标志，随车携带<b>行驶证、驾驶证</b>（"交管 12123"上的电子驾驶证（2021 年底起）、电子行驶证（2024-12-02 起）已在全国推行，与纸质证件同等效力）；号牌应悬挂在车前、车后指定位置，保持清晰完整，<b>不得故意遮挡、污损</b>。</li>
@@ -215,6 +227,7 @@ const CHAPTERS = [
           <li>达到报废标准的机动车<b>不得上道路行驶</b>；拼装车、报废车禁止上路。</li>
         </ul>`, tip: '没登记不能上路；号牌前后都要挂，不能遮。' },
       { t: '变更登记与转移登记', hot: 1, body: `
+        <div class="illus" data-illus="registration"></div>
         <ul>
           <li><b>改变车身颜色、更换发动机、更换车身或车架</b>、因质量问题更换整车、营运与非营运性质转换等：申请<b>变更登记</b>。</li>
           <li>机动车所有权转移（<b>过户</b>）：申请<b>转移登记</b>。</li>
@@ -222,6 +235,7 @@ const CHAPTERS = [
           <li>机动车用作抵押：申请<b>抵押登记</b>。</li>
         </ul>`, tip: '车自己变了 → 变更；车换主人了 → 转移。' },
       { t: '安全技术检验周期（现行政策）', hot: 1, body: `
+        <div class="illus" data-illus="inspection"></div>
         <table>
           <tr><th>车辆</th><th>检验周期</th></tr>
           <tr><td>私家车（9 座及以下非营运小微型载客汽车，面包车除外）</td><td><b>10 年内只上线 2 次</b>：第 6 年、第 10 年；第 2、4、8 年免上线，在"交管 12123"申领检验标志即可；<b>10 年以上每年 1 次</b></td></tr>
@@ -241,6 +255,7 @@ const CHAPTERS = [
         
         <p>有限速标志、标线的，按标志标线行驶。</p>`, tip: '城 30/50，公路 40/70（先无线，后一车道）。' },
       { t: '最高不超过 30 km/h 的情形', hot: 2, body: `
+        <div class="sign-row"><figure><div class="illus" data-sign="w_curve_r"></div><figcaption>急弯</figcaption></figure><figure><div class="illus" data-sign="w_bridge"></div><figcaption>窄桥</figcaption></figure><figure><div class="illus" data-sign="w_rail_n"></div><figcaption>铁路道口</figcaption></figure><figure><div class="illus" data-sign="w_narrow2"></div><figcaption>窄路</figcaption></figure><figure><div class="illus" data-sign="w_slip"></div><figcaption>泥泞易滑</figcaption></figure><figure><div class="illus" data-sign="w_icy"></div><figcaption>冰雪</figcaption></figure></div>
         <ul>
           <li>进出非机动车道。</li>
           <li>通过<b>铁路道口、急弯路、窄路、窄桥</b>。</li>
@@ -251,6 +266,7 @@ const CHAPTERS = [
         </ul>
         <p class="warn">易错：普通道路能见度 50 米以内是 <b>30</b>；高速公路能见度 50 米以内是 <b>20</b>。</p>`, tip: '"弯桥道口掉转坡，雾雪泥泞拖故障"——一律 30。' },
       { t: '超车', hot: 2, body: `
+        <div class="illus" data-illus="overtake"></div>
         <div class="sign-row"><figure><div class="illus" data-sign="p_noovertake"></div><figcaption>禁止超车</figcaption></figure><figure><div class="illus" data-sign="p_endovertake"></div><figcaption>解除禁止超车</figcaption></figure></div>
         <p>超车时：提前开启<b>左转向灯</b>，变换使用远、近光灯或鸣喇叭，确认安全后<b>从前车左侧</b>超越，与被超车辆拉开必要距离后，开启右转向灯驶回原车道。</p>
         <p><b>不得超车</b>的情形：</p>
@@ -327,6 +343,7 @@ const CHAPTERS = [
           <li>前方车辆停车排队或缓慢行驶时：<b>不得借道超车、占用对面车道、穿插等候车辆</b>。</li>
         </ul>`, tip: '人行横道减速，有人就停；校车停，你也停。' },
       { t: '驾驶中禁止的行为', hot: 1, body: `
+        <div class="illus" data-illus="fatigue"></div>
         <ul>
           <li>车门、车厢没有关好时行车。</li>
           <li>在驾驶室前后窗范围内悬挂、放置<b>妨碍视线</b>的物品。</li>
@@ -337,6 +354,8 @@ const CHAPTERS = [
           <li>驾驶人、乘车人应当按规定使用<b>安全带</b>；摩托车驾驶人及乘坐人员应当戴<b>安全头盔</b>。</li>
         </ul>`, tip: '疲劳驾驶：4 小时要歇，歇够 20 分钟。' },
       { t: '铁路道口、漫水路、牵引', hot: 1, body: `
+        <div class="sign-row"><figure><div class="illus" data-sign="w_rail_g"></div><figcaption>有人看守道口</figcaption></figure><figure><div class="illus" data-sign="w_rail_n"></div><figcaption>无人看守道口</figcaption></figure><figure><div class="illus" data-sign="w_water"></div><figcaption>注意积水</figcaption></figure></div>
+        <div class="illus" data-illus="towing"></div>
         <ul>
           <li><b>铁路道口</b>：按信号或管理人员指挥通行；没有的，<b>减速或停车，确认安全后通过</b>。道口信号灯两个红灯交替闪烁或一个红灯亮：禁止通行。</li>
           <li><b>漫水路、漫水桥</b>：停车察明水情，确认安全后<b>低速通过</b>。</li>
@@ -372,6 +391,7 @@ const CHAPTERS = [
         <div class="illus" data-illus="visibility"></div>
         `, tip: '"200-60-100，100-40-50，50-20 赶快走"。' },
       { t: '进出高速与禁止行为', hot: 1, body: `
+        <div class="illus" data-illus="ramp"></div>
         <ul>
           <li>从匝道驶入：开启<b>左转向灯</b>，在<b>加速车道</b>提速，在不妨碍已在高速公路内车辆正常行驶的情况下驶入车道。</li>
           <li>驶离：开启<b>右转向灯</b>，驶入<b>减速车道</b>，降低车速后驶离。</li>
@@ -393,6 +413,7 @@ const CHAPTERS = [
     intro: '看图题集中在这里。先按"颜色 + 形状"把大类认出来，题目就排除掉一大半。',
     points: [
       { t: '交通信号灯', hot: 2, body: `
+        <div class="illus" data-illus="traffic_light"></div>
         <div class="sign-row"><figure><div class="illus" data-sign="w_signal"></div><figcaption>注意信号灯</figcaption></figure><figure><div class="illus" data-sign="d_hazard"></div><figcaption>双闪开关</figcaption></figure></div>
         <ul>
           <li><b>绿灯</b>：准许通行，但转弯的车辆不得妨碍被放行的直行车辆、行人通行。</li>
@@ -441,6 +462,7 @@ const CHAPTERS = [
           <li>路侧<b>黄色虚线</b>：禁止长时停车；路侧<b>黄色实线</b>：禁止停车（含临时停车）。</li>
         </ul>`, tip: '白分同向黄分对向，虚线能过实线不能；虚实线看自己这一侧。' },
       { t: '交警手势（8 种）', hot: 1, body: `
+        <div class="sign-row"><figure><div class="illus" data-sign="h_stop"></div><figcaption>停止</figcaption></figure><figure><div class="illus" data-sign="h_straight"></div><figcaption>直行</figcaption></figure><figure><div class="illus" data-sign="h_left"></div><figcaption>左转弯</figcaption></figure><figure><div class="illus" data-sign="h_left_wait"></div><figcaption>左转弯待转</figcaption></figure><figure><div class="illus" data-sign="h_right"></div><figcaption>右转弯</figcaption></figure><figure><div class="illus" data-sign="h_lane"></div><figcaption>变道</figcaption></figure><figure><div class="illus" data-sign="h_slow"></div><figcaption>减速慢行</figcaption></figure><figure><div class="illus" data-sign="h_pull"></div><figcaption>靠边停车</figcaption></figure></div>
         <p><b>停止、直行、左转弯、左转弯待转、右转弯、变道、减速慢行、示意车辆靠边停车</b>，共 8 种。</p>
         <ul>
           <li>判断方向一律以<b>交警本人的左右</b>为准，不要按自己（驾驶人）视角。</li>
@@ -456,6 +478,7 @@ const CHAPTERS = [
     intro: '题少但答案非常固定：先救人、再报警、能撤就撤。',
     points: [
       { t: '发生事故后的处置顺序', hot: 2, body: `
+        <div class="illus" data-illus="accident_flow"></div>
         <ul>
           <li>立即<b>停车，保护现场</b>；开启危险报警闪光灯，按规定设置警告标志。</li>
           <li>造成人身伤亡：立即<b>抢救受伤人员</b>，并迅速报警；因抢救伤员变动现场的，应当<b>标明位置</b>。</li>
@@ -477,18 +500,21 @@ const CHAPTERS = [
     intro: '常识题，答题原则：控制方向 > 减速 > 停车；绝大多数情况不选"紧急制动""猛打方向"。',
     points: [
       { t: '爆胎、转向失控、侧滑', hot: 2, body: `
+        <div class="illus" data-illus="blowout"></div>
         <ul>
           <li><b>爆胎</b>：双手紧握方向盘保持方向，松抬加速踏板缓慢减速，<b>不要紧急制动</b>；车速降下来后再轻踩制动，停到路边。</li>
           <li><b>转向突然失控</b>：车辆尚能保持直线行驶时，不要紧急制动，轻踩制动使车缓慢停下；已偏离方向、事故无法避免时，<b>果断连续踩踏、放松制动踏板</b>，尽量缩短停车距离。</li>
           <li><b>侧滑</b>：松抬加速踏板，<b>向侧滑的一侧</b>（车尾甩向哪边）适当转动方向盘修正，不可紧急制动、猛打方向。</li>
         </ul>`, tip: '爆胎：握稳方向、松油门、别急刹。侧滑：往滑的方向回轮。' },
       { t: '制动失效', hot: 1, body: `
+        <div class="illus" data-illus="brake_fail"></div>
         <ul>
           <li>保持冷静，<b>控制方向</b>；<b>抢挡减速</b>（由高速挡换入低速挡），利用发动机制动。</li>
           <li>配合<b>驻车制动</b>（手刹）缓慢拉紧，不可一下拉死，以免侧滑甩尾。</li>
           <li>下长坡制动失效：首先抢挡，利用道路边专设的<b>紧急避险车道</b>，或靠向山体、利用路边障碍物减速。</li>
         </ul>`, tip: '刹车失灵：先抢挡，再手刹，最后撞山/进避险车道。' },
       { t: '碰撞、翻车、落水、着火', hot: 1, body: `
+        <div class="illus" data-illus="emergencies"></div>
         <ul>
           <li><b>正面碰撞</b>不可避免：撞击部位不在驾驶人一侧时，双手紧握方向盘，两腿向前蹬直，身体后倾；撞击部位靠近驾驶座时，<b>迅速躲离方向盘</b>，将两脚抬起。</li>
           <li><b>侧翻</b>：紧握方向盘，两脚勾住踏板，使身体固定，随车翻转；不要跳车。</li>
@@ -497,6 +523,7 @@ const CHAPTERS = [
           <li>加油时：熄火，禁止吸烟、使用明火，不要使用手机。</li>
         </ul>`, tip: '着火别开机盖；落水砸侧窗边角；翻车不跳车。' },
       { t: '恶劣天气与特殊路况', hot: 1, body: `
+        <div class="sign-row"><figure><div class="illus" data-sign="w_slip"></div><figcaption>易滑</figcaption></figure><figure><div class="illus" data-sign="w_ice"></div><figcaption>雨雪天</figcaption></figure><figure><div class="illus" data-sign="w_water"></div><figcaption>积水</figcaption></figure><figure><div class="illus" data-sign="w_wind"></div><figcaption>横风</figcaption></figure><figure><div class="illus" data-sign="w_tunnel"></div><figcaption>隧道</figcaption></figure><figure><div class="illus" data-sign="d_fog_f"></div><figcaption>前雾灯</figcaption></figure></div>
         <ul>
           <li><b>雨天</b>：降低车速，加大跟车距离；高速行驶时轮胎与路面间形成水膜产生"水滑"，应握稳方向盘、逐渐降速，<b>不要急踩制动</b>。</li>
           <li><b>雾天</b>：开启雾灯、近光灯、危险报警闪光灯，<b>不要使用远光灯</b>（雾中光线散射反而看不清），必要时鸣喇叭提示。</li>
@@ -508,6 +535,7 @@ const CHAPTERS = [
           <li>长时间高速行驶后易产生"<b>速度错觉</b>"，低估实际车速，应多看速度表。</li>
         </ul>`, tip: '雨天别急刹、雾天别远光、冰雪走车辙、涉水一次过、下坡别空挡。' },
       { t: '驾驶姿势与安全装置', hot: 1, body: `
+        <div class="illus" data-illus="posture"></div>
         <ul>
           <li>握方向盘：左手在 <b>9–10 点</b>位置，右手在 <b>3–4 点</b>位置。</li>
           <li><b>安全带</b>：腰带系在髋骨部位，肩带斜跨肩部中央、不要压颈；安全气囊必须与安全带配合使用。</li>
@@ -517,6 +545,7 @@ const CHAPTERS = [
           <li>起步前：检查车辆、环视四周，开启左转向灯，观察后方交通，确认安全后起步。</li>
         </ul>`, tip: 'ABS 一脚到底不松；儿童不坐副驾。' },
       { t: '仪表盘指示灯', hot: 1, body: `
+        <div class="sign-row"><figure><div class="illus" data-sign="d_oil"></div><figcaption>机油压力</figcaption></figure><figure><div class="illus" data-sign="d_battery"></div><figcaption>充电</figcaption></figure><figure><div class="illus" data-sign="d_coolant"></div><figcaption>水温</figcaption></figure><figure><div class="illus" data-sign="d_brake"></div><figcaption>制动</figcaption></figure><figure><div class="illus" data-sign="d_belt"></div><figcaption>安全带</figcaption></figure><figure><div class="illus" data-sign="d_engine"></div><figcaption>发动机</figcaption></figure><figure><div class="illus" data-sign="d_abs"></div><figcaption>ABS</figcaption></figure><figure><div class="illus" data-sign="d_tpms"></div><figcaption>胎压</figcaption></figure><figure><div class="illus" data-sign="d_fuel"></div><figcaption>燃油</figcaption></figure><figure><div class="illus" data-sign="d_high"></div><figcaption>远光</figcaption></figure><figure><div class="illus" data-sign="d_low"></div><figcaption>近光</figcaption></figure><figure><div class="illus" data-sign="d_fog_f"></div><figcaption>前雾灯</figcaption></figure><figure><div class="illus" data-sign="d_fog_r"></div><figcaption>后雾灯</figcaption></figure><figure><div class="illus" data-sign="d_hazard"></div><figcaption>双闪</figcaption></figure></div>
         <p>先看颜色：<b class="c-red">红色</b> = 严重故障/危险，必须尽快停车；<b class="c-yel">黄色</b> = 故障或提醒，尽快检修；<b class="c-grn">绿色</b>/<b class="c-blu">蓝色</b> = 某装置正在工作。</p>
         <table>
           <tr><th>图案</th><th>含义</th></tr>

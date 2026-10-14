@@ -23,7 +23,7 @@
   const chArt = (id) => `<div class="ch-art">${(CH_ART[id] || []).map((k) => SIGNS[k] || '').join('')}</div>`;
   // 把正文里的图解占位换成真图
   function fillIllus(root) {
-    root.querySelectorAll('.illus[data-illus]').forEach((el) => { const f = window.ILLUS && ILLUS[el.dataset.illus]; if (f) el.outerHTML = f(); });
+    root.querySelectorAll('.illus[data-illus]').forEach((el) => { const [name, arg] = el.dataset.illus.split(':'); const f = window.ILLUS && ILLUS[name]; if (f) el.outerHTML = f(arg); });
     root.querySelectorAll('.illus[data-sign]').forEach((el) => { el.outerHTML = SIGNS[el.dataset.sign] || ''; });
   }
 
