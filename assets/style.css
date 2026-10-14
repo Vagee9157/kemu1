@@ -294,10 +294,10 @@ footer.foot b{color:var(--ink-soft);font-weight:700}
 /* ---------- 图解 ---------- */
 svg.il{display:block;width:100%;max-width:520px;height:auto;margin:12px auto 4px;color:var(--ink)}
 .il-ladder{max-width:460px}
-.ch-art{display:inline-flex;gap:0;margin-left:10px;vertical-align:middle}
-.ch-art svg{width:26px;height:26px;border-radius:50%;box-shadow:0 0 0 2px var(--bg);margin-left:-7px;filter:drop-shadow(0 1px 1px rgba(0,0,0,.15))}
-.ch-art svg:first-child{margin-left:0}
-@media (max-width:719px){.ch-art svg{width:22px;height:22px}}
+.ch-art{display:inline-flex;gap:6px;margin-left:12px;vertical-align:middle}
+.ch-art svg{width:30px;height:30px;display:block;filter:drop-shadow(0 1px 2px rgba(0,0,0,.16))}
+.ch-art svg[viewBox="0 0 120 80"]{width:44px}
+@media (max-width:719px){.ch-art{gap:5px;margin-left:10px}.ch-art svg{width:26px;height:26px}.ch-art svg[viewBox="0 0 120 80"]{width:38px}}
 .sign-row figure .illus{display:none}
 
 /* ---------- 连击 / 通关 ---------- */
