@@ -20,7 +20,7 @@
   const totalPts = CHAPTERS.reduce((n, c) => n + c.points.length, 0);
 
   /* ---------- 主题 ---------- */
-  const isDark = () => (S.theme ? S.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches);
+  const isDark = () => (S.theme ? S.theme === 'dark' : (document.documentElement.dataset.style === 'c' || matchMedia('(prefers-color-scheme: dark)').matches));
   const applyTheme = () => {
     if (S.theme) document.documentElement.dataset.theme = S.theme; else delete document.documentElement.dataset.theme;
     const u = $('#themeBtn use'); if (u) u.setAttribute('href', isDark() ? '#i-sun' : '#i-moon');

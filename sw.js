@@ -1,6 +1,6 @@
 // 网络优先：有网永远拿最新内容，没网用上次缓存的，联网打开过一次就能离线看
-const CACHE = 'km1-v4';
-const CORE = ['./', 'index.html', 'assets/style.css?v=4', 'assets/data.js?v=4', 'assets/app.js?v=4', 'manifest.json', 'assets/icons/icon-192.png'];
+const CACHE = 'km1-v5';
+const CORE = ['./', 'index.html', 'assets/style.css?v=5', 'assets/theme-a.css?v=5', 'assets/theme-b.css?v=5', 'assets/theme-c.css?v=5', 'assets/data.js?v=5', 'assets/pics.js?v=5', 'assets/questions2.js?v=5', 'assets/app.js?v=5', 'manifest.json', 'assets/icons/icon-192.png'];
 
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(CORE)).then(() => self.skipWaiting()));

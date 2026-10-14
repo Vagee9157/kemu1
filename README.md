@@ -10,7 +10,7 @@
 |---|---|
 | 📖 考点 | 8 章 49 个考点，按考试分值排；每条标「必考 / 常考」，附一句话记忆口诀；可搜索、可勾「已掌握」 |
 | 🔢 速记 | 数字题汇总（驾驶证年限、记分、速度、距离、高速低能见度）+ 易混对比表；可「遮住答案」点开自测 |
-| ✍️ 刷题 | 136 道经典题：高频必刷 / 模拟考试（随机 50 题，交卷出分）/ 全部顺序 / 按章节；答完即出解析并可跳回对应考点 |
+| ✍️ 刷题 | 377 道题（含 150 多道看图题）：高频必刷 / 模拟考试（随机 50 题，交卷出分）/ 全部顺序 / 按章节；答完即出解析并可跳回对应考点 |
 | 📕 错题 | 做错自动收录，按错误次数排，重做答对即移出 |
 
 学习进度、错题只存在本机浏览器（localStorage），换设备或清缓存会丢。
@@ -34,7 +34,10 @@
 
 ```
 index.html        页面骨架
-assets/data.js    全部内容：考点 CHAPTERS / 数字 NUMBERS / 易混 CONFUSE / 题目 QUESTIONS / 标志 SIGNS
+assets/data.js        考点 CHAPTERS / 数字 NUMBERS / 易混 CONFUSE / 第一批题 QUESTIONS / 基础标志 SIGNS
+assets/pics.js        看图题图库：84 个标志、23 种标线、26 个仪表灯、8 个交警手势（内联 SVG）
+assets/questions2.js  看图题（按 pics.js 目录自动生成）+ 手写补充题
+assets/theme-a/b/c.css 三套样式，?style=a|b|c 切换，styles.html 是挑选页
 assets/app.js     交互逻辑
 assets/style.css  样式（浅色 / 深色）
 sw.js             离线缓存（网络优先）

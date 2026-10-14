@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>挑一个样式</title>
+<style>
+  body{margin:0;font-family:"Noto Sans SC",-apple-system,"PingFang SC",sans-serif;background:#f4f4f1;color:#1e221f;padding:28px 18px 60px}
+  h1{font-size:24px;margin:0 0 6px}
+  p.lead{color:#5b615d;margin:0 0 22px;font-size:14px;line-height:1.7}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;max-width:980px}
+  a.card{display:block;text-decoration:none;color:inherit;background:#fff;border:1px solid #e2e4df;border-radius:14px;overflow:hidden;transition:transform .15s,box-shadow .15s}
+  a.card:hover{transform:translateY(-3px);box-shadow:0 14px 34px rgba(0,0,0,.1)}
+  .swatch{height:120px;display:flex;align-items:flex-end;padding:14px;font-weight:700;font-size:22px;letter-spacing:.02em}
+  .swatch i{display:inline-block;width:38px;height:6px;border-radius:3px;margin-left:auto}
+  .body{padding:14px 16px 16px}
+  .body b{display:block;font-size:16px;margin-bottom:4px}
+  .body span{font-size:13px;color:#5b615d;line-height:1.7}
+  .a .swatch{background:#f5f2ea;color:#1f6f4a;font-family:"Noto Serif SC","Songti SC",serif}.a .swatch i{background:#e5b73b}
+  .b .swatch{background:linear-gradient(135deg,#2563eb,#1e40af);color:#fff}.b .swatch i{background:#ffb347}
+  .c .swatch{background:#121314;color:#f2b63a}.c .swatch i{background:#6fd3c7}
+  .note{max-width:980px;margin-top:22px;font-size:13px;color:#5b615d;line-height:1.7}
+  code{background:#e9e9e4;padding:1px 6px;border-radius:4px}
+</style>
+</head>
+<body>
+<h1>科目一通关笔记 · 挑一个样式</h1>
+<p class="lead">三套只是换皮，内容和功能一样。点进去看完整效果（手机上也打开试试），选定后告诉我，我把它定成默认并删掉另外两套。</p>
+<div class="grid">
+  <a class="card a" href="index.html?style=a"><div class="swatch">A 考前笔记<i></i></div><div class="body"><b>纸色 · 宋体标题 · 驾校绿</b><span>像一本手写笔记。暖色纸底，标题用宋体，重点词下面压一道路面黄线。浅色为主，跟随系统切深色。</span></div></a>
+  <a class="card b" href="index.html?style=b"><div class="swatch">B 清爽应用<i></i></div><div class="body"><b>白卡片 · 交管蓝 · 大圆角</b><span>最像一个学习 App。蓝色渐变页首，白色卡片浮在浅灰底上，全无衬线，手机底栏带圆角。浅色为主，支持深色。</span></div></a>
+  <a class="card c" href="index.html?style=c"><div class="swatch">C 夜读黑板<i></i></div><div class="body"><b>炭黑底 · 琥珀黄 · 粗黑标题</b><span>默认深色，晚上刷题不刺眼。黄色当主色，答对用薄荷绿，直角小圆角，字更粗、对比更强。可切到米白"粉笔"浅色版。</span></div></a>
+</div>
+<p class="note">地址后面带 <code>?style=a / b / c</code> 就能切，选过一次会记在这台设备上。</p>
+</body>
+</html>

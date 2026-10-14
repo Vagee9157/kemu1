@@ -1,0 +1,40 @@
+/* 样式 A：考前笔记 —— 纸色 + 宋体标题 + 驾校绿 + 路面黄线 */
+:root{
+  --bg:#f5f2ea; --bg-2:#ece8dd; --paper:#fffdf8; --paper-2:#f6f3eb;
+  --line:#e3ddcf; --line-2:#cfc7b4;
+  --ink:#1e221f; --ink-soft:#4e5550; --ink-dim:#848b85;
+  --green:#1f6f4a; --green-ink:#fff; --green-soft:#e2efe6; --green-deep:#164f36;
+  --yellow:#e5b73b; --yellow-soft:#fbf1d2;
+  --red:#c8372d; --red-soft:#f9e3df;
+  --blue:#2457b8; --blue-soft:#e1e9f8;
+  --shadow:0 1px 1px rgba(40,35,20,.04),0 6px 20px rgba(40,35,20,.06);
+  --r:16px; --r-s:10px;
+  --serif:"Noto Serif SC","Songti SC","STSong",serif;
+  --sans:"Noto Sans SC",-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#15181a; --bg-2:#1b1f22; --paper:#1d2124; --paper-2:#24292d;
+    --line:#2d3337; --line-2:#3c444a;
+    --ink:#ebe9e2; --ink-soft:#b8bbb3; --ink-dim:#7f857f;
+    --green:#4fc08a; --green-ink:#0b1810; --green-soft:#1c3328; --green-deep:#7adba8;
+    --yellow:#f0c54f; --yellow-soft:#3a3218;
+    --red:#ff7366; --red-soft:#43221f;
+    --blue:#7ea6ff; --blue-soft:#1f2b45;
+    --shadow:0 1px 1px rgba(0,0,0,.3),0 6px 20px rgba(0,0,0,.28);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#15181a; --bg-2:#1b1f22; --paper:#1d2124; --paper-2:#24292d;
+  --line:#2d3337; --line-2:#3c444a;
+  --ink:#ebe9e2; --ink-soft:#b8bbb3; --ink-dim:#7f857f;
+  --green:#4fc08a; --green-ink:#0b1810; --green-soft:#1c3328; --green-deep:#7adba8;
+  --yellow:#f0c54f; --yellow-soft:#3a3218;
+  --red:#ff7366; --red-soft:#43221f;
+  --blue:#7ea6ff; --blue-soft:#1f2b45;
+  --shadow:0 1px 1px rgba(0,0,0,.3),0 6px 20px rgba(0,0,0,.28);
+  color-scheme:dark;
+}
+
