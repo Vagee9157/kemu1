@@ -18,6 +18,14 @@
   const CHMAP = Object.fromEntries(CHAPTERS.map((c) => [c.id, c]));
   const ptKey = (c, i) => c.id + ':' + i;
   const totalPts = CHAPTERS.reduce((n, c) => n + c.points.length, 0);
+  // 章节头的小插图：从标志库里挑三个代表
+  const CH_ART = { exam: ['p_check', 'w_slow', 'i_parking'], points: ['p_speed', 'p_nohorn', 'p_noparking'], vehicle: ['i_motor', 'p_notruck', 'g_charge'], road: ['p_yield', 'i_sr', 'i_crossing'], highway: ['g_exit', 'i_minspeed', 'p_nostraight'], signal: ['w_signal', 'p_stop', 'i_round'], accident: ['w_accident', 'm_accident', 'd_hazard'], safe: ['w_slip', 'd_abs', 'd_tpms'] };
+  const chArt = (id) => `<div class="ch-art">${(CH_ART[id] || []).map((k) => SIGNS[k] || '').join('')}</div>`;
+  // 把正文里的图解占位换成真图
+  function fillIllus(root) {
+    root.querySelectorAll('.illus[data-illus]').forEach((el) => { const f = window.ILLUS && ILLUS[el.dataset.illus]; if (f) el.outerHTML = f(); });
+    root.querySelectorAll('.illus[data-sign]').forEach((el) => { el.outerHTML = SIGNS[el.dataset.sign] || ''; });
+  }
 
   /* ---------- 主题 ---------- */
   const isDark = () => (S.theme ? S.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches);
@@ -82,11 +90,12 @@
       }).join('');
       return `<section class="ch" id="ch-${c.id}" data-ch="${c.id}">
         <div class="ch-head"><span class="num">${String(ci + 1).padStart(2, '0')}</span>
-          <h3>${esc(c.name)}</h3>
+          <h3>${esc(c.name)}${chArt(c.id)}</h3>
           <button class="btn go" data-practice="${c.id}"><svg class="i"><use href="#i-pencil"/></svg>练这章 ${qn} 题</button>
           <p>${esc(c.intro)}</p>
         </div>${pts}</section>`;
     }).join('');
+    fillIllus($('#outline-box'));
     applyFilter();
     // 滚动时高亮左栏当前章
     if ('IntersectionObserver' in window) {
@@ -165,6 +174,30 @@
       </table></div></div>`;
     $('#numbers-box').innerHTML = `<div class="num-grid">${cmp.replace('class="num-group"', 'class="num-group span2"')}${groups}</div>`;
   }
+  // ---- 翻卡 ----
+  let deck = null; // { cards:[{f,b}], i, left }
+  function buildDeck() {
+    const cards = [];
+    NUMBERS.forEach((g) => g.rows.forEach(([f, b]) => cards.push({ f: `${g.g} · ${f}`, b })));
+    CONFUSE.forEach(([k, a, b]) => cards.push({ f: k, b: `${a}  ｜  ${b}` }));
+    return shuffle(cards);
+  }
+  function renderCard() {
+    const box = $('#flash');
+    if (!deck.cards.length) { box.innerHTML = `<div class="result"><div class="score pass">全会了</div><p>这一轮 ${deck.total} 张都过了。</p><div class="acts"><button class="btn primary" id="flashAgain">再来一轮</button><button class="btn" id="flashQuit">退出翻卡</button></div></div>`; $('#flashAgain').onclick = startFlash; $('#flashQuit').onclick = stopFlash; return; }
+    const c = deck.cards[0];
+    box.innerHTML = `<div class="flash-head"><button class="btn ghost" id="flashQuit"><svg class="i"><use href="#i-chev-l"/></svg>退出</button><span class="grow">翻卡</span><span class="cnt">剩 ${deck.cards.length} / ${deck.total}</span></div>
+      <div class="fcard" id="fcard" tabindex="0"><div class="f-inner"><div class="f-face f-front"><small>问</small><div>${esc(c.f)}</div><em>点一下翻面</em></div><div class="f-face f-back"><small>答</small><div>${esc(c.b)}</div></div></div></div>
+      <div class="quiz-nav"><button class="btn" data-flash="no"><svg class="i"><use href="#i-x"/></svg>没记住</button><button class="btn primary" data-flash="ok"><svg class="i"><use href="#i-check"/></svg>记住了</button></div>`;
+    $('#fcard').onclick = () => $('#fcard').classList.toggle('flipped');
+    $('#flashQuit').onclick = stopFlash;
+    box.querySelectorAll('[data-flash]').forEach((b) => { b.onclick = () => { const c = deck.cards.shift(); if (b.dataset.flash === 'no') deck.cards.push(c); renderCard(); }; });
+  }
+  function startFlash() { deck = { cards: buildDeck() }; deck.total = deck.cards.length; $('#numbers-box').hidden = true; $('#numTools').hidden = true; $('#flash').hidden = false; renderCard(); }
+  function stopFlash() { deck = null; $('#flash').hidden = true; $('#numbers-box').hidden = false; $('#numTools').hidden = false; }
+  $('#flashBtn').onclick = startFlash;
+  document.addEventListener('keydown', (e) => { if (deck && !$('#flash').hidden && e.key === ' ') { e.preventDefault(); $('#fcard')?.classList.toggle('flipped'); } });
+
   $('#hideAns').onclick = (e) => {
     const on = e.currentTarget.getAttribute('aria-pressed') !== 'true';
     e.currentTarget.setAttribute('aria-pressed', on);
@@ -179,9 +212,10 @@
   let quiz = null; // { list, i, ans: {id: pickedIndex}, mode, title, instant }
 
   function chAcc(chId) {
-    let r = 0, t = 0;
-    QUESTIONS.filter((q) => q.ch === chId).forEach((q) => { const s = S.stats[q.id]; if (s) { r += s.r || 0; t += (s.r || 0) + (s.w || 0); } });
-    return t ? Math.round(r / t * 100) : null;
+    let r = 0, t = 0, done = 0, all = 0;
+    QUESTIONS.filter((q) => q.ch === chId).forEach((q) => { all++; const s = S.stats[q.id]; if (s) { done++; r += s.r || 0; t += (s.r || 0) + (s.w || 0); } });
+    const acc = t ? Math.round(r / t * 100) : null;
+    return { acc, pass: done === all && acc !== null && acc >= 90 };
   }
   function renderQuizHome() {
     quiz = null;
@@ -199,8 +233,8 @@
       <h3 class="sub-h">按章节练</h3>
       <div class="mode-grid">
         ${CHAPTERS.map((c) => {
-          const n = QUESTIONS.filter((q) => q.ch === c.id).length; const acc = chAcc(c.id);
-          return `<button class="mode" data-mode="ch" data-ch="${c.id}"><b>${esc(c.name)}</b>
+          const n = QUESTIONS.filter((q) => q.ch === c.id).length; const { acc, pass } = chAcc(c.id);
+          return `<button class="mode ${pass ? 'passed' : ''}" data-mode="ch" data-ch="${c.id}"><b>${esc(c.name)}${pass ? '<span class="tag ok"><svg class="i"><use href="#i-check"/></svg>通关</span>' : ''}</b>
             <span>${n} 题 · ${acc === null ? '还没练' : '正确率 ' + acc + '%'}</span>
             <div class="bar"><i style="width:${acc || 0}%"></i></div></button>`;
         }).join('')}
@@ -222,7 +256,7 @@
     else if (mode === 'ch') { list = QUESTIONS.filter((q) => q.ch === ch); title = CHMAP[ch].name; }
     else if (mode === 'wrong') { list = shuffle(Object.keys(S.wrong).map((id) => QMAP[id]).filter(Boolean)); title = '错题重做'; }
     if (!list || !list.length) { alert(mode === 'new' ? '全部题目都做过了，换个模式吧。' : '这里还没有题。'); return; }
-    quiz = { list, i: 0, ans: {}, mode, title, instant, finished: false };
+    quiz = { list, i: 0, ans: {}, mode, title, instant, finished: false }; combo = 0;
     show('quiz'); renderQ();
   }
 
@@ -267,7 +301,9 @@
       </div>`;
   }
 
+  let combo = 0;
   function record(q, ok) {
+    combo = ok ? combo + 1 : 0;
     const s = S.stats[q.id] || (S.stats[q.id] = { r: 0, w: 0 });
     if (ok) { s.r++; if (quiz.mode === 'wrong') delete S.wrong[q.id]; }
     else { s.w++; S.wrong[q.id] = (S.wrong[q.id] || 0) + 1; }
@@ -279,6 +315,7 @@
     if (quiz.instant) {
       if (quiz.ans[q.id] !== undefined) return;
       quiz.ans[q.id] = k; record(q, isRight(q, k)); renderQ();
+      if (combo >= 3) { const c = document.createElement('div'); c.className = 'combo'; c.textContent = `连对 ×${combo}`; $('.qcard').appendChild(c); setTimeout(() => c.remove(), 1400); }
     } else {
       quiz.ans[q.id] = k; // 模拟考可以改答案，交卷时统一记录
       if (quiz.i < quiz.list.length - 1) { quiz.i++; } renderQ();

@@ -79,6 +79,7 @@ const CHAPTERS = [
           <li>有器质性心脏病、癫痫、美尼尔氏症、眩晕症、癔病、震颤麻痹、精神病、痴呆等妨碍安全驾驶疾病的：不得申请。</li>
         </ul>`, tip: '假材料 1 年、作弊 1 年、吊销 2 年、骗证 3 年、醉驾 5 年、醉驾营运 10 年、逃逸/酒驾重大事故终生。' },
       { t: '实习期', hot: 2, body: `
+        <div class="illus" data-illus="probation"></div>
         <ul>
           <li>初次申领驾驶证后 <b>12 个月</b>为实习期，车身后部粘贴或悬挂统一式样的<b>实习标志</b>。</li>
           <li>实习期内上<b>高速公路</b>：应当由持相应或更高准驾车型驾驶证 <b>3 年以上</b>的驾驶人陪同。</li>
@@ -86,6 +87,7 @@ const CHAPTERS = [
           <li>实习期内记满 12 分：<b>注销</b>其实习的准驾车型驾驶资格。</li>
         </ul>`, tip: '实习 12 个月、贴标志；上高速要 3 年老司机陪。' },
       { t: '驾驶证有效期、换证、注销', hot: 1, body: `
+        <div class="illus" data-illus="license_timeline"></div>
         <ul>
           <li>有效期分 <b>6 年、10 年、长期</b>。初领 6 年；6 年内每个记分周期都没记满 12 分 → 换 10 年；10 年内每个周期都没记满 → 换长期。</li>
           <li>有效期满前 <b>90 日内</b>申请换证。</li>
@@ -108,6 +110,7 @@ const CHAPTERS = [
           <li>《道路交通安全法》的修订草案 2026-08 刚提请全国人大常委会一审，<b>尚未生效</b>，题库还没跟进。</li>
         </ul>`, tip: '记分规则 = 2022 版 163 号令，别信"2026 新规"。' },
       { t: '记分周期与满分', hot: 2, body: `
+        <div class="illus" data-illus="points_ladder"></div>
         <ul>
           <li>记分周期 <b>12 个月</b>，满分 <b>12 分</b>，从初次领取驾驶证之日起连续计算。</li>
           <li>一次记分分值有 5 档：<b>12、9、6、3、1</b> 分。</li>
@@ -178,6 +181,7 @@ const CHAPTERS = [
           <li>载货<b>长、宽、高超过规定</b>。</li>
         </ul>`, tip: '灯光、会车、禁令标志标线、安全带、头盔 → 1 分。' },
       { t: '酒驾与醉驾（必考）', hot: 2, body: `
+        <div class="illus" data-illus="alcohol"></div>
         <table>
           <tr><th>情形</th><th>处罚</th></tr>
           <tr><td>饮酒驾驶<br><small>血液酒精 ≥20 mg/100mL 且 &lt;80</small></td><td>暂扣驾驶证 <b>6 个月</b>，罚款 <b>1000–2000 元</b>，记 12 分</td></tr>
@@ -233,11 +237,8 @@ const CHAPTERS = [
     intro: '分值最大的一章，约 30 题。速度、让行、停车三块最常考。',
     points: [
       { t: '没有限速标志时的最高车速', hot: 2, body: `
-        <table>
-          <tr><th>道路</th><th>城市道路</th><th>公路</th></tr>
-          <tr><td>没有道路中心线</td><td><b>30</b> km/h</td><td><b>40</b> km/h</td></tr>
-          <tr><td>同方向只有 1 条机动车道</td><td><b>50</b> km/h</td><td><b>70</b> km/h</td></tr>
-        </table>
+        <div class="illus" data-illus="speed_road"></div>
+        
         <p>有限速标志、标线的，按标志标线行驶。</p>`, tip: '城 30/50，公路 40/70（先无线，后一车道）。' },
       { t: '最高不超过 30 km/h 的情形', hot: 2, body: `
         <ul>
@@ -250,6 +251,7 @@ const CHAPTERS = [
         </ul>
         <p class="warn">易错：普通道路能见度 50 米以内是 <b>30</b>；高速公路能见度 50 米以内是 <b>20</b>。</p>`, tip: '"弯桥道口掉转坡，雾雪泥泞拖故障"——一律 30。' },
       { t: '超车', hot: 2, body: `
+        <div class="sign-row"><figure><div class="illus" data-sign="p_noovertake"></div><figcaption>禁止超车</figcaption></figure><figure><div class="illus" data-sign="p_endovertake"></div><figcaption>解除禁止超车</figcaption></figure></div>
         <p>超车时：提前开启<b>左转向灯</b>，变换使用远、近光灯或鸣喇叭，确认安全后<b>从前车左侧</b>超越，与被超车辆拉开必要距离后，开启右转向灯驶回原车道。</p>
         <p><b>不得超车</b>的情形：</p>
         <ul>
@@ -260,6 +262,7 @@ const CHAPTERS = [
         </ul>
         <p>被超车时：在条件许可的情况下，应当<b>降低速度、靠右让路</b>。</p>`, tip: '左侧超；前车转/掉/超不超，有会车不超，特种车不超，路口弯坡桥隧不超。' },
       { t: '会车', hot: 2, body: `
+        <div class="illus" data-illus="meeting"></div>
         <ul>
           <li>没有中心隔离设施或中心线的道路：<b>减速靠右</b>，与其他车辆、行人保持安全距离。</li>
           <li>有障碍的路段：<b>无障碍的一方先行</b>；但有障碍的一方已驶入障碍路段而无障碍的一方未驶入时，有障碍的一方先行。</li>
@@ -268,6 +271,7 @@ const CHAPTERS = [
           <li>夜间会车：距对向来车 <b>150 米以外</b>改用近光灯；在窄路、窄桥与非机动车会车时使用近光灯。</li>
         </ul>`, tip: '无障碍先、上坡先、不靠山先；夜里 150 米换近光。' },
       { t: '路口通行与让行', hot: 2, body: `
+        <div class="illus" data-illus="yield_rules"></div>
         <p><b>有信号灯的路口：</b></p>
         <ul>
           <li>划有导向车道的，按所需行进方向驶入导向车道。</li>
@@ -285,12 +289,14 @@ const CHAPTERS = [
         </ul>
         <p>前方路口交通阻塞时，<b>不得进入路口</b>，依次停在路口以外等候。车道减少的路段、路口遇停车排队时，<b>每车道一辆依次交替</b>驶入。</p>`, tip: '"右方先、直行先、左转先于对向右转、环内先"。' },
       { t: '掉头与倒车', hot: 1, body: `
+        <div class="sign-row"><figure><div class="illus" data-sign="p_nouturn"></div><figcaption>禁止掉头</figcaption></figure><figure><div class="illus" data-sign="i_uturn"></div><figcaption>允许掉头</figcaption></figure><figure><div class="illus" data-sign="p_noleft"></div><figcaption>禁止左转（也不能掉头）</figcaption></figure></div>
         <ul>
           <li><b>不得掉头</b>：有禁止掉头或禁止左转弯标志、标线的地点，以及<b>铁路道口、人行横道、桥梁、急弯、陡坡、隧道</b>或容易发生危险的路段。没有禁止掉头标志的地方可以掉头，但不得妨碍正常行驶的其他车辆和行人。</li>
           <li><b>不得倒车</b>：<b>铁路道口、交叉路口、单行路、桥梁、急弯、陡坡、隧道</b>中。倒车应当察明车后情况，确认安全后倒车。</li>
           <li><b>高速公路</b>上一律不得倒车、逆行、掉头（记 12 分）。</li>
         </ul>`, tip: '"道口路口单行路，桥弯坡隧"不倒车；"禁左"的地方也不能掉头。' },
       { t: '停车规定（口 50 站 30）', hot: 2, body: `
+        <div class="illus" data-illus="parking"></div>
         <ul>
           <li>设有禁停标志标线的路段、机动车道与非机动车道/人行道之间设有隔离设施的路段、<b>人行横道、施工地段</b>：不得停车。</li>
           <li><b>交叉路口、铁路道口、急弯路、宽度不足 4 米的窄路、桥梁、陡坡、隧道</b>以及距离上述地点 <b>50 米以内</b>：不得停车。</li>
@@ -299,6 +305,7 @@ const CHAPTERS = [
           <li>路边临时停车应<b>紧靠道路右侧</b>，驾驶人<b>不得离车</b>，上下人员或装卸物品后立即驶离。</li>
         </ul>`, tip: '"口 50 站 30"：路口道口弯桥坡隧 50 米，车站急救加油消防 30 米。' },
       { t: '灯光与喇叭', hot: 2, body: `
+        <div class="illus" data-illus="lights"></div>
         <ul>
           <li><b>左转向灯</b>：向左转弯、向左变道、准备超车、驶离停车地点、掉头。</li>
           <li><b>右转向灯</b>：向右转弯、向右变道、超车完毕驶回原车道、靠路边停车。</li>
@@ -310,6 +317,7 @@ const CHAPTERS = [
           <li>进入<b>环形路口</b>不用开转向灯，驶出环形路口时开启<b>右转向灯</b>。</li>
         </ul>`, tip: '往左（含超车、起步、掉头）开左灯；往右（含回原道、靠边停）开右灯；雾天 = 雾灯 + 双闪。' },
       { t: '行人、校车、特种车', hot: 1, body: `
+        <div class="sign-row"><figure><div class="illus" data-sign="w_ped"></div><figcaption>注意行人</figcaption></figure><figure><div class="illus" data-sign="w_child"></div><figcaption>注意儿童</figcaption></figure><figure><div class="illus" data-sign="i_crossing"></div><figcaption>人行横道（指示）</figcaption></figure><figure><div class="illus" data-sign="l_zebra"></div><figcaption>人行横道线</figcaption></figure></div>
         <ul>
           <li>行经<b>人行横道</b>：应当减速行驶；遇行人正在通过人行横道，应当<b>停车让行</b>。</li>
           <li>行经没有交通信号的道路，遇行人横过道路：应当<b>避让</b>。</li>
@@ -342,9 +350,11 @@ const CHAPTERS = [
     intro: '每次 6–8 题，数字密集：速度、车距、能见度三张表要背熟。',
     points: [
       { t: '哪些不能上高速', hot: 1, body: `
+        <div class="sign-row"><figure><div class="illus" data-sign="g_exit"></div><figcaption>高速出口预告</figcaption></figure><figure><div class="illus" data-sign="i_minspeed"></div><figcaption>最低限速</figcaption></figure></div>
         <p>行人、非机动车、拖拉机、轮式专用机械车、铰接式客车、全挂拖斗车，以及其他<b>设计最高时速低于 70 公里</b>的机动车，不得进入高速公路。</p>
         <p>实习期内上高速需持证 3 年以上的驾驶人陪同。</p>`, tip: '设计时速低于 70 不能上高速。' },
       { t: '高速限速与车道最低速', hot: 2, body: `
+        <div class="illus" data-illus="highway_lanes"></div>
         <ul>
           <li>最高车速不得超过 <b>120</b> km/h，最低车速不得低于 <b>60</b> km/h。</li>
           <li>小型载客汽车最高 120；其他机动车最高 <b>100</b>；摩托车最高 <b>80</b>。</li>
@@ -353,17 +363,14 @@ const CHAPTERS = [
           <li>道路限速标志标明的车速与上述规定不一致的，<b>按标志</b>行驶。</li>
         </ul>`, tip: '120 / 60；两车道左 100；三车道左 110 中 90。' },
       { t: '车距', hot: 2, body: `
+        <div class="illus" data-illus="following"></div>
         <ul>
           <li>车速超过 <b>100</b> km/h：与同车道前车保持 <b>100 米以上</b>。</li>
           <li>车速低于 100 km/h：距离可适当缩短，但最小不得少于 <b>50 米</b>。</li>
         </ul>`, tip: '过百留百，不过百也不少于 50。' },
       { t: '低能见度（雾雨雪）', hot: 2, body: `
-        <table>
-          <tr><th>能见度</th><th>开灯</th><th>车速</th><th>车距</th></tr>
-          <tr><td>小于 200 米</td><td>雾灯、近光灯、示廓灯、前后位灯</td><td>≤ <b>60</b></td><td>≥ <b>100</b> 米</td></tr>
-          <tr><td>小于 100 米</td><td>同上 + <b>危险报警闪光灯</b></td><td>≤ <b>40</b></td><td>≥ <b>50</b> 米</td></tr>
-          <tr><td>小于 50 米</td><td>同上</td><td>≤ <b>20</b></td><td>从最近出口<b>尽快驶离</b></td></tr>
-        </table>`, tip: '"200-60-100，100-40-50，50-20 赶快走"。' },
+        <div class="illus" data-illus="visibility"></div>
+        `, tip: '"200-60-100，100-40-50，50-20 赶快走"。' },
       { t: '进出高速与禁止行为', hot: 1, body: `
         <ul>
           <li>从匝道驶入：开启<b>左转向灯</b>，在<b>加速车道</b>提速，在不妨碍已在高速公路内车辆正常行驶的情况下驶入车道。</li>
@@ -372,6 +379,7 @@ const CHAPTERS = [
           <li>不得：<b>倒车、逆行、穿越中央分隔带掉头</b>或在车道内停车；在匝道、加速车道或减速车道上超车；骑、轧车道分界线或在路肩上行驶；非紧急情况时在<b>应急车道</b>行驶或停车；试车或学习驾驶。</li>
         </ul>`, tip: '进高速开左灯走加速道；出高速开右灯走减速道；错过出口就往前。' },
       { t: '高速上故障或事故', hot: 2, body: `
+        <div class="illus" data-illus="warning_triangle"></div>
         <ul>
           <li>立即开启<b>危险报警闪光灯</b>，尽量把车移到<b>应急车道</b>或右侧路肩。</li>
           <li>在来车方向 <b>150 米以外</b>设置警告标志（普通道路为车后 <b>50–100 米</b>），夜间还应开启示廓灯和后位灯。</li>
@@ -385,6 +393,7 @@ const CHAPTERS = [
     intro: '看图题集中在这里。先按"颜色 + 形状"把大类认出来，题目就排除掉一大半。',
     points: [
       { t: '交通信号灯', hot: 2, body: `
+        <div class="sign-row"><figure><div class="illus" data-sign="w_signal"></div><figcaption>注意信号灯</figcaption></figure><figure><div class="illus" data-sign="d_hazard"></div><figcaption>双闪开关</figcaption></figure></div>
         <ul>
           <li><b>绿灯</b>：准许通行，但转弯的车辆不得妨碍被放行的直行车辆、行人通行。</li>
           <li><b>黄灯</b>：已越过停止线的车辆可以继续通行；未越过的应当停车。</li>
