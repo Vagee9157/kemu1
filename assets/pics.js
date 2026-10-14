@@ -79,7 +79,7 @@
     { key: 'p_noovertake', name: '禁止超车', cat: 'ban', svg: ban(`${carFront(R, 36, 54, .75)}${carFront(K, 64, 54, .75)}`, false) },
     { key: 'p_endovertake', name: '解除禁止超车', cat: 'ban', svg: endSign(`${carFront('#9a9a9a', 36, 54, .75)}${carFront('#9a9a9a', 64, 54, .75)}`) },
     { key: 'p_nohorn', name: '禁止鸣喇叭', cat: 'ban', svg: ban(horn(K)) },
-    { key: 'p_height', name: '限制高度 4.5 米', cat: 'ban', svg: ban(`<polygon points="50,20 40,32 60,32" fill="${K}"/><polygon points="50,80 40,68 60,68" fill="${K}"/>${txt('4.5m', 50, 58, 20)}`, false) },
+    { key: 'p_height', name: '限制高度 3.5 米', cat: 'ban', svg: ban(`<polygon points="50,20 40,32 60,32" fill="${K}"/><polygon points="50,80 40,68 60,68" fill="${K}"/>${txt('4.5m', 50, 58, 20)}`, false) },
     { key: 'p_width', name: '限制宽度 3 米', cat: 'ban', svg: ban(`<polygon points="20,50 32,40 32,60" fill="${K}"/><polygon points="80,50 68,40 68,60" fill="${K}"/>${txt('3m', 50, 58, 22)}`, false) },
     { key: 'p_weight', name: '限制质量 10 吨', cat: 'ban', svg: ban(txt('10t', 50, 61, 30), false) },
     { key: 'p_stop', name: '停车让行', cat: 'ban', svg: svg(`<polygon points="30,4 70,4 96,30 96,70 70,96 30,96 4,70 4,30" fill="${R}" stroke="${W}" stroke-width="3"/>${txt('停', 50, 66, 44, W)}`) },
@@ -239,6 +239,11 @@
   ];
 
   /* ---- 合并进 SIGNS，并导出目录 ---- */
-  [...SIGN_CATALOG, ...LANE_CATALOG, ...DASH_CATALOG, ...GESTURE_CATALOG].forEach((it) => { SIGNS[it.key] = it.svg; });
+  // 有国标原图（assets/signs/<key>.svg，来自 Wikimedia Commons）的标志优先用原图，没有的用手画 svg
+  const FILES = window.SIGN_FILES || {};
+  [...SIGN_CATALOG, ...LANE_CATALOG, ...DASH_CATALOG, ...GESTURE_CATALOG].forEach((it) => {
+    const f = FILES[it.key];
+    SIGNS[it.key] = f ? `<img src="assets/signs/${it.key}.svg${f.v ? '?v=' + f.v : ''}" alt="${it.name}" class="${f.wide ? 'wide' : ''}" loading="lazy">` : it.svg;
+  });
   window.PICS = { SIGN_CATALOG, LANE_CATALOG, DASH_CATALOG, GESTURE_CATALOG };
 })();

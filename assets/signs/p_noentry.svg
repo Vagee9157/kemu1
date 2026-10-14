@@ -1,0 +1,70 @@
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+  
+  
+   viewBox="0 0 468.48264 468.48264"
+  
+  
+   id="svg3268"
+   version="1.1">
+  <metadata
+     id="metadata3274">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs3272" />
+  <sodipodi:namedview
+    
+    
+    
+    
+    
+    
+    
+     showgrid="false"
+     id="namedview3270"
+    
+    
+    
+    
+     guidetolerance="10"
+     gridtolerance="10"
+     objecttolerance="10"
+     borderopacity="1"
+     bordercolor="#666666"
+     pagecolor="#ffffff" />
+  <g
+     transform="translate(1.227572,-2.3963566)"
+     id="g3276"
+    
+    >
+    <g
+       transform="matrix(1.2901279,0,0,1.2901279,-1.2275844,2.3962852)"
+       id="g3876">
+      <path
+         style="color:#000000;display:inline;overflow:visible;visibility:visible;opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1.21043;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker:none;enable-background:accumulate"
+         d="M 362.52362,181.56447 A 180.9592,180.9592 0 0 1 181.56442,362.52367 180.9592,180.9592 0 0 1 0.60522461,181.56447 180.9592,180.9592 0 0 1 181.56442,0.60527039 180.9592,180.9592 0 0 1 362.52362,181.56447 Z"
+         id="path3003" />
+      <path
+        
+        
+         style="color:#000000;display:inline;overflow:visible;visibility:visible;opacity:1;fill:#c0111e;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.605215px;marker:none;enable-background:accumulate"
+         d="m 181.56437,6.0521836 c -96.932743,0 -175.5122602,78.5795154 -175.5122602,175.5122764 0,96.93275 78.5795172,175.51226 175.5122602,175.51226 96.93277,0 175.51229,-78.57951 175.51229,-175.51226 0,-96.932761 -78.57952,-175.5122764 -175.51229,-175.5122764 z M 299.76294,152.08199 v 58.74128 H 64.895988 v -58.74128 z"
+         id="path4775-9" />
+    </g>
+  </g>
+</svg>

@@ -36,6 +36,7 @@
 index.html        页面骨架
 assets/data.js        考点 CHAPTERS / 数字 NUMBERS / 易混 CONFUSE / 第一批题 QUESTIONS / 基础标志 SIGNS
 assets/illus.js       考点图解（记分阶梯、速度路牌、让行路口等 13 张，纯 SVG 跟随主题）
+assets/signs/         83 个国标标志原图（Wikimedia Commons，Public domain，见 LICENSE.md）
 assets/pics.js        看图题图库：84 个标志、23 种标线、26 个仪表灯、8 个交警手势（内联 SVG）
 assets/questions2.js  看图题（按 pics.js 目录自动生成）+ 手写补充题
 assets/app.js     交互逻辑
