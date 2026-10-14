@@ -348,3 +348,10 @@ img.photo{aspect-ratio:2/3;object-fit:cover;border-radius:10px;background:#1e5aa
 .sign-row img.photo{width:auto;height:84px}
 .wrong-item img.photo{width:auto;height:72px}
 .gest-grid img.photo{max-width:none;width:100%;height:auto}
+
+/* 标线：国标图例裁图，宽高比不一 */
+img.lanepic{object-fit:contain;border-radius:8px;background:#fff}
+.qsign img.lanepic{width:auto;max-width:100%;height:auto;max-height:230px}
+.sign-row img.lanepic{width:auto;max-width:100%;height:84px}
+.wrong-item img.lanepic{width:auto;height:72px;max-width:120px}
+.lane-grid img.lanepic{width:100%;height:auto;max-height:140px;object-fit:cover;margin-bottom:6px}

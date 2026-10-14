@@ -158,6 +158,12 @@
     { key: 'l_bus', name: '公交专用车道', short: '公交专用道', svg: road(`${edges}${lane(60, W, false)}<text x="86" y="52" font-size="16" text-anchor="middle" fill="${W}" font-weight="700" font-family="sans-serif" writing-mode="tb">公交</text>`) },
     { key: 'l_wait', name: '左转弯待转区', short: '左转待转区', svg: road(`${edges}${lane(60, Y, false)}<rect x="8" y="22" width="52" height="6" fill="${W}"/><rect x="14" y="4" width="40" height="14" fill="none" stroke="${W}" stroke-width="2.5" stroke-dasharray="4 3"/>`) },
     { key: 'l_park', name: '停车位标线', short: '停车位', svg: road(`${lane(8, W, false)}${lane(60, W, true)}<g fill="none" stroke="${W}" stroke-width="2.5"><rect x="88" y="4" width="24" height="22"/><rect x="88" y="30" width="24" height="22"/><rect x="88" y="56" width="24" height="22"/></g>`) },
+    { key: 'l_arrow_l', name: '向左转弯导向箭头', short: '左转箭头', svg: road(`${edges}${lane(60, W, true)}${arrowOnRoad('M34 70 V36 H28 L38 14 L48 36 H42 V70 Z')}`) },
+    { key: 'l_arrow_r', name: '向右转弯导向箭头', short: '右转箭头', svg: road(`${edges}${lane(60, W, true)}${arrowOnRoad('M34 70 V36 H28 L38 14 L48 36 H42 V70 Z')}`) },
+    { key: 'l_arrow_sr', name: '直行或右转导向箭头', short: '直行或右转箭头', svg: road(`${edges}${lane(60, W, true)}${arrowOnRoad('M34 70 V36 H28 L38 14 L48 36 H42 V70 Z')}`) },
+    { key: 'l_arrow_su', name: '直行或掉头导向箭头', short: '直行或掉头箭头', svg: road(`${edges}${lane(60, W, true)}${arrowOnRoad('M34 70 V36 H28 L38 14 L48 36 H42 V70 Z')}`) },
+    { key: 'l_arrow_lu', name: '左转或掉头导向箭头', short: '左转或掉头箭头', svg: road(`${edges}${lane(60, W, true)}${arrowOnRoad('M34 70 V36 H28 L38 14 L48 36 H42 V70 Z')}`) },
+    { key: 'l_arrow_lr', name: '左转或右转导向箭头', short: '左右转箭头', svg: road(`${edges}${lane(60, W, true)}${arrowOnRoad('M34 70 V36 H28 L38 14 L48 36 H42 V70 Z')}`) },
     { key: 'l_tidal', name: '可变导向车道线（锯齿线）', short: '可变导向车道', svg: road(`${edges}${lane(60, W, false)}<path d="M36 0 V80 M36 4 L42 4 M36 14 L42 14 M36 24 L42 24 M36 34 L42 34 M36 44 L42 44 M36 54 L42 54 M36 64 L42 64 M36 74 L42 74 M84 0 V80 M84 4 L78 4 M84 14 L78 14 M84 24 L78 24 M84 34 L78 34 M84 44 L78 44 M84 54 L78 54 M84 64 L78 64 M84 74 L78 74" stroke="${W}" stroke-width="3"/>`) },
   ];
 
@@ -242,7 +248,8 @@
   // 有国标原图（assets/signs/<key>.svg，来自 Wikimedia Commons）的标志优先用原图，没有的用手画 svg
   const FILES = window.SIGN_FILES || {};
   [...SIGN_CATALOG, ...LANE_CATALOG, ...DASH_CATALOG, ...GESTURE_CATALOG].forEach((it) => {
-    const f = FILES[it.key], d = (window.DASH_FILES || {})[it.key], g = (window.GEST_FILES || {})[it.key];
+    const f = FILES[it.key], d = (window.DASH_FILES || {})[it.key], g = (window.GEST_FILES || {})[it.key], l = (window.LANE_FILES || {})[it.key];
+    if (l) { SIGNS[it.key] = `<img src="assets/lanes/${it.key}.jpg" alt="${it.name}" class="lanepic" loading="lazy">`; return; }
     if (g) { SIGNS[it.key] = `<img src="assets/gest/${it.key}.jpg" alt="${it.name}" class="photo" loading="lazy">`; return; }
     if (d) { SIGNS[it.key] = `<span class="lamp lamp-${it.color}" role="img" aria-label="${it.name}" style="--m:url('${new URL('assets/dash/' + it.key + '.svg', document.baseURI).href}')"></span>`; return; }
     SIGNS[it.key] = f ? `<img src="assets/signs/${it.key}.svg${f.v ? '?v=' + f.v : ''}" alt="${it.name}" class="${f.wide ? 'wide' : ''}" loading="lazy">` : it.svg;

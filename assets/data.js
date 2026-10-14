@@ -447,12 +447,12 @@ const CHAPTERS = [
         </div>`, tip: '红圈白底 = 最高限速；蓝底白字 = 最低限速；叉 = 禁止停车，一道杠 = 禁止长时停车。' },
       { t: '道路标线', hot: 2, body: `
         <div class="lane-grid">
-          <figure>${laneSvg('whiteDash')}<figcaption><b>白色虚线</b>：同向车道分界线，可越线变道</figcaption></figure>
-          <figure>${laneSvg('whiteSolid')}<figcaption><b>白色实线</b>：同向车道分界线/路口导向车道线，不得越线</figcaption></figure>
-          <figure>${laneSvg('yellowDash')}<figcaption><b>黄色虚线</b>：对向车道分界线，可越线超车、掉头</figcaption></figure>
-          <figure>${laneSvg('yellowSolid')}<figcaption><b>黄色实线</b>：对向车道分界线，禁止跨越</figcaption></figure>
-          <figure>${laneSvg('doubleYellow')}<figcaption><b>双黄实线</b>：严格禁止跨越、压线</figcaption></figure>
-          <figure>${laneSvg('yellowMix')}<figcaption><b>黄色虚实线</b>：<b>实线一侧禁止</b>越线，虚线一侧准许</figcaption></figure>
+          <figure><div class="illus" data-sign="l_white_dash"></div><figcaption><b>白色虚线</b>：同向车道分界线，可越线变道</figcaption></figure>
+          <figure><div class="illus" data-sign="l_white_solid"></div><figcaption><b>白色实线</b>：同向车道分界线/路口导向车道线，不得越线</figcaption></figure>
+          <figure><div class="illus" data-sign="l_yellow_dash"></div><figcaption><b>黄色虚线</b>：对向车道分界线，可越线超车、掉头</figcaption></figure>
+          <figure><div class="illus" data-sign="l_yellow_solid"></div><figcaption><b>黄色实线</b>：对向车道分界线，禁止跨越</figcaption></figure>
+          <figure><div class="illus" data-sign="l_double_yellow"></div><figcaption><b>双黄实线</b>：严格禁止跨越、压线</figcaption></figure>
+          <figure><div class="illus" data-sign="l_yellow_mix"></div><figcaption><b>黄色虚实线</b>：<b>实线一侧禁止</b>越线，虚线一侧准许</figcaption></figure>
         </div>
         <ul>
           <li>路口<b>双白实线</b>：停车让行线；<b>双白虚线</b>：减速让行线。</li>
