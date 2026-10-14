@@ -252,7 +252,7 @@
     if (l) { SIGNS[it.key] = `<img src="assets/lanes/${it.key}.jpg" alt="${it.name}" class="lanepic" loading="lazy">`; return; }
     if (g) { SIGNS[it.key] = `<img src="assets/gest/${it.key}.jpg" alt="${it.name}" class="photo" loading="lazy">`; return; }
     if (d) { SIGNS[it.key] = `<span class="lamp lamp-${it.color}" role="img" aria-label="${it.name}" style="--m:url('${new URL('assets/dash/' + it.key + '.svg', document.baseURI).href}')"></span>`; return; }
-    SIGNS[it.key] = f ? `<img src="assets/signs/${it.key}.svg${f.v ? '?v=' + f.v : ''}" alt="${it.name}" class="${f.wide ? 'wide' : ''}" loading="lazy">` : it.svg;
+    SIGNS[it.key] = f ? `<img src="assets/signs/${it.key}.${f.ext || 'svg'}${f.v ? '?v=' + f.v : ''}" alt="${it.name}" class="${f.wide ? 'wide' : ''}" loading="lazy">` : it.svg;
   });
   window.PICS = { SIGN_CATALOG, LANE_CATALOG, DASH_CATALOG, GESTURE_CATALOG };
 })();

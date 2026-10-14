@@ -87,3 +87,4 @@
 | i_meet.svg | [File:CN road sign 示 15.svg](https://commons.wikimedia.org/wiki/File:CN_road_sign_示_15.svg) — Public domain |
 | g_exit.svg | [File:China road sign 路 49a.svg](https://commons.wikimedia.org/wiki/File:China_road_sign_路_49a.svg) — Public domain |
 | g_hospital.svg | [File:China road sign 路 21a.svg](https://commons.wikimedia.org/wiki/File:China_road_sign_路_21a.svg) — Public domain |
+| g_tourist.jpg | 裁自 [File:China GB 5768.2-2009.pdf](https://commons.wikimedia.org/wiki/File:China_GB_5768.2-2009.pdf) 图300 旅2 旅游区方向 — Public domain |
