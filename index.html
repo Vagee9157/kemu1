@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="assets/style.css?v=1">
+<link rel="stylesheet" href="assets/style.css?v=2">
 </head>
 <body>
 <header class="top">
@@ -44,22 +44,22 @@
       <button class="chip" id="hideMastered" aria-pressed="false">隐藏已掌握</button>
     </div>
     <div class="toc" id="toc"></div>
-    <div id="outline"></div>
+    <div id="outline-box"></div>
   </section>
 
   <section class="view" id="view-numbers" hidden>
     <h2 class="vh">数字速记</h2>
     <p class="lead">科目一四成以上的题考的是数字。打开"遮住答案"后点一下才显示，用来自测。</p>
     <div class="toolbar"><button class="chip" id="hideAns" aria-pressed="false">遮住答案</button></div>
-    <div id="numbers"></div>
+    <div id="numbers-box"></div>
   </section>
 
   <section class="view" id="view-quiz" hidden>
-    <div id="quiz"></div>
+    <div id="quiz-box"></div>
   </section>
 
   <section class="view" id="view-wrong" hidden>
-    <div id="wrong"></div>
+    <div id="wrong-box"></div>
   </section>
 
   <footer class="foot">
@@ -68,7 +68,7 @@
   </footer>
 </main>
 
-<script src="assets/data.js?v=1"></script>
-<script src="assets/app.js?v=1"></script>
+<script src="assets/data.js?v=2"></script>
+<script src="assets/app.js?v=2"></script>
 </body>
 </html>

@@ -54,7 +54,7 @@
   const filt = { q: '', hot: false, hideM: false };
   function renderOutline() {
     $('#toc').innerHTML = CHAPTERS.map((c) => `<a href="#ch-${c.id}" data-ch="${c.id}">${c.icon} ${esc(c.name)}</a>`).join('');
-    $('#outline').innerHTML = CHAPTERS.map((c) => {
+    $('#outline-box').innerHTML = CHAPTERS.map((c) => {
       const qn = QUESTIONS.filter((q) => q.ch === c.id).length;
       const pts = c.points.map((p, i) => {
         const k = ptKey(c, i), m = !!S.mastered[k];
@@ -82,7 +82,7 @@
   }
   function applyFilter() {
     const q = filt.q.trim().toLowerCase();
-    document.querySelectorAll('#outline section.ch').forEach((sec) => {
+    document.querySelectorAll('#outline-box section.ch').forEach((sec) => {
       let any = false;
       sec.querySelectorAll('details.pt').forEach((d) => {
         const okHot = !filt.hot || d.dataset.hot === '2';
@@ -98,7 +98,7 @@
   $('#search').addEventListener('input', (e) => { filt.q = e.target.value; applyFilter(); });
   $('#onlyHot').onclick = (e) => { filt.hot = !filt.hot; e.currentTarget.setAttribute('aria-pressed', filt.hot); applyFilter(); };
   $('#hideMastered').onclick = (e) => { filt.hideM = !filt.hideM; e.currentTarget.setAttribute('aria-pressed', filt.hideM); applyFilter(); };
-  $('#outline').addEventListener('change', (e) => {
+  $('#outline-box').addEventListener('change', (e) => {
     const k = e.target.dataset.master; if (!k) return;
     if (e.target.checked) S.mastered[k] = 1; else delete S.mastered[k];
     save(); refreshStat();
@@ -107,7 +107,7 @@
     if (e.target.checked && !t) title.insertAdjacentHTML('beforeend', '<span class="tag ok">已掌握</span>');
     if (!e.target.checked && t) t.remove();
   });
-  $('#outline').addEventListener('click', (e) => {
+  $('#outline-box').addEventListener('click', (e) => {
     const b = e.target.closest('[data-practice]'); if (b) startQuiz('ch', b.dataset.practice);
   });
   $('#toc').addEventListener('click', (e) => {
@@ -123,16 +123,16 @@
       <table class="cmp-table"><tr><th>考点</th><th>A</th><th>B</th></tr>
       ${CONFUSE.map(([k, a, b]) => `<tr><td>${esc(k)}</td><td class="ans">${esc(a)}</td><td class="ans">${esc(b)}</td></tr>`).join('')}
       </table></div></div>`;
-    $('#numbers').innerHTML = cmp + groups;
+    $('#numbers-box').innerHTML = cmp + groups;
   }
   $('#hideAns').onclick = (e) => {
     const on = e.currentTarget.getAttribute('aria-pressed') !== 'true';
     e.currentTarget.setAttribute('aria-pressed', on);
-    $('#numbers').classList.toggle('hide-ans', on);
-    document.querySelectorAll('#numbers .shown').forEach((x) => x.classList.remove('shown'));
+    $('#numbers-box').classList.toggle('hide-ans', on);
+    document.querySelectorAll('#numbers-box .shown').forEach((x) => x.classList.remove('shown'));
   };
-  $('#numbers').addEventListener('click', (e) => {
-    const td = e.target.closest('td'); if (td && $('#numbers').classList.contains('hide-ans')) td.classList.toggle('shown');
+  $('#numbers-box').addEventListener('click', (e) => {
+    const td = e.target.closest('td'); if (td && $('#numbers-box').classList.contains('hide-ans')) td.classList.toggle('shown');
   });
 
   /* ---------- 刷题 ---------- */
@@ -147,7 +147,7 @@
     quiz = null;
     const hotN = QUESTIONS.filter((q) => q.hot).length;
     const done = QUESTIONS.filter((q) => S.stats[q.id]).length;
-    $('#quiz').innerHTML = `
+    $('#quiz-box').innerHTML = `
       <h2 class="vh">经典真题</h2>
       <p class="lead">共 ${QUESTIONS.length} 题，覆盖每个必考点。已做过 ${done} 题。练习模式答完立刻出解析；模拟考试交卷再看分数。</p>
       <div class="mode-grid">
@@ -166,7 +166,7 @@
         }).join('')}
       </div>`;
   }
-  $('#quiz').addEventListener('click', (e) => {
+  $('#quiz-box').addEventListener('click', (e) => {
     const m = e.target.closest('[data-mode]'); if (m) return startQuiz(m.dataset.mode, m.dataset.ch);
     const o = e.target.closest('[data-opt]'); if (o) return pick(+o.dataset.opt);
     const n = e.target.closest('[data-nav]'); if (n) return nav(n.dataset.nav);
@@ -209,7 +209,7 @@
         <a href="javascript:void 0" data-goto="${q.ch}">看考点 ›</a></div>` : '';
     const doneN = Object.keys(ans).length;
     const last = i === list.length - 1;
-    $('#quiz').innerHTML = `
+    $('#quiz-box').innerHTML = `
       <div class="quiz-head"><button class="btn ghost" data-nav="home">‹ 返回</button>
         <span class="grow">${esc(quiz.title)}</span><span>${i + 1} / ${list.length}</span></div>
       <div class="bar" style="margin:-4px 0 12px"><i style="width:${doneN / list.length * 100}%"></i></div>
@@ -266,7 +266,7 @@
     const pct = Math.round(right / list.length * 100);
     const pass = pct >= 90;
     const wrongs = list.filter((q) => !(ans[q.id] !== undefined && isRight(q, ans[q.id])));
-    $('#quiz').innerHTML = `
+    $('#quiz-box').innerHTML = `
       <div class="result">
         <div class="score ${pass ? 'pass' : 'fail'}">${pct}<small style="font-size:20px">分</small></div>
         <p>${esc(quiz.title)} · 答对 ${right} / ${list.length}${instant ? '' : '（按百分制折算，90 分及格）'}<br>
@@ -293,7 +293,7 @@
   }
   function renderWrong() {
     const list = Object.keys(S.wrong).map((id) => QMAP[id]).filter(Boolean).sort((a, b) => S.wrong[b.id] - S.wrong[a.id]);
-    $('#wrong').innerHTML = `
+    $('#wrong-box').innerHTML = `
       <h2 class="vh">错题本</h2>
       <p class="lead">做错的题自动收进来，按错的次数排。在"重做错题"里答对一次就移出。</p>
       ${list.length ? `<div class="toolbar"><button class="btn primary" id="redo">重做错题（${list.length}）</button>

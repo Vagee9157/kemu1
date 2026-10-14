@@ -37,7 +37,7 @@ sw.js             离线缓存（网络优先）
 
 ## 加题 / 改内容
 
-只改 `assets/data.js`。改完把 `index.html` 和 `sw.js` 里的 `?v=1` 一起加 1，再把 `sw.js` 的 `CACHE` 版本号加 1，回访的人才会拿到新版。
+只改 `assets/data.js`。改完把 `index.html` 和 `sw.js` 里的 `?v=N` 一起加 1，再把 `sw.js` 的 `CACHE` 版本号加 1，回访的人才会拿到新版。
 
 题目格式：
 
