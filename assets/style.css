@@ -194,7 +194,8 @@ details[open] .caret{transform:rotate(90deg)}
 .num-table tr:last-child td{border-bottom:0}
 .hide-ans .num-table td:last-child,.hide-ans .cmp-table td.ans{filter:blur(6px);cursor:pointer;user-select:none;transition:filter .15s}
 .hide-ans .num-table td.shown,.hide-ans .cmp-table td.shown{filter:none}
-.cmp-table td:first-child{font-weight:600;white-space:nowrap}
+.cmp-table td:first-child{font-weight:600;width:30%}
+@media (max-width:719px){.cmp-table{font-size:13px}.cmp-table td,.cmp-table th{padding:7px 5px}}
 
 /* ---------- 刷题 ---------- */
 .vh{font-size:24px;margin:4px 0 4px}
