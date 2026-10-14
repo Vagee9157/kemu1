@@ -88,3 +88,4 @@
 | g_exit.svg | [File:China road sign 路 49a.svg](https://commons.wikimedia.org/wiki/File:China_road_sign_路_49a.svg) — Public domain |
 | g_hospital.svg | [File:China road sign 路 21a.svg](https://commons.wikimedia.org/wiki/File:China_road_sign_路_21a.svg) — Public domain |
 | g_tourist.jpg | 裁自 [File:China GB 5768.2-2009.pdf](https://commons.wikimedia.org/wiki/File:China_GB_5768.2-2009.pdf) 图300 旅2 旅游区方向 — Public domain |
+| p_noebike.jpg / m_accident.jpg / g_charge.jpg / g_service.jpg | 裁自中国道路交通安全协会《专家讲堂：解读 GB 5768.2-2022》系列文章配图（[二](https://www.crsa.net/news/article/6354)、[四](https://www.crsa.net/news/article/6449)、[五](https://www.crsa.net/news/article/6610)），为国家标准中的标志版面示例，仅作驾考学习引用 |

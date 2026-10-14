@@ -117,7 +117,7 @@
     // —— 指路 / 其他 ——
     { key: 'g_exit', name: '高速公路出口预告', cat: 'guide', svg: board(G, `${txt('出口', 60, 36, 18, W)}${txt('2 km', 60, 62, 16, W, 500)}`) },
     { key: 'g_charge', name: '电动汽车充电站', cat: 'guide', svg: board(B, `<rect x="40" y="22" width="26" height="40" rx="4" fill="${W}"/><rect x="48" y="16" width="10" height="8" fill="${W}"/><path d="M55 30 L46 46 H54 L50 58 L62 40 H54 Z" fill="${B}"/><path d="M70 40 H80 V56 Q80 64 72 64" ${st(W, 4)}/>`) },
-    { key: 'g_service', name: '服务区', cat: 'guide', svg: board(G, `<path d="M30 24 V56 M24 24 V36 Q24 42 30 42 Q36 42 36 36 V24" ${st(W, 4)}/><path d="M48 24 Q58 24 58 36 Q58 44 50 46 V56" ${st(W, 4)}/><rect x="70" y="36" width="26" height="14" rx="3" fill="${W}"/><path d="M70 50 V58 M96 50 V58" ${st(W, 4)}/>`) },
+    { key: 'g_service', name: '服务站（服务区）', cat: 'guide', svg: board(G, `<path d="M30 24 V56 M24 24 V36 Q24 42 30 42 Q36 42 36 36 V24" ${st(W, 4)}/><path d="M48 24 Q58 24 58 36 Q58 44 50 46 V56" ${st(W, 4)}/><rect x="70" y="36" width="26" height="14" rx="3" fill="${W}"/><path d="M70 50 V58 M96 50 V58" ${st(W, 4)}/>`) },
     { key: 'm_accident', name: '前方交通事故（事故管理区）', cat: 'guide', svg: board('#e8609a', `${txt('前方事故', 60, 38, 17, W)}${txt('减速慢行', 60, 62, 15, W, 500)}`) },
     { key: 'g_tourist', name: '旅游区方向', cat: 'guide', svg: board('#7a4a1d', `${txt('某某风景区', 60, 48, 18, W)}`) },
     { key: 'g_hospital', name: '医院（告示标志）', cat: 'guide', svg: board('#2f6fbf', `<rect x="52" y="22" width="16" height="36" fill="${W}"/><rect x="42" y="32" width="36" height="16" fill="${W}"/>`) },
