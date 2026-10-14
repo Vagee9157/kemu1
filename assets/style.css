@@ -129,6 +129,7 @@ main{padding-top:20px;padding-bottom:60px}
 .toc-m{display:flex;gap:8px;overflow-x:auto;margin:0 -18px 10px;padding:2px 18px 10px;scrollbar-width:none}
 .toc-m::-webkit-scrollbar{display:none}
 .toc-m a{flex:none;text-decoration:none;color:var(--ink-soft);background:var(--paper);border-radius:11px;padding:6px 12px;font-size:13px;font-weight:500;box-shadow:var(--shadow)}
+.toc-m a.on{background:var(--brand-soft);color:var(--brand);font-weight:700}
 .toc-toggle{flex:none;border:0;background:var(--brand);color:#fff;border-radius:11px;padding:6px 12px;font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:5px;box-shadow:0 4px 12px rgba(37,99,235,.25)}
 .toc-toggle[aria-expanded="true"]{background:var(--ink);box-shadow:none}
 .toc-tree{background:var(--paper);border-radius:var(--r-s);box-shadow:var(--shadow-2);padding:6px 8px;margin:0 0 16px}
@@ -321,3 +322,8 @@ svg.il{display:block;width:100%;max-width:520px;height:auto;margin:12px auto 4px
 .f-back{transform:rotateY(180deg);background:var(--brand);color:#fff}
 .f-back small{color:rgba(255,255,255,.7)}
 .f-back div{font-size:22px}
+
+/* 章节切换 */
+.search-hint{font-size:12.5px;color:var(--ink-dim);margin:-6px 0 12px}
+.ch-nav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:18px;padding-top:16px;border-top:1px dashed var(--line)}
+.ch-nav .btn{max-width:48%;overflow:hidden;text-overflow:ellipsis}

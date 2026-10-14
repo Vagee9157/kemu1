@@ -65,6 +65,14 @@
 
   /* ---------- 考点大纲 ---------- */
   const filt = { q: '', hot: false, hideM: false };
+  let curCh = CHMAP[S.ch] ? S.ch : CHAPTERS[0].id;
+  function setChapter(id, scroll = true) {
+    curCh = id; S.ch = id; save();
+    document.querySelectorAll('#toc a, #tocM a').forEach((a) => a.classList.toggle('on', a.dataset.ch === id));
+    const pill = document.querySelector(`#tocM a[data-ch="${id}"]`); if (pill) pill.scrollIntoView({ block: 'nearest', inline: 'center' });
+    applyFilter();
+    if (scroll) { const top = $('#view-outline .toolbar').getBoundingClientRect().top + window.scrollY - 70; window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' }); }
+  }
   function renderOutline() {
     $('#toc').innerHTML = CHAPTERS.map((c, i) => `<a href="#ch-${c.id}" data-ch="${c.id}"><span class="n">${String(i + 1).padStart(2, '0')}</span>${esc(c.name)}</a>`).join('');
     $('#tocM').innerHTML = `<button class="toc-toggle" id="tocToggle" aria-expanded="false"><svg class="i"><use href="#i-menu"/></svg>目录</button>` +
@@ -93,17 +101,14 @@
           <h3>${esc(c.name)}${chArt(c.id)}</h3>
           <button class="btn go" data-practice="${c.id}"><svg class="i"><use href="#i-pencil"/></svg>练这章 ${qn} 题</button>
           <p>${esc(c.intro)}</p>
-        </div>${pts}</section>`;
+        </div>${pts}
+        <div class="ch-nav">
+          ${ci > 0 ? `<button class="btn" data-ch-go="${CHAPTERS[ci - 1].id}"><svg class="i"><use href="#i-chev-l"/></svg>${esc(CHAPTERS[ci - 1].name)}</button>` : '<span></span>'}
+          ${ci < CHAPTERS.length - 1 ? `<button class="btn primary" data-ch-go="${CHAPTERS[ci + 1].id}">${esc(CHAPTERS[ci + 1].name)}<svg class="i"><use href="#i-chev-r"/></svg></button>` : `<button class="btn primary" data-practice="${c.id}">全部看完了，去刷题</button>`}
+        </div></section>`;
     }).join('');
     fillIllus($('#outline-box'));
-    applyFilter();
-    // 滚动时高亮左栏当前章
-    if ('IntersectionObserver' in window) {
-      const io = new IntersectionObserver((es) => {
-        es.forEach((e) => { if (e.isIntersecting) document.querySelectorAll('#toc a').forEach((a) => a.classList.toggle('on', a.dataset.ch === e.target.dataset.ch)); });
-      }, { rootMargin: '-80px 0px -70% 0px' });
-      document.querySelectorAll('#outline-box section.ch').forEach((s) => io.observe(s));
-    }
+    setChapter(curCh, false);
   }
   // 手机端两级目录树：章节 → 考点标题
   function renderTocTree() {
@@ -127,8 +132,9 @@
         d.hidden = !vis; if (vis) any = true;
         if (q && vis) d.open = true;
       });
-      sec.hidden = !any;
+      sec.hidden = q ? !any : sec.dataset.ch !== curCh;
     });
+    $('#searchHint').hidden = !q;
   }
   $('#search').addEventListener('input', (e) => { filt.q = e.target.value; applyFilter(); });
   $('#onlyHot').onclick = (e) => { filt.hot = !filt.hot; e.currentTarget.setAttribute('aria-pressed', filt.hot); applyFilter(); };
@@ -143,11 +149,12 @@
     if (!e.target.checked && t) t.remove();
   });
   $('#outline-box').addEventListener('click', (e) => {
-    const b = e.target.closest('[data-practice]'); if (b) startQuiz('ch', b.dataset.practice);
+    const b = e.target.closest('[data-practice]'); if (b) return startQuiz('ch', b.dataset.practice);
+    const g = e.target.closest('[data-ch-go]'); if (g) setChapter(g.dataset.chGo);
   });
   ['#toc', '#tocM'].forEach((sel) => $(sel).addEventListener('click', (e) => {
     const a = e.target.closest('a[data-ch]'); if (!a) return;
-    e.preventDefault(); document.getElementById('ch-' + a.dataset.ch).scrollIntoView({ behavior: 'smooth' });
+    e.preventDefault(); if (filt.q) { filt.q = ''; $('#search').value = ''; } setChapter(a.dataset.ch);
   }));
   $('#tocM').addEventListener('click', (e) => {
     const b = e.target.closest('#tocToggle'); if (!b) return;
@@ -159,9 +166,10 @@
     e.preventDefault();
     const d = document.querySelector(`details.pt[data-k="${a.dataset.pt}"]`); if (!d) return;
     // 被筛选藏起来的先放出来
-    if (d.hidden) { filt.q = ''; $('#search').value = ''; filt.hot = false; $('#onlyHot').setAttribute('aria-pressed', 'false'); filt.hideM = false; $('#hideMastered').setAttribute('aria-pressed', 'false'); applyFilter(); }
+    filt.q = ''; $('#search').value = ''; filt.hot = false; $('#onlyHot').setAttribute('aria-pressed', 'false'); filt.hideM = false; $('#hideMastered').setAttribute('aria-pressed', 'false');
+    setChapter(a.dataset.pt.split(':')[0], false);
     d.open = true; $('#tocTree').hidden = true; $('#tocToggle').setAttribute('aria-expanded', 'false');
-    d.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    setTimeout(() => d.scrollIntoView({ behavior: 'smooth', block: 'start' }), 30);
   });
 
   /* ---------- 数字速记 ---------- */
@@ -244,7 +252,7 @@
     const m = e.target.closest('[data-mode]'); if (m) return startQuiz(m.dataset.mode, m.dataset.ch);
     const o = e.target.closest('[data-opt]'); if (o) return pick(+o.dataset.opt);
     const n = e.target.closest('[data-nav]'); if (n) return nav(n.dataset.nav);
-    const g = e.target.closest('[data-goto]'); if (g) { show('outline'); setTimeout(() => document.getElementById('ch-' + g.dataset.goto).scrollIntoView(), 30); }
+    const g = e.target.closest('[data-goto]'); if (g) { show('outline'); setChapter(g.dataset.goto); }
   });
 
   function startQuiz(mode, ch) {

@@ -195,30 +195,47 @@
   ];
 
   /* ================= 交警手势 ================= */
-  // 正面图。交警的左臂在画面右侧（x>50），右臂在画面左侧。
-  const officer = (arms, note) => svg(`
-    <rect width="100" height="100" fill="#eef2f6"/>
-    <rect x="30" y="86" width="40" height="4" rx="2" fill="#c8d0d8"/>
-    <circle cx="50" cy="18" r="8" fill="#f1c9a5"/>
-    <path d="M40 15 Q50 6 60 15 L60 12 H40 Z" fill="#1f3b73"/>
-    <path d="M40 28 H60 L63 60 H37 Z" fill="#2a4e8f"/>
-    <path d="M40 60 H48 V86 H41 Z M52 60 H60 L59 86 H52 Z" fill="#1d2f54"/>
+  // 正面图，按公安部手势示意图风格：深蓝制服、白帽、白手套。交警的左臂在画面右侧（x>50），右臂在画面左侧。
+  const U = '#24508f', U2 = '#1a3c6e', SKIN = '#f3cda8', GL = '#ffffff';
+  const officer = (arms) => svg(`
+    <defs><marker id="ah" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="#d7262b"/></marker></defs>
+    <rect width="100" height="120" fill="#eef2f7"/>
+    <ellipse cx="50" cy="113" rx="18" ry="3" fill="#c9d2dc"/>
+    <!-- 腿 / 鞋 -->
+    <path d="M41 70 H49 L48 108 H40 Z M51 70 H59 L60 108 H52 Z" fill="${U2}"/>
+    <path d="M38 108 H49 V111 H37 Z M51 108 H62 V111 H51 Z" fill="#111"/>
+    <!-- 上衣 -->
+    <path d="M40 31 Q50 27 60 31 L63 72 H37 Z" fill="${U}"/>
+    <path d="M37 72 H63 V75 H37 Z" fill="#111"/><rect x="48" y="71" width="4" height="4" fill="#d9b24a"/>
+    <path d="M50 31 L46 40 L50 46 L54 40 Z" fill="#8fb0dd"/>
+    <circle cx="50" cy="50" r="1.3" fill="#d9b24a"/><circle cx="50" cy="58" r="1.3" fill="#d9b24a"/>
+    <!-- 反光背心边 -->
+    <path d="M42 33 L45 68 M58 33 L55 68" stroke="#e8edf3" stroke-width="2.2" stroke-linecap="round"/>
     ${arms}
-    ${note ? `<text x="50" y="97" font-size="7" text-anchor="middle" fill="#55606c" font-family="sans-serif">${note}</text>` : ''}`);
-  const arm = (x1, y1, x2, y2) => `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#2a4e8f" stroke-width="7" stroke-linecap="round"/><circle cx="${x2}" cy="${y2}" r="4.5" fill="#f1c9a5"/>`;
-  const palm = (x, y) => `<line x1="${x < 50 ? 40 : 60}" y1="32" x2="${x}" y2="${y}" stroke="#2a4e8f" stroke-width="7" stroke-linecap="round"/><rect x="${x - 5}" y="${y - 6}" width="10" height="12" rx="3" fill="#f1c9a5" stroke="#d9a77f" stroke-width="1"/>`; // 向前平伸（朝向观察者），画成短臂 + 正对的手掌
-  const swing = (d) => `<path d="${d}" fill="none" stroke="#d7262b" stroke-width="2.5" stroke-dasharray="4 3" marker-end="url(#ah)"/>`;
-  const defs = `<defs><marker id="ah" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="#d7262b"/></marker></defs>`;
-  const L = (x, y) => arm(60, 32, x, y), Rr = (x, y) => arm(40, 32, x, y);
+    <!-- 头 / 帽 -->
+    <path d="M44 20 Q50 26 56 20 V14 H44 Z" fill="${SKIN}"/>
+    <circle cx="50" cy="14" r="7.5" fill="${SKIN}"/>
+    <path d="M41.5 13 Q50 2 58.5 13 Z" fill="#fff"/><rect x="41" y="12" width="18" height="3.5" rx="1" fill="${U2}"/>
+    <path d="M42 15.5 H58 L56 18 H44 Z" fill="#111"/>
+    <circle cx="50" cy="9.5" r="1.6" fill="#d9b24a"/>`, '0 0 100 120');
+  // 手臂：从肩到手，白手套；palm=true 画成向前平伸（朝向观察者）的手掌
+  const limb = (x1, y1, x2, y2) => `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${U}" stroke-width="8" stroke-linecap="round"/><line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#e8edf3" stroke-width="1.2" stroke-dasharray="0 11 3 100" stroke-linecap="round"/>`;
+  const glove = (x, y) => `<circle cx="${x}" cy="${y}" r="4.6" fill="${GL}" stroke="#b9c3cf" stroke-width=".8"/>`;
+  const palm = (x, y) => `<rect x="${x - 5.5}" y="${y - 7}" width="11" height="14" rx="3" fill="${GL}" stroke="#b9c3cf" stroke-width=".8"/>${[-4, -1.3, 1.4, 4.1].map((dx) => `<rect x="${x + dx - 1.1}" y="${y - 11}" width="2.2" height="5" rx="1" fill="${GL}" stroke="#b9c3cf" stroke-width=".6"/>`).join('')}`;
+  const L = (x, y) => limb(59, 33, x, y) + glove(x, y);          // 左臂（画面右）
+  const Rr = (x, y) => limb(41, 33, x, y) + glove(x, y);         // 右臂（画面左）
+  const Lf = () => limb(59, 33, 62, 46) + palm(62, 50);          // 左臂向前平伸
+  const Rf = () => limb(41, 33, 38, 46) + palm(38, 50);          // 右臂向前平伸
+  const swing = (d) => `<path d="${d}" fill="none" stroke="#d7262b" stroke-width="2.4" stroke-dasharray="4 3" marker-end="url(#ah)"/>`;
   const GESTURE_CATALOG = [
-    { key: 'h_stop', name: '停止信号', desc: '左臂由前向上直伸，掌心向前', svg: officer(defs + L(64, 6) + Rr(36, 58)) },
-    { key: 'h_straight', name: '直行信号', desc: '左臂向左平伸掌心向前；右臂向右平伸掌心向前，然后右臂向左前方摆动', svg: officer(defs + L(92, 32) + Rr(8, 32) + swing('M12 40 Q30 52 46 46')) },
-    { key: 'h_left', name: '左转弯信号', desc: '右臂向前平伸掌心向前；左臂与手掌平直向右前方摆动', svg: officer(defs + palm(36, 46) + L(90, 44) + swing('M86 50 Q70 60 50 54')) },
-    { key: 'h_left_wait', name: '左转弯待转信号', desc: '左臂向左下方平伸与身体成 45°，掌心向下，上下摆动', svg: officer(defs + L(84, 60) + Rr(36, 58) + swing('M94 48 L94 64') + swing('M98 66 L98 50')) },
-    { key: 'h_right', name: '右转弯信号', desc: '左臂向前平伸掌心向前；右臂与手掌平直向左前方摆动', svg: officer(defs + palm(64, 46) + Rr(10, 44) + swing('M14 50 Q30 60 50 54')) },
-    { key: 'h_lane', name: '变道信号', desc: '右臂向前平伸掌心向左，右臂向左水平摆动', svg: officer(defs + palm(36, 46) + L(64, 58) + swing('M44 46 Q56 42 70 44')) },
-    { key: 'h_slow', name: '减速慢行信号', desc: '右臂向右平伸掌心向下，右臂与手掌平直向下方摆动', svg: officer(defs + Rr(8, 32) + L(64, 58) + swing('M14 38 L14 54')) },
-    { key: 'h_pull', name: '示意车辆靠边停车信号', desc: '左臂由前向上直伸掌心向前；右臂向前平伸掌心向左，向左水平摆动', svg: officer(defs + L(64, 6) + palm(36, 46) + swing('M44 46 Q56 42 70 44')) },
+    { key: 'h_stop', name: '停止信号', desc: '左臂由前向上直伸，掌心向前', svg: officer(Rr(37, 66) + limb(59, 33, 70, 16) + palm(70, 13)) },
+    { key: 'h_straight', name: '直行信号', desc: '左臂向左平伸掌心向前；右臂向右平伸掌心向前，然后右臂向左前方摆动', svg: officer(L(93, 33) + Rr(7, 33) + swing('M10 41 Q28 54 46 48')) },
+    { key: 'h_left', name: '左转弯信号', desc: '右臂向前平伸掌心向前；左臂与手掌平直向右前方摆动', svg: officer(Rf() + L(92, 44) + swing('M88 51 Q70 62 52 56')) },
+    { key: 'h_left_wait', name: '左转弯待转信号', desc: '左臂向左下方平伸与身体成 45°，掌心向下，上下摆动', svg: officer(Rr(37, 66) + L(80, 60) + swing('M91 48 L91 64') + swing('M96 66 L96 50')) },
+    { key: 'h_right', name: '右转弯信号', desc: '左臂向前平伸掌心向前；右臂与手掌平直向左前方摆动', svg: officer(Lf() + Rr(8, 44) + swing('M12 51 Q30 62 48 56')) },
+    { key: 'h_lane', name: '变道信号', desc: '右臂向前平伸掌心向左，右臂向左水平摆动', svg: officer(Rf() + L(63, 66) + swing('M46 50 Q58 44 74 48')) },
+    { key: 'h_slow', name: '减速慢行信号', desc: '右臂向右平伸掌心向下，右臂与手掌平直向下方摆动', svg: officer(Rr(7, 33) + L(63, 66) + swing('M12 40 L12 56')) },
+    { key: 'h_pull', name: '示意车辆靠边停车信号', desc: '左臂由前向上直伸掌心向前；右臂向前平伸掌心向左，向左水平摆动', svg: officer(limb(59, 33, 70, 16) + palm(70, 13) + Rf() + swing('M46 50 Q58 44 74 48')) },
   ];
 
   /* ---- 合并进 SIGNS，并导出目录 ---- */
