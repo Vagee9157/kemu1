@@ -242,7 +242,8 @@
   // 有国标原图（assets/signs/<key>.svg，来自 Wikimedia Commons）的标志优先用原图，没有的用手画 svg
   const FILES = window.SIGN_FILES || {};
   [...SIGN_CATALOG, ...LANE_CATALOG, ...DASH_CATALOG, ...GESTURE_CATALOG].forEach((it) => {
-    const f = FILES[it.key];
+    const f = FILES[it.key], d = (window.DASH_FILES || {})[it.key];
+    if (d) { SIGNS[it.key] = `<span class="lamp lamp-${it.color}" role="img" aria-label="${it.name}" style="--m:url('${new URL('assets/dash/' + it.key + '.svg', document.baseURI).href}')"></span>`; return; }
     SIGNS[it.key] = f ? `<img src="assets/signs/${it.key}.svg${f.v ? '?v=' + f.v : ''}" alt="${it.name}" class="${f.wide ? 'wide' : ''}" loading="lazy">` : it.svg;
   });
   window.PICS = { SIGN_CATALOG, LANE_CATALOG, DASH_CATALOG, GESTURE_CATALOG };

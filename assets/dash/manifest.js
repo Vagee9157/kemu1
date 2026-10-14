@@ -1,0 +1,2 @@
+// ISO 7000 仪表符号（key → assets/dash/<key>.svg），见 LICENSE.md
+window.DASH_FILES = {"d_oil": 1, "d_battery": 1, "d_coolant": 1, "d_brake": 1, "d_parkbrake": 1, "d_belt": 1, "d_airbag": 1, "d_door": 1, "d_hazard": 1, "d_engine": 1, "d_abs": 1, "d_tpms": 1, "d_fuel": 1, "d_eps": 1, "d_esp": 1, "d_washer": 1, "d_lowbat": 1, "d_high": 1, "d_low": 1, "d_fog_f": 1, "d_fog_r": 1, "d_pos": 1, "d_turn": 1, "d_cruise": 1};
