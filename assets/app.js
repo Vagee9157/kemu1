@@ -20,11 +20,14 @@
   const totalPts = CHAPTERS.reduce((n, c) => n + c.points.length, 0);
 
   /* ---------- 主题 ---------- */
-  const applyTheme = () => { if (S.theme) document.documentElement.dataset.theme = S.theme; else delete document.documentElement.dataset.theme; };
+  const isDark = () => (S.theme ? S.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches);
+  const applyTheme = () => {
+    if (S.theme) document.documentElement.dataset.theme = S.theme; else delete document.documentElement.dataset.theme;
+    const u = $('#themeBtn use'); if (u) u.setAttribute('href', isDark() ? '#i-sun' : '#i-moon');
+  };
   applyTheme();
   $('#themeBtn').onclick = () => {
-    const dark = S.theme ? S.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
-    S.theme = dark ? 'light' : 'dark'; applyTheme(); save();
+    S.theme = isDark() ? 'light' : 'dark'; applyTheme(); save();
   };
 
   /* ---------- 顶栏统计 ---------- */
@@ -33,7 +36,9 @@
     let r = 0, t = 0;
     Object.values(S.stats).forEach((s) => { r += s.r || 0; t += (s.r || 0) + (s.w || 0); });
     const acc = t ? Math.round(r / t * 100) + '%' : '—';
-    $('#topStat').innerHTML = `已掌握 <b>${m}/${totalPts}</b> · 做题 <b>${t}</b> · 正确率 <b>${acc}</b>`;
+    const C = 2 * Math.PI * 31, pct = m / totalPts;
+    $('#ring').innerHTML = `<svg viewBox="0 0 72 72" aria-hidden="true"><circle class="bg" cx="36" cy="36" r="31"/><circle class="fg" cx="36" cy="36" r="31" stroke-dasharray="${C}" stroke-dashoffset="${C * (1 - pct)}"/></svg>
+      <dl><dt>已掌握</dt><dd>${m} / ${totalPts}</dd><dt>做题</dt><dd>${t}</dd><dt>正确率</dt><dd>${acc}</dd></dl>`;
     const w = Object.keys(S.wrong).length;
     $('#wrongBadge').textContent = w ? ` ${w}` : '';
   }
@@ -53,8 +58,9 @@
   /* ---------- 考点大纲 ---------- */
   const filt = { q: '', hot: false, hideM: false };
   function renderOutline() {
-    $('#toc').innerHTML = CHAPTERS.map((c) => `<a href="#ch-${c.id}" data-ch="${c.id}">${c.icon} ${esc(c.name)}</a>`).join('');
-    $('#outline-box').innerHTML = CHAPTERS.map((c) => {
+    $('#toc').innerHTML = CHAPTERS.map((c, i) => `<a href="#ch-${c.id}" data-ch="${c.id}"><span class="n">${String(i + 1).padStart(2, '0')}</span>${esc(c.name)}</a>`).join('');
+    $('#tocM').innerHTML = CHAPTERS.map((c, i) => `<a href="#ch-${c.id}" data-ch="${c.id}">${String(i + 1).padStart(2, '0')} ${esc(c.name)}</a>`).join('');
+    $('#outline-box').innerHTML = CHAPTERS.map((c, ci) => {
       const qn = QUESTIONS.filter((q) => q.ch === c.id).length;
       const pts = c.points.map((p, i) => {
         const k = ptKey(c, i), m = !!S.mastered[k];
@@ -73,12 +79,20 @@
         </details>`;
       }).join('');
       return `<section class="ch" id="ch-${c.id}" data-ch="${c.id}">
-        <div class="ch-head"><span class="ch-ico">${c.icon}</span>
-          <div><h3>${esc(c.name)}</h3><p>${esc(c.intro)}</p></div>
-          <button class="btn go" data-practice="${c.id}">练这章 ${qn} 题</button>
+        <div class="ch-head"><span class="num">${String(ci + 1).padStart(2, '0')}</span>
+          <h3>${esc(c.name)}</h3>
+          <button class="btn go" data-practice="${c.id}"><svg class="i"><use href="#i-pen"/></svg>练这章 ${qn} 题</button>
+          <p>${esc(c.intro)}</p>
         </div>${pts}</section>`;
     }).join('');
     applyFilter();
+    // 滚动时高亮左栏当前章
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((es) => {
+        es.forEach((e) => { if (e.isIntersecting) document.querySelectorAll('#toc a').forEach((a) => a.classList.toggle('on', a.dataset.ch === e.target.dataset.ch)); });
+      }, { rootMargin: '-80px 0px -70% 0px' });
+      document.querySelectorAll('#outline-box section.ch').forEach((s) => io.observe(s));
+    }
   }
   function applyFilter() {
     const q = filt.q.trim().toLowerCase();
@@ -110,10 +124,10 @@
   $('#outline-box').addEventListener('click', (e) => {
     const b = e.target.closest('[data-practice]'); if (b) startQuiz('ch', b.dataset.practice);
   });
-  $('#toc').addEventListener('click', (e) => {
+  ['#toc', '#tocM'].forEach((sel) => $(sel).addEventListener('click', (e) => {
     const a = e.target.closest('a[data-ch]'); if (!a) return;
     e.preventDefault(); document.getElementById('ch-' + a.dataset.ch).scrollIntoView({ behavior: 'smooth' });
-  });
+  }));
 
   /* ---------- 数字速记 ---------- */
   function renderNumbers() {
@@ -123,7 +137,7 @@
       <table class="cmp-table"><tr><th>考点</th><th>A</th><th>B</th></tr>
       ${CONFUSE.map(([k, a, b]) => `<tr><td>${esc(k)}</td><td class="ans">${esc(a)}</td><td class="ans">${esc(b)}</td></tr>`).join('')}
       </table></div></div>`;
-    $('#numbers-box').innerHTML = cmp + groups;
+    $('#numbers-box').innerHTML = `<div class="num-grid">${cmp.replace('class="num-group"', 'class="num-group span2"')}${groups}</div>`;
   }
   $('#hideAns').onclick = (e) => {
     const on = e.currentTarget.getAttribute('aria-pressed') !== 'true';
@@ -151,16 +165,16 @@
       <h2 class="vh">经典真题</h2>
       <p class="lead">共 ${QUESTIONS.length} 题，覆盖每个必考点。已做过 ${done} 题。练习模式答完立刻出解析；模拟考试交卷再看分数。</p>
       <div class="mode-grid">
-        <button class="mode featured" data-mode="hot"><b>🔥 高频必刷</b><span>${hotN} 道最常考的题，随机顺序</span></button>
-        <button class="mode" data-mode="exam"><b>⏱ 模拟考试</b><span>随机抽 50 题，交卷后出分，90% 算过</span></button>
-        <button class="mode" data-mode="all"><b>📚 全部顺序练</b><span>按章节从头到尾 ${QUESTIONS.length} 题</span></button>
-        <button class="mode" data-mode="new"><b>🆕 只做没做过的</b><span>还剩 ${QUESTIONS.length - done} 题</span></button>
+        <button class="mode featured" data-mode="hot"><b><svg class="i"><use href="#i-fire"/></svg>高频必刷</b><span>${hotN} 道最常考的题，随机顺序</span></button>
+        <button class="mode" data-mode="exam"><b><svg class="i"><use href="#i-clock"/></svg>模拟考试</b><span>随机抽 50 题，交卷后出分，90 分算过</span></button>
+        <button class="mode" data-mode="all"><b><svg class="i"><use href="#i-list"/></svg>全部顺序练</b><span>按章节从头到尾 ${QUESTIONS.length} 题</span></button>
+        <button class="mode" data-mode="new"><b><svg class="i"><use href="#i-spark"/></svg>只做没做过的</b><span>还剩 ${QUESTIONS.length - done} 题</span></button>
       </div>
       <h3 class="sub-h">按章节练</h3>
       <div class="mode-grid">
         ${CHAPTERS.map((c) => {
           const n = QUESTIONS.filter((q) => q.ch === c.id).length; const acc = chAcc(c.id);
-          return `<button class="mode" data-mode="ch" data-ch="${c.id}"><b>${c.icon} ${esc(c.name)}</b>
+          return `<button class="mode" data-mode="ch" data-ch="${c.id}"><b>${esc(c.name)}</b>
             <span>${n} 题 · ${acc === null ? '还没练' : '正确率 ' + acc + '%'}</span>
             <div class="bar"><i style="width:${acc || 0}%"></i></div></button>`;
         }).join('')}
@@ -204,14 +218,14 @@
       return `<button class="${cls}" data-opt="${k}" ${reveal ? 'disabled' : ''}><span class="k">${keys[k]}</span><span>${esc(o)}</span></button>`;
     }).join('');
     const ok = answered && isRight(q, picked);
-    const expHtml = reveal ? `<div class="exp"><span class="verdict ${ok ? 'ok' : 'no'}">${ok ? '答对了' : '答错了'}</span>
+    const expHtml = reveal ? `<div class="exp ${ok ? 'ok' : 'no'}"><span class="verdict">${ok ? '答对了' : '答错了'}</span>
         正确答案：<b>${keys[rightIdx(q)]} ${esc(opts[rightIdx(q)])}</b><br>${esc(q.exp)}
         <a href="javascript:void 0" data-goto="${q.ch}">看考点 ›</a></div>` : '';
     const doneN = Object.keys(ans).length;
     const last = i === list.length - 1;
     $('#quiz-box').innerHTML = `
       <div class="quiz-head"><button class="btn ghost" data-nav="home">‹ 返回</button>
-        <span class="grow">${esc(quiz.title)}</span><span>${i + 1} / ${list.length}</span></div>
+        <span class="grow">${esc(quiz.title)}</span><span class="cnt">${i + 1} / ${list.length}</span></div>
       <div class="bar" style="margin:-4px 0 12px"><i style="width:${doneN / list.length * 100}%"></i></div>
       <div class="qcard">
         <div class="qmeta"><span class="qtype">${q.type === 'judge' ? '判断题' : '单选题'}</span><span class="qtype">${esc(CHMAP[q.ch].name)}</span>${q.hot ? '<span class="tag h2">高频</span>' : ''}</div>
