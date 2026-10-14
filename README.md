@@ -37,9 +37,8 @@ index.html        页面骨架
 assets/data.js        考点 CHAPTERS / 数字 NUMBERS / 易混 CONFUSE / 第一批题 QUESTIONS / 基础标志 SIGNS
 assets/pics.js        看图题图库：84 个标志、23 种标线、26 个仪表灯、8 个交警手势（内联 SVG）
 assets/questions2.js  看图题（按 pics.js 目录自动生成）+ 手写补充题
-assets/theme-a/b/c.css 三套样式，?style=a|b|c 切换，styles.html 是挑选页
 assets/app.js     交互逻辑
-assets/style.css  样式（浅色 / 深色）
+assets/style.css      样式（浅色 / 深色），字体 Manrope + Noto Sans SC，图标 Lucide
 sw.js             离线缓存（网络优先）
 ```
 

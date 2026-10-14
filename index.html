@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#1f6f4a">
+<meta name="theme-color" content="#2563eb">
 <title>科目一通关笔记</title>
-<meta name="description" content="驾照科目一考点大纲、高频数字速记和经典真题练习，手机电脑都能用，离线可看。">
+<meta name="description" content="驾照科目一考点大纲、高频数字速记和经典真题练习（含标志、标线、仪表灯、交警手势看图题），手机电脑都能用，离线可看。">
 <link rel="manifest" href="manifest.json">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -14,26 +14,31 @@
 <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600&family=Noto+Serif+SC:wght@600;700&display=swap">
-<link rel="stylesheet" href="assets/style.css?v=5">
-<script>
-  // 样式挑选：?style=a|b|c，选过记在本机；默认 a
-  (function(){var m=location.search.match(/[?&]style=([abc])/);var s=m?m[1]:null;try{if(s)localStorage.setItem('km1.style',s);else s=localStorage.getItem('km1.style');}catch(e){}
-  s=s||'a';document.documentElement.dataset.style=s;document.write('<link rel="stylesheet" href="assets/theme-'+s+'.css?v=5">');})();
-</script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Noto+Sans+SC:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="assets/style.css?v=6">
 </head>
 <body>
+<!-- Lucide 图标（ISC 许可），统一 24 网格 / 2px 描边 -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5V5.5M8 7h8M8 11h6"/></symbol>
-  <symbol id="i-num" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M9 9v11M15 9v11"/></symbol>
-  <symbol id="i-pen" viewBox="0 0 24 24"><path d="M4 20l4-1 11-11-3-3L5 16z"/><path d="M13 7l3 3M4 20l1-4"/></symbol>
-  <symbol id="i-flag" viewBox="0 0 24 24"><path d="M5 21V4"/><path d="M5 4h12l-2 4 2 4H5"/></symbol>
-  <symbol id="i-fire" viewBox="0 0 24 24"><path d="M12 3c1 3 4 4 4 8a4 4 0 0 1-8 0c0-1 .5-2 1-3 .5 1.5 1.5 2 2 2 0-2-1-4 1-7z"/><path d="M6 13a6 6 0 1 0 12 0"/></symbol>
-  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
-  <symbol id="i-list" viewBox="0 0 24 24"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/></symbol>
-  <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M6 18l2.5-2.5M15.5 8.5 18 6"/></symbol>
-  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
-  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></symbol>
+  <symbol id="i-num" viewBox="0 0 24 24"><line x1="4" x2="20" y1="9" y2="9"/><line x1="4" x2="20" y1="15" y2="15"/><line x1="10" x2="8" y1="3" y2="21"/><line x1="16" x2="14" y1="3" y2="21"/></symbol>
+  <symbol id="i-pen" viewBox="0 0 24 24"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"/></symbol>
+  <symbol id="i-pencil" viewBox="0 0 24 24"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/></symbol>
+  <symbol id="i-bookmark" viewBox="0 0 24 24"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></symbol>
+  <symbol id="i-flame" viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></symbol>
+  <symbol id="i-timer" viewBox="0 0 24 24"><line x1="10" x2="14" y1="2" y2="2"/><line x1="12" x2="15" y1="14" y2="11"/><circle cx="12" cy="14" r="8"/></symbol>
+  <symbol id="i-list" viewBox="0 0 24 24"><path d="M10 12h11"/><path d="M10 18h11"/><path d="M10 6h11"/><path d="M4 10h2"/><path d="M4 6h1v4"/><path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"/></symbol>
+  <symbol id="i-sparkles" viewBox="0 0 24 24"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/><path d="M20 3v4"/><path d="M22 5h-4"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+  <symbol id="i-chev-r" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+  <symbol id="i-chev-l" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+  <symbol id="i-redo" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></symbol>
+  <symbol id="i-party" viewBox="0 0 24 24"><path d="M5.8 11.3 2 22l10.7-3.79"/><path d="M4 3h.01"/><path d="M22 8h.01"/><path d="M15 2h.01"/><path d="M22 20h.01"/><path d="m22 2-2.24.75a2.9 2.9 0 0 0-1.96 3.12c.1.86-.57 1.63-1.45 1.63h-.38c-.86 0-1.6.6-1.76 1.44L14 10"/><path d="m22 13-.82-.33c-.86-.34-1.82.2-1.98 1.11c-.11.7-.72 1.22-1.43 1.22H17"/><path d="m11 2 .33.82c.34.86-.2 1.82-1.11 1.98C9.52 4.9 9 5.52 9 6.23V7"/><path d="M11 13c1.93 1.93 2.83 4.17 2 5-.83.83-3.07-.07-5-2-1.93-1.93-2.83-4.17-2-5 .83-.83 3.07.07 5 2Z"/></symbol>
 </svg>
 
 <header class="top">
@@ -44,7 +49,7 @@
         <button role="tab" data-view="outline" aria-selected="true"><svg class="i"><use href="#i-book"/></svg>考点</button>
         <button role="tab" data-view="numbers" aria-selected="false"><svg class="i"><use href="#i-num"/></svg>速记</button>
         <button role="tab" data-view="quiz" aria-selected="false"><svg class="i"><use href="#i-pen"/></svg>刷题</button>
-        <button role="tab" data-view="wrong" aria-selected="false"><svg class="i"><use href="#i-flag"/></svg>错题<span class="badge" id="wrongBadge"></span></button>
+        <button role="tab" data-view="wrong" aria-selected="false"><svg class="i"><use href="#i-bookmark"/></svg>错题<span class="badge" id="wrongBadge"></span></button>
       </nav>
       <button class="icon-btn" id="themeBtn" title="切换深浅色" aria-label="切换深浅色"><svg class="i" style="font-size:18px"><use href="#i-moon"/></svg></button>
     </div>
@@ -61,7 +66,7 @@
       <div class="ring" id="ring"></div>
     </div>
     <div class="toolbar">
-      <input class="search" id="search" type="search" placeholder="搜考点：高速 / 停车 / 12 分 / 雾天…" autocomplete="off">
+      <div class="search-wrap"><svg class="i"><use href="#i-search"/></svg><input class="search" id="search" type="search" placeholder="搜考点：高速 / 停车 / 12 分 / 雾天…" autocomplete="off"></div>
       <button class="chip" id="onlyHot" aria-pressed="false">只看必考</button>
       <button class="chip" id="hideMastered" aria-pressed="false">隐藏已掌握</button>
     </div>
@@ -89,13 +94,13 @@
 
   <footer class="foot">
     <b>依据</b>：《道路交通安全法》《道路交通安全法实施条例》《机动车驾驶证申领和使用规定》（公安部令第 162 号，经第 172 号修改，2025-01-01 起）《道路交通安全违法行为记分管理办法》（公安部令第 163 号，2022-04-01 起）。题目按公开题库常见题型改写，以官方考试系统为准。<br>
-    学习进度和错题只存在这台设备的浏览器里；联网打开过一次后可离线使用。
+    学习进度和错题只存在这台设备的浏览器里；联网打开过一次后可离线使用。图标来自 Lucide。
   </footer>
 </main>
 
-<script src="assets/data.js?v=5"></script>
-<script src="assets/pics.js?v=5"></script>
-<script src="assets/questions2.js?v=5"></script>
-<script src="assets/app.js?v=5"></script>
+<script src="assets/data.js?v=6"></script>
+<script src="assets/pics.js?v=6"></script>
+<script src="assets/questions2.js?v=6"></script>
+<script src="assets/app.js?v=6"></script>
 </body>
 </html>

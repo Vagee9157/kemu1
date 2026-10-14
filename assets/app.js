@@ -20,7 +20,7 @@
   const totalPts = CHAPTERS.reduce((n, c) => n + c.points.length, 0);
 
   /* ---------- 主题 ---------- */
-  const isDark = () => (S.theme ? S.theme === 'dark' : (document.documentElement.dataset.style === 'c' || matchMedia('(prefers-color-scheme: dark)').matches));
+  const isDark = () => (S.theme ? S.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches);
   const applyTheme = () => {
     if (S.theme) document.documentElement.dataset.theme = S.theme; else delete document.documentElement.dataset.theme;
     const u = $('#themeBtn use'); if (u) u.setAttribute('href', isDark() ? '#i-sun' : '#i-moon');
@@ -67,8 +67,8 @@
         const tag = p.hot === 2 ? '<span class="tag h2">必考</span>' : p.hot === 1 ? '<span class="tag h1">常考</span>' : '';
         return `<details class="pt" data-k="${k}" data-hot="${p.hot}">
           <summary>
-            <div class="pt-title">${esc(p.t)} ${tag}${m ? '<span class="tag ok">已掌握</span>' : ''}</div>
-            <span class="caret">›</span>
+            <div class="pt-title">${esc(p.t)} ${tag}${m ? '<span class="tag ok"><svg class="i"><use href="#i-check"/></svg>已掌握</span>' : ''}</div>
+            <span class="caret"><svg class="i"><use href="#i-chev-r"/></svg></span>
             ${p.tip ? `<div class="pt-tip">${esc(p.tip)}</div>` : ''}
           </summary>
           <div class="pt-body"><div class="tbl-scroll">${p.body}</div>
@@ -81,7 +81,7 @@
       return `<section class="ch" id="ch-${c.id}" data-ch="${c.id}">
         <div class="ch-head"><span class="num">${String(ci + 1).padStart(2, '0')}</span>
           <h3>${esc(c.name)}</h3>
-          <button class="btn go" data-practice="${c.id}"><svg class="i"><use href="#i-pen"/></svg>练这章 ${qn} 题</button>
+          <button class="btn go" data-practice="${c.id}"><svg class="i"><use href="#i-pencil"/></svg>练这章 ${qn} 题</button>
           <p>${esc(c.intro)}</p>
         </div>${pts}</section>`;
     }).join('');
@@ -118,7 +118,7 @@
     save(); refreshStat();
     const title = e.target.closest('details').querySelector('.pt-title');
     const t = title.querySelector('.tag.ok');
-    if (e.target.checked && !t) title.insertAdjacentHTML('beforeend', '<span class="tag ok">已掌握</span>');
+    if (e.target.checked && !t) title.insertAdjacentHTML('beforeend', '<span class="tag ok"><svg class="i"><use href="#i-check"/></svg>已掌握</span>');
     if (!e.target.checked && t) t.remove();
   });
   $('#outline-box').addEventListener('click', (e) => {
@@ -165,10 +165,10 @@
       <h2 class="vh">经典真题</h2>
       <p class="lead">共 ${QUESTIONS.length} 题，覆盖每个必考点。已做过 ${done} 题。练习模式答完立刻出解析；模拟考试交卷再看分数。</p>
       <div class="mode-grid">
-        <button class="mode featured" data-mode="hot"><b><svg class="i"><use href="#i-fire"/></svg>高频必刷</b><span>${hotN} 道最常考的题，随机顺序</span></button>
-        <button class="mode" data-mode="exam"><b><svg class="i"><use href="#i-clock"/></svg>模拟考试</b><span>随机抽 50 题，交卷后出分，90 分算过</span></button>
+        <button class="mode featured" data-mode="hot"><b><svg class="i"><use href="#i-flame"/></svg>高频必刷</b><span>${hotN} 道最常考的题，随机顺序</span></button>
+        <button class="mode" data-mode="exam"><b><svg class="i"><use href="#i-timer"/></svg>模拟考试</b><span>随机抽 50 题，交卷后出分，90 分算过</span></button>
         <button class="mode" data-mode="all"><b><svg class="i"><use href="#i-list"/></svg>全部顺序练</b><span>按章节从头到尾 ${QUESTIONS.length} 题</span></button>
-        <button class="mode" data-mode="new"><b><svg class="i"><use href="#i-spark"/></svg>只做没做过的</b><span>还剩 ${QUESTIONS.length - done} 题</span></button>
+        <button class="mode" data-mode="new"><b><svg class="i"><use href="#i-sparkles"/></svg>只做没做过的</b><span>还剩 ${QUESTIONS.length - done} 题</span></button>
       </div>
       <h3 class="sub-h">按章节练</h3>
       <div class="mode-grid">
@@ -218,13 +218,13 @@
       return `<button class="${cls}" data-opt="${k}" ${reveal ? 'disabled' : ''}><span class="k">${keys[k]}</span><span>${esc(o)}</span></button>`;
     }).join('');
     const ok = answered && isRight(q, picked);
-    const expHtml = reveal ? `<div class="exp ${ok ? 'ok' : 'no'}"><span class="verdict">${ok ? '答对了' : '答错了'}</span>
+    const expHtml = reveal ? `<div class="exp ${ok ? 'ok' : 'no'}"><span class="verdict">${ok ? '<svg class="i"><use href="#i-check"/></svg>答对了' : '<svg class="i"><use href="#i-x"/></svg>答错了'}</span>
         正确答案：<b>${keys[rightIdx(q)]} ${esc(opts[rightIdx(q)])}</b><br>${esc(q.exp)}
-        <a href="javascript:void 0" data-goto="${q.ch}">看考点 ›</a></div>` : '';
+        <a href="javascript:void 0" data-goto="${q.ch}">看考点<svg class="i"><use href="#i-chev-r"/></svg></a></div>` : '';
     const doneN = Object.keys(ans).length;
     const last = i === list.length - 1;
     $('#quiz-box').innerHTML = `
-      <div class="quiz-head"><button class="btn ghost" data-nav="home">‹ 返回</button>
+      <div class="quiz-head"><button class="btn ghost" data-nav="home"><svg class="i"><use href="#i-chev-l"/></svg>返回</button>
         <span class="grow">${esc(quiz.title)}</span><span class="cnt">${i + 1} / ${list.length}</span></div>
       <div class="bar" style="margin:-4px 0 12px"><i style="width:${doneN / list.length * 100}%"></i></div>
       <div class="qcard">
@@ -310,9 +310,9 @@
     $('#wrong-box').innerHTML = `
       <h2 class="vh">错题本</h2>
       <p class="lead">做错的题自动收进来，按错的次数排。在"重做错题"里答对一次就移出。</p>
-      ${list.length ? `<div class="toolbar"><button class="btn primary" id="redo">重做错题（${list.length}）</button>
-        <button class="btn ghost" id="clearWrong">清空错题本</button></div>${list.map(wrongCard).join('')}`
-        : '<div class="empty">还没有错题。去"刷题"做几道吧。</div>'}`;
+      ${list.length ? `<div class="toolbar"><button class="btn primary" id="redo"><svg class="i"><use href="#i-redo"/></svg>重做错题（${list.length}）</button>
+        <button class="btn ghost" id="clearWrong"><svg class="i"><use href="#i-trash"/></svg>清空错题本</button></div>${list.map(wrongCard).join('')}`
+        : '<div class="empty"><svg class="i"><use href="#i-party"/></svg>还没有错题。去"刷题"做几道吧。</div>'}`;
     const r = $('#redo'); if (r) r.onclick = () => startQuiz('wrong');
     const c = $('#clearWrong'); if (c) c.onclick = () => { if (confirm('确定清空错题本吗？做题记录会保留。')) { S.wrong = {}; save(); refreshStat(); renderWrong(); } };
   }
