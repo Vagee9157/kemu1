@@ -59,7 +59,9 @@
   const filt = { q: '', hot: false, hideM: false };
   function renderOutline() {
     $('#toc').innerHTML = CHAPTERS.map((c, i) => `<a href="#ch-${c.id}" data-ch="${c.id}"><span class="n">${String(i + 1).padStart(2, '0')}</span>${esc(c.name)}</a>`).join('');
-    $('#tocM').innerHTML = CHAPTERS.map((c, i) => `<a href="#ch-${c.id}" data-ch="${c.id}">${String(i + 1).padStart(2, '0')} ${esc(c.name)}</a>`).join('');
+    $('#tocM').innerHTML = `<button class="toc-toggle" id="tocToggle" aria-expanded="false"><svg class="i"><use href="#i-menu"/></svg>目录</button>` +
+      CHAPTERS.map((c, i) => `<a href="#ch-${c.id}" data-ch="${c.id}">${String(i + 1).padStart(2, '0')} ${esc(c.name)}</a>`).join('');
+    renderTocTree();
     $('#outline-box').innerHTML = CHAPTERS.map((c, ci) => {
       const qn = QUESTIONS.filter((q) => q.ch === c.id).length;
       const pts = c.points.map((p, i) => {
@@ -93,6 +95,16 @@
       }, { rootMargin: '-80px 0px -70% 0px' });
       document.querySelectorAll('#outline-box section.ch').forEach((s) => io.observe(s));
     }
+  }
+  // 手机端两级目录树：章节 → 考点标题
+  function renderTocTree() {
+    $('#tocTree').innerHTML = CHAPTERS.map((c, i) => {
+      const done = c.points.filter((p, j) => S.mastered[ptKey(c, j)]).length;
+      return `<details class="tt-ch" ${i === 0 ? 'open' : ''}>
+        <summary><span class="n">${String(i + 1).padStart(2, '0')}</span><span class="t">${esc(c.name)}</span><span class="m">${done}/${c.points.length}</span><svg class="i"><use href="#i-chev-d"/></svg></summary>
+        <div class="tt-pts">${c.points.map((p, j) => `<a href="#" data-pt="${ptKey(c, j)}" class="${S.mastered[ptKey(c, j)] ? 'done' : ''}"><i class="dot ${p.hot === 2 ? 'on' : ''}"></i>${esc(p.t)}</a>`).join('')}</div>
+      </details>`;
+    }).join('');
   }
   function applyFilter() {
     const q = filt.q.trim().toLowerCase();
@@ -128,6 +140,20 @@
     const a = e.target.closest('a[data-ch]'); if (!a) return;
     e.preventDefault(); document.getElementById('ch-' + a.dataset.ch).scrollIntoView({ behavior: 'smooth' });
   }));
+  $('#tocM').addEventListener('click', (e) => {
+    const b = e.target.closest('#tocToggle'); if (!b) return;
+    const open = $('#tocTree').hidden; $('#tocTree').hidden = !open; b.setAttribute('aria-expanded', open);
+    if (open) renderTocTree();
+  });
+  $('#tocTree').addEventListener('click', (e) => {
+    const a = e.target.closest('a[data-pt]'); if (!a) return;
+    e.preventDefault();
+    const d = document.querySelector(`details.pt[data-k="${a.dataset.pt}"]`); if (!d) return;
+    // 被筛选藏起来的先放出来
+    if (d.hidden) { filt.q = ''; $('#search').value = ''; filt.hot = false; $('#onlyHot').setAttribute('aria-pressed', 'false'); filt.hideM = false; $('#hideMastered').setAttribute('aria-pressed', 'false'); applyFilter(); }
+    d.open = true; $('#tocTree').hidden = true; $('#tocToggle').setAttribute('aria-expanded', 'false');
+    d.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
 
   /* ---------- 数字速记 ---------- */
   function renderNumbers() {

@@ -129,7 +129,25 @@ main{padding-top:20px;padding-bottom:60px}
 .toc-m{display:flex;gap:8px;overflow-x:auto;margin:0 -18px 10px;padding:2px 18px 10px;scrollbar-width:none}
 .toc-m::-webkit-scrollbar{display:none}
 .toc-m a{flex:none;text-decoration:none;color:var(--ink-soft);background:var(--paper);border-radius:11px;padding:6px 12px;font-size:13px;font-weight:500;box-shadow:var(--shadow)}
-@media (min-width:1024px){.toc-m{display:none}}
+.toc-toggle{flex:none;border:0;background:var(--brand);color:#fff;border-radius:11px;padding:6px 12px;font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:5px;box-shadow:0 4px 12px rgba(37,99,235,.25)}
+.toc-toggle[aria-expanded="true"]{background:var(--ink);box-shadow:none}
+.toc-tree{background:var(--paper);border-radius:var(--r-s);box-shadow:var(--shadow-2);padding:6px 8px;margin:0 0 16px}
+.toc-tree[hidden]{display:none}
+.tt-ch>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;padding:10px 8px;border-radius:10px;font-weight:700;font-size:14.5px}
+.tt-ch>summary::-webkit-details-marker{display:none}
+.tt-ch>summary .n{font-size:11.5px;font-weight:800;color:var(--brand);background:var(--brand-soft);border-radius:7px;width:30px;height:24px;display:grid;place-items:center;font-variant-numeric:tabular-nums}
+.tt-ch>summary .t{flex:1}
+.tt-ch>summary .m{font-size:12px;font-weight:600;color:var(--ink-dim);font-variant-numeric:tabular-nums}
+.tt-ch>summary svg.i{color:var(--ink-dim);transition:transform .2s;font-size:18px}
+.tt-ch[open]>summary svg.i{transform:rotate(180deg)}
+.tt-ch[open]>summary{color:var(--brand)}
+.tt-pts{display:flex;flex-direction:column;padding:0 0 6px 14px;border-left:2px solid var(--line);margin:0 0 6px 22px}
+.tt-pts a{text-decoration:none;color:var(--ink-soft);font-size:13.5px;padding:7px 10px;border-radius:8px;display:flex;align-items:center;gap:7px;line-height:1.45}
+.tt-pts a:active{background:var(--paper-2)}
+.tt-pts a.done{color:var(--ink-dim);text-decoration:line-through;text-decoration-color:var(--line-2)}
+.tt-pts a .dot{width:6px;height:6px;border-radius:50%;background:transparent;flex:none}
+.tt-pts a .dot.on{background:var(--red)}
+@media (min-width:1024px){.toc-m,.toc-tree{display:none}}
 
 section.ch{margin:6px 0 36px;scroll-margin-top:92px}
 .ch-head{display:grid;grid-template-columns:auto 1fr auto;gap:2px 14px;align-items:center;margin-bottom:12px}
