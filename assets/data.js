@@ -354,7 +354,7 @@ const CHAPTERS = [
           <li>驾驶人、乘车人应当按规定使用<b>安全带</b>；摩托车驾驶人及乘坐人员应当戴<b>安全头盔</b>。</li>
         </ul>`, tip: '疲劳驾驶：4 小时要歇，歇够 20 分钟。' },
       { t: '铁路道口、漫水路、牵引', hot: 1, body: `
-        <div class="sign-row"><figure><div class="illus" data-sign="w_rail_g"></div><figcaption>有人看守道口</figcaption></figure><figure><div class="illus" data-sign="w_rail_n"></div><figcaption>无人看守道口</figcaption></figure><figure><div class="illus" data-sign="w_water"></div><figcaption>注意积水</figcaption></figure></div>
+        <div class="sign-row"><figure><div class="illus" data-sign="w_rail_g"></div><figcaption>有人看守道口</figcaption></figure><figure><div class="illus" data-sign="w_rail_n"></div><figcaption>无人看守道口</figcaption></figure></div>
         <div class="illus" data-illus="towing"></div>
         <ul>
           <li><b>铁路道口</b>：按信号或管理人员指挥通行；没有的，<b>减速或停车，确认安全后通过</b>。道口信号灯两个红灯交替闪烁或一个红灯亮：禁止通行。</li>
@@ -432,7 +432,7 @@ const CHAPTERS = [
           <figure>${SIGNS.tourist}<figcaption>旅游区：棕色底</figcaption></figure>
         </div>
         <p>特例：<b>停车让行</b>是红色八角形，<b>减速让行</b>是顶角朝下的倒三角形，二者都属于禁令标志。</p>
-        <p>2022 年新国标（GB 5768.2-2022，2022-10-01 起）新增了一批标志，近两年题库开始出现：电动汽车充电站（蓝底指路类）、注意积水（黄三角警告）、禁止电动自行车驶入（红圈禁令）、<b>交通事故管理区</b>（<b>粉红色底</b>，提示前方正在处理事故，减速绕行）。</p>`, tip: '黄三角警告，红圈禁令，蓝色指示，绿色高速指路，棕色旅游，粉色事故管理区。' },
+        <p>2022 年新国标（GB 5768.2-2022，2022-10-01 起）新增了一批标志，近两年题库开始出现：电动汽车充电站（蓝底指路类）、禁止电动自行车进入（红圈禁令）、<b>交通事故管理区</b>（<b>粉红色底</b>，提示前方正在处理事故，减速绕行）。</p>`, tip: '黄三角警告，红圈禁令，蓝色指示，绿色高速指路，棕色旅游，粉色事故管理区。' },
       { t: '最容易认错的几组标志', hot: 2, body: `
         <div class="sign-row">
           <figure>${SIGNS.stop}<figcaption>停车让行：必须停车瞭望</figcaption></figure>
@@ -520,7 +520,7 @@ const CHAPTERS = [
           <li>加油时：熄火，禁止吸烟、使用明火，不要使用手机。</li>
         </ul>`, tip: '着火别开机盖；落水砸侧窗边角；翻车不跳车。' },
       { t: '恶劣天气与特殊路况', hot: 1, body: `
-        <div class="sign-row"><figure><div class="illus" data-sign="w_slip"></div><figcaption>易滑</figcaption></figure><figure><div class="illus" data-sign="w_ice"></div><figcaption>雨雪天</figcaption></figure><figure><div class="illus" data-sign="w_water"></div><figcaption>积水</figcaption></figure><figure><div class="illus" data-sign="w_wind"></div><figcaption>横风</figcaption></figure><figure><div class="illus" data-sign="w_tunnel"></div><figcaption>隧道</figcaption></figure><figure><div class="illus" data-sign="d_fog_f"></div><figcaption>前雾灯</figcaption></figure></div>
+        <div class="sign-row"><figure><div class="illus" data-sign="w_slip"></div><figcaption>易滑</figcaption></figure><figure><div class="illus" data-sign="w_ice"></div><figcaption>雨雪天</figcaption></figure><figure><div class="illus" data-sign="w_wind"></div><figcaption>横风</figcaption></figure><figure><div class="illus" data-sign="w_tunnel"></div><figcaption>隧道</figcaption></figure><figure><div class="illus" data-sign="d_fog_f"></div><figcaption>前雾灯</figcaption></figure></div>
         <ul>
           <li><b>雨天</b>：降低车速，加大跟车距离；高速行驶时轮胎与路面间形成水膜产生"水滑"，应握稳方向盘、逐渐降速，<b>不要急踩制动</b>。</li>
           <li><b>雾天</b>：开启雾灯、近光灯、危险报警闪光灯，<b>不要使用远光灯</b>（雾中光线散射反而看不清），必要时鸣喇叭提示。</li>

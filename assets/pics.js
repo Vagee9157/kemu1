@@ -59,7 +59,6 @@
     { key: 'w_work', name: '施工', cat: 'warn', svg: warn(`<circle cx="36" cy="34" r="6" fill="${K}"/><path d="M28 44 L44 42 L58 56 L52 62 L44 56 L40 80 H28 Z" fill="${K}"/><path d="M50 56 L66 70" ${st(K, 5)}/><path d="M62 68 L74 64 L78 76 L68 80 Z" fill="${K}"/><path d="M48 80 Q64 68 82 80 Z" fill="${K}"/>`) },
     { key: 'w_accident', name: '事故易发路段', cat: 'warn', svg: warn(`${car(K, 34, 62, .6)}${car(K, 66, 62, .6)}<path d="M50 36 L54 48 L62 46 L56 54 L60 62 L50 56 L40 62 L44 54 L38 46 L46 48 Z" fill="${K}"/>`) },
     { key: 'w_tunnel', name: '隧道', cat: 'warn', svg: warn(`<path d="M28 80 V52 Q28 34 50 34 Q72 34 72 52 V80 Z" fill="${K}"/><path d="M36 80 V54 Q36 42 50 42 Q64 42 64 54 V80 Z" fill="${Y}"/>`) },
-    { key: 'w_water', name: '注意积水', cat: 'warn', svg: warn(`${car(K, 50, 48, .8)}<path d="M22 66 Q30 58 38 66 T54 66 T70 66 T86 66 M22 76 Q30 68 38 76 T54 76 T70 76 T86 76" ${st(K, 4)}/>`) },
     { key: 'w_village', name: '村庄', cat: 'warn', svg: warn(`<path d="M26 80 V56 L40 42 L54 56 V80 Z" fill="${K}"/><path d="M58 80 V62 L68 52 L78 62 V80 Z" fill="${K}"/>`) },
     { key: 'w_wind', name: '注意横风', cat: 'warn', svg: warn(`<path d="M30 80 V34" ${st(K, 6)}/><path d="M30 36 L74 44 L30 54 Z" fill="${K}"/>`) },
     { key: 'w_ice', name: '注意雨（雪）天', cat: 'warn', svg: warn(`<path d="M34 40 Q50 24 66 40 Q76 48 62 52 H36 Q24 48 34 40 Z" fill="${K}"/><path d="M40 60 L36 72 M50 60 L46 72 M60 60 L56 72" ${st(K, 5)}/>`) },
