@@ -423,3 +423,20 @@ details.pt[open] .pt-tip{grid-column:1/3}
 .f-pics figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:8px}
 .f-pics figcaption{font-size:15px;font-weight:700;line-height:1.45}
 .chip[hidden]{display:none}
+
+/* ---------- 模拟考计时 / 薄弱章节 / 错题分组 ---------- */
+.qtimer{font-variant-numeric:tabular-nums;font-weight:800;font-size:14px;padding:3px 10px;border-radius:999px;background:var(--brand-soft);color:var(--brand);margin-right:6px}
+.qtimer.low{background:var(--red-soft);color:var(--red)}
+.mode.weak .bar i{background:var(--red)}
+.mode.weak{box-shadow:0 0 0 1.5px var(--red-soft),var(--shadow)}
+.by-ch{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 4px;justify-content:center}
+#wrong-box .by-ch{justify-content:flex-start;margin:4px 0 16px}
+a.chip{text-decoration:none;color:inherit}
+.w-group{margin:0 0 20px;scroll-margin-top:80px}
+.w-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 10px}
+.w-head h3{flex:1;margin:0;font-size:16px}
+.w-head h3 small{font-size:12.5px;font-weight:600;color:var(--ink-dim)}
+.w-foot{display:flex;justify-content:space-between;align-items:center;margin-top:6px;font-size:13px}
+.w-foot a{display:inline-flex;align-items:center;gap:2px;font-weight:600;text-decoration:none}
+.wrong-item .w-foot svg.i{float:none;width:1em;height:1em;margin:0;filter:none}
+.mode b .tag{white-space:nowrap;flex:none}

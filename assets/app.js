@@ -289,7 +289,7 @@
     let r = 0, t = 0, done = 0, all = 0;
     QUESTIONS.filter((q) => q.ch === chId).forEach((q) => { all++; const s = S.stats[q.id]; if (s) { done++; r += s.r || 0; t += (s.r || 0) + (s.w || 0); } });
     const acc = t ? Math.round(r / t * 100) : null;
-    return { acc, pass: done === all && acc !== null && acc >= 90 };
+    return { acc, done, pass: done === all && acc !== null && acc >= 90 };
   }
   function renderQuizHome() {
     quiz = null;
@@ -300,18 +300,26 @@
       <p class="lead">共 ${QUESTIONS.length} 题，覆盖每个必考点。已做过 ${done} 题。练习模式答完立刻出解析；模拟考试交卷再看分数。</p>
       <div class="mode-grid">
         <button class="mode featured" data-mode="hot"><b><svg class="i"><use href="#i-flame"/></svg>高频必刷</b><span>${hotN} 道最常考的题，随机顺序</span></button>
-        <button class="mode" data-mode="exam"><b><svg class="i"><use href="#i-timer"/></svg>模拟考试</b><span>随机抽 50 题，交卷后出分，90 分算过</span></button>
+        <button class="mode" data-mode="exam"><b><svg class="i"><use href="#i-timer"/></svg>模拟考试</b><span>按真考：100 题（判断 30 + 单选 70）· 45 分钟 · 90 分及格</span></button>
+        <button class="mode" data-mode="sprint"><b><svg class="i"><use href="#i-flame"/></svg>考前冲刺</b><span>${sprintList().length ? `错题 + 还没拿稳的高频题，共 ${sprintList().length} 道` : '先刷几道题，这里会自动凑出你的薄弱题'}</span></button>
         <button class="mode" data-mode="all"><b><svg class="i"><use href="#i-list"/></svg>全部顺序练</b><span>按章节从头到尾 ${QUESTIONS.length} 题</span></button>
         <button class="mode" data-mode="new"><b><svg class="i"><use href="#i-sparkles"/></svg>只做没做过的</b><span>还剩 ${QUESTIONS.length - done} 题</span></button>
       </div>
       <h3 class="sub-h">按章节练</h3>
       <div class="mode-grid">
-        ${CHAPTERS.map((c) => {
-          const n = QUESTIONS.filter((q) => q.ch === c.id).length; const { acc, pass } = chAcc(c.id);
-          return `<button class="mode ${pass ? 'passed' : ''}" data-mode="ch" data-ch="${c.id}"><b>${esc(c.name)}${pass ? '<span class="tag ok"><svg class="i"><use href="#i-check"/></svg>通关</span>' : ''}</b>
-            <span>${n} 题 · ${acc === null ? '还没练' : '正确率 ' + acc + '%'}</span>
-            <div class="bar"><i style="width:${acc || 0}%"></i></div></button>`;
-        }).join('')}
+        ${(() => {
+          // 正确率低于 90 的标"薄弱"，最低的一章标"最弱"
+          const accs = CHAPTERS.map((c) => chAcc(c.id).acc).filter((a) => a !== null && a < 90);
+          const worst = accs.length ? Math.min(...accs) : null;
+          return CHAPTERS.map((c) => {
+            const n = QUESTIONS.filter((q) => q.ch === c.id).length; const { acc, pass, done } = chAcc(c.id);
+            const weak = acc !== null && acc < 90;
+            const tag = pass ? '<span class="tag ok"><svg class="i"><use href="#i-check"/></svg>通关</span>' : weak ? `<span class="tag h2">${acc === worst ? '最弱' : '薄弱'}</span>` : '';
+            return `<button class="mode ${pass ? 'passed' : ''} ${weak ? 'weak' : ''}" data-mode="ch" data-ch="${c.id}"><b>${esc(c.name)}${tag}</b>
+              <span>做过 ${done} / ${n} · ${acc === null ? '还没练' : '正确率 ' + acc + '%'}</span>
+              <div class="bar"><i style="width:${acc || 0}%"></i></div></button>`;
+          }).join('');
+        })()}
       </div>`;
   }
   $('#quiz-box').addEventListener('click', (e) => {
@@ -321,17 +329,60 @@
     const g = e.target.closest('[data-goto]'); if (g) { show('outline'); setChapter(g.dataset.goto); }
   });
 
+  // 模拟考试组卷：按各章分值配额抽 100 题，判断 30 / 单选 70，判断题在前（同真考）
+  const EXAM_QUOTA = { exam: 9, points: 14, vehicle: 5, road: 28, highway: 7, signal: 22, accident: 5, safe: 10 };
+  const EXAM_MIN = 45;
+  function examPaper() {
+    const J = [], Sg = [];
+    CHAPTERS.forEach((c) => {
+      const n = EXAM_QUOTA[c.id] || 0;
+      const js = shuffle(QUESTIONS.filter((q) => q.ch === c.id && q.type === 'judge'));
+      const ss = shuffle(QUESTIONS.filter((q) => q.ch === c.id && q.type === 'single'));
+      let nj = Math.min(js.length, Math.round(n * 0.3)), ns = Math.min(ss.length, n - nj);
+      nj = Math.min(js.length, n - ns);
+      J.push(...js.slice(0, nj)); Sg.push(...ss.slice(0, ns));
+    });
+    // 凑不满的从剩下的题里补，再把判断 / 单选调到 30 / 70
+    const used = new Set([...J, ...Sg]);
+    const rest = shuffle(QUESTIONS.filter((q) => !used.has(q)));
+    while (J.length + Sg.length < 100 && rest.length) { const q = rest.pop(); (q.type === 'judge' ? J : Sg).push(q); }
+    const restJ = rest.filter((q) => q.type === 'judge'), restS = rest.filter((q) => q.type === 'single');
+    while (J.length > 30 && restS.length) { J.splice(Math.random() * J.length | 0, 1); Sg.push(restS.pop()); }
+    while (J.length < 30 && restJ.length && Sg.length) { Sg.splice(Math.random() * Sg.length | 0, 1); J.push(restJ.pop()); }
+    return shuffle(J).concat(shuffle(Sg));
+  }
+  // 考前冲刺：错题本 + 高频题里还没拿稳的（没做过 / 错的次数不少于对的）+ 翻卡没记住的数字所在章节的高频题
+  const FC_CH = { 驾驶证: 'exam', 不得再申领: 'exam', 记分与酒驾: 'points', 速度: 'road', 距离: 'road', 高速低能见度: 'highway', 时间: 'safe' };
+  function sprintList() {
+    const wrong = Object.keys(S.wrong).map((id) => QMAP[id]).filter(Boolean);
+    const shaky = QUESTIONS.filter((q) => { if (!q.hot || S.wrong[q.id]) return false; const st = S.stats[q.id]; return st && st.w >= st.r; });
+    const fcCh = new Set(CARDS.filter((c) => S.fc[c.id] && c.id[0] === 'n').map((c) => FC_CH[c.f.split(' · ')[0]]).filter(Boolean));
+    const seen = new Set([...wrong, ...shaky]);
+    const fcQ = QUESTIONS.filter((q) => q.hot && fcCh.has(q.ch) && !seen.has(q) && !(S.stats[q.id] && S.stats[q.id].w === 0 && S.stats[q.id].r >= 2));
+    return [...shuffle(wrong), ...shuffle(shaky), ...shuffle(fcQ)].slice(0, 80);
+  }
+  let timer = null;
+  const stopTimer = () => { if (timer) { clearInterval(timer); timer = null; } };
+  function tick() {
+    const el = $('#qtimer'); if (!quiz || !quiz.deadline) return;
+    const left = Math.max(0, quiz.deadline - Date.now());
+    if (el) { const m = Math.floor(left / 60000), sec = Math.floor(left % 60000 / 1000); el.textContent = `${String(m).padStart(2, '0')}:${String(sec).padStart(2, '0')}`; el.classList.toggle('low', left < 5 * 60000); }
+    if (!left && !quiz.finished) { stopTimer(); alert('45 分钟到，自动交卷。'); finish(true); }
+  }
   function startQuiz(mode, ch) {
     let list, title, instant = true;
     if (mode === 'hot') { list = shuffle(QUESTIONS.filter((q) => q.hot)); title = '高频必刷'; }
-    else if (mode === 'exam') { list = shuffle(QUESTIONS).slice(0, 50); title = '模拟考试'; instant = false; }
+    else if (mode === 'exam') { list = examPaper(); title = '模拟考试'; instant = false; }
+    else if (mode === 'sprint') { list = sprintList(); title = '考前冲刺'; }
     else if (mode === 'all') { list = CHAPTERS.flatMap((c) => QUESTIONS.filter((q) => q.ch === c.id)); title = '全部顺序练'; }
     else if (mode === 'new') { list = shuffle(QUESTIONS.filter((q) => !S.stats[q.id])); title = '没做过的'; }
     else if (mode === 'ch') { list = QUESTIONS.filter((q) => q.ch === ch); title = CHMAP[ch].name; }
-    else if (mode === 'wrong') { list = shuffle(Object.keys(S.wrong).map((id) => QMAP[id]).filter(Boolean)); title = '错题重做'; }
-    if (!list || !list.length) { alert(mode === 'new' ? '全部题目都做过了，换个模式吧。' : '这里还没有题。'); return; }
-    quiz = { list, i: 0, ans: {}, mode, title, instant, finished: false }; combo = 0;
+    else if (mode === 'wrong') { list = shuffle(Object.keys(S.wrong).map((id) => QMAP[id]).filter((q) => q && (!ch || q.ch === ch))); title = ch ? `错题重做 · ${CHMAP[ch].name}` : '错题重做'; }
+    if (!list || !list.length) { alert(mode === 'new' ? '全部题目都做过了，换个模式吧。' : mode === 'sprint' ? '还没有薄弱题：先刷几道高频题，或者在速记里翻翻卡。' : '这里还没有题。'); return; }
+    stopTimer();
+    quiz = { list, i: 0, ans: {}, mode, title, instant, finished: false, deadline: mode === 'exam' ? Date.now() + EXAM_MIN * 60000 : 0 }; combo = 0;
     show('quiz'); renderQ();
+    if (quiz.deadline) timer = setInterval(tick, 1000);
   }
 
   const isRight = (q, p) => (q.type === 'judge' ? (p === 0) === q.a : p === q.a);
@@ -359,7 +410,7 @@
     const last = i === list.length - 1;
     $('#quiz-box').innerHTML = `
       <div class="quiz-head"><button class="btn ghost" data-nav="home"><svg class="i"><use href="#i-chev-l"/></svg>返回</button>
-        <span class="grow">${esc(quiz.title)}</span><span class="cnt">${i + 1} / ${list.length}</span></div>
+        <span class="grow">${esc(quiz.title)}</span>${quiz.deadline && !quiz.finished ? '<span class="qtimer" id="qtimer"></span>' : ''}<span class="cnt">${i + 1} / ${list.length}</span></div>
       <div class="bar" style="margin:-4px 0 12px"><i style="width:${doneN / list.length * 100}%"></i></div>
       <div class="qcard">
         <div class="qmeta"><span class="qtype">${q.type === 'judge' ? '判断题' : '单选题'}</span><span class="qtype">${esc(CHMAP[q.ch].name)}</span>${q.hot ? '<span class="tag h2">高频</span>' : ''}</div>
@@ -373,6 +424,7 @@
         ${last ? `<button class="btn primary" data-nav="finish">${instant ? '看结果' : '交卷'}</button>`
                : `<button class="btn primary" data-nav="next">下一题</button>`}
       </div>`;
+    if (quiz.deadline) tick();
   }
 
   let combo = 0;
@@ -399,7 +451,7 @@
   function nav(d) {
     if (d === 'home') {
       if (quiz && !quiz.instant && !quiz.finished && Object.keys(quiz.ans).length && !confirm('模拟考还没交卷，确定退出吗？')) return;
-      return renderQuizHome();
+      stopTimer(); return renderQuizHome();
     }
     if (d === 'prev' && quiz.i > 0) quiz.i--;
     if (d === 'next' && quiz.i < quiz.list.length - 1) quiz.i++;
@@ -407,10 +459,11 @@
     renderQ(); window.scrollTo(0, 0);
   }
 
-  function finish() {
+  function finish(forced) {
     const { list, ans, instant } = quiz;
     const unanswered = list.filter((q) => ans[q.id] === undefined).length;
-    if (!instant && unanswered && !confirm(`还有 ${unanswered} 题没答，确定交卷吗？`)) return;
+    if (!forced && !instant && unanswered && !confirm(`还有 ${unanswered} 题没答，确定交卷吗？`)) return;
+    stopTimer();
     if (!instant) list.forEach((q) => { if (ans[q.id] !== undefined) record(q, isRight(q, ans[q.id])); else record(q, false); });
     quiz.finished = true;
     const right = list.filter((q) => ans[q.id] !== undefined && isRight(q, ans[q.id])).length;
@@ -421,7 +474,8 @@
       <div class="result">
         <div class="score ${pass ? 'pass' : 'fail'}">${pct}<small style="font-size:20px">分</small></div>
         <p>${esc(quiz.title)} · 答对 ${right} / ${list.length}${instant ? '' : '（按百分制折算，90 分及格）'}<br>
-        ${pass ? '稳了，保持这个状态去考。' : '错题已经收进错题本，重做两遍再来。'}</p>
+        ${quiz.mode === 'exam' ? `用时 ${Math.min(EXAM_MIN, Math.ceil((Date.now() - (quiz.deadline - EXAM_MIN * 60000)) / 60000))} 分钟 · ` : ''}${pass ? '稳了，保持这个状态去考。' : quiz.mode === 'exam' && wrongs.length > 10 ? '真考错满 11 题就判不及格，错题已收进错题本，重做两遍再来。' : '错题已经收进错题本，重做两遍再来。'}</p>
+        ${wrongs.length ? `<div class="by-ch">${CHAPTERS.map((c) => { const n = wrongs.filter((q) => q.ch === c.id).length; return n ? `<button class="chip" data-goto="${c.id}">${esc(c.name)} 错 ${n}</button>` : ''; }).join('')}</div>` : ''}
         <div class="acts">
           ${wrongs.length ? '<button class="btn primary" data-mode="wrong">重做错题本</button>' : ''}
           <button class="btn" data-nav="home">返回题库</button>
@@ -440,19 +494,28 @@
       <div class="q">${esc(q.q)}</div>${optsLine}
       <div class="a">答案：${keys[rightIdx(q)]} ${esc(opts[rightIdx(q)])}</div>
       <div class="e">${esc(q.exp)}</div>
-      ${S.wrong[q.id] ? `<div class="cnt">错过 ${S.wrong[q.id]} 次</div>` : ''}</div>`;
+      <div class="w-foot">${S.wrong[q.id] ? `<span class="cnt">错过 ${S.wrong[q.id]} 次</span>` : '<span></span>'}<a href="javascript:void 0" data-goto="${q.ch}">回考点<svg class="i"><use href="#i-chev-r"/></svg></a></div></div>`;
   }
   function renderWrong() {
-    const list = Object.keys(S.wrong).map((id) => QMAP[id]).filter(Boolean).sort((a, b) => S.wrong[b.id] - S.wrong[a.id]);
+    const all = Object.keys(S.wrong).map((id) => QMAP[id]).filter(Boolean);
+    const groups = CHAPTERS.map((c) => ({ c, list: all.filter((q) => q.ch === c.id).sort((a, b) => S.wrong[b.id] - S.wrong[a.id]) })).filter((g) => g.list.length).sort((a, b) => b.list.length - a.list.length);
     $('#wrong-box').innerHTML = `
       <h2 class="vh">错题本</h2>
-      <p class="lead">做错的题自动收进来，按错的次数排。在"重做错题"里答对一次就移出。</p>
-      ${list.length ? `<div class="toolbar"><button class="btn primary" id="redo"><svg class="i"><use href="#i-redo"/></svg>重做错题（${list.length}）</button>
-        <button class="btn ghost" id="clearWrong"><svg class="i"><use href="#i-trash"/></svg>清空错题本</button></div>${list.map(wrongCard).join('')}`
+      <p class="lead">做错的题自动收进来，按章节分组、错得多的章节排前面。在"重做错题"里答对一次就移出。</p>
+      ${all.length ? `<div class="toolbar"><button class="btn primary" data-redo=""><svg class="i"><use href="#i-redo"/></svg>重做全部错题（${all.length}）</button>
+        <button class="btn ghost" id="clearWrong"><svg class="i"><use href="#i-trash"/></svg>清空错题本</button></div>
+        <div class="by-ch">${groups.map((g) => `<a class="chip" href="#wch-${g.c.id}">${esc(g.c.name)} ${g.list.length}</a>`).join('')}</div>
+        ${groups.map((g) => `<section class="w-group" id="wch-${g.c.id}"><div class="w-head"><h3>${esc(g.c.name)} <small>${g.list.length} 题</small></h3>
+          <button class="btn" data-redo="${g.c.id}"><svg class="i"><use href="#i-redo"/></svg>重做这章</button><button class="btn ghost" data-goto="${g.c.id}">看考点</button></div>
+          ${g.list.map(wrongCard).join('')}</section>`).join('')}`
         : '<div class="empty"><svg class="i"><use href="#i-party"/></svg>还没有错题。去"刷题"做几道吧。</div>'}`;
-    const r = $('#redo'); if (r) r.onclick = () => startQuiz('wrong');
     const c = $('#clearWrong'); if (c) c.onclick = () => { if (confirm('确定清空错题本吗？做题记录会保留。')) { S.wrong = {}; save(); refreshStat(); renderWrong(); } };
   }
+  $('#wrong-box').addEventListener('click', (e) => {
+    const r = e.target.closest('[data-redo]'); if (r) return startQuiz('wrong', r.dataset.redo || undefined);
+    const g = e.target.closest('[data-goto]'); if (g) { show('outline'); setChapter(g.dataset.goto); return; }
+    const a = e.target.closest('a.chip[href^="#wch-"]'); if (a) { e.preventDefault(); document.querySelector(a.getAttribute('href'))?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+  });
 
   /* ---------- 键盘：1-4 / A-D 选，回车或 → 下一题 ---------- */
   document.addEventListener('keydown', (e) => {
