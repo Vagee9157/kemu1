@@ -23,7 +23,7 @@
   const chArt = (id) => `<div class="ch-art">${(CH_ART[id] || []).map((k) => SIGNS[k] || '').join('')}</div>`;
   // 收起状态的缩略图：取正文里第一张图（图解 / 标志 / 手势）
   function thumbOf(body) {
-    const m = body.match(/data-(illus|sign|gest)="?([^"\s>]*)/);
+    const m = body.match(/data-(illus|sign|gest)(?:="([^"]*)")?/);
     if (!m) return '';
     if (m[1] === 'illus') { const [name, arg] = m[2].split(':'); const f = window.ILLUS && ILLUS[name]; return f ? `<div class="pt-thumb il-thumb">${f(arg)}</div>` : ''; }
     if (m[1] === 'gest') return `<div class="pt-thumb">${SIGNS.h_stop || ''}</div>`;
