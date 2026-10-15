@@ -28,3 +28,6 @@
 | d_pos.svg | 0456 | [File:ISO 7000 - Ref-No 0456.svg](https://commons.wikimedia.org/wiki/File:ISO_7000_-_Ref-No_0456.svg) — Public domain |
 | d_turn.svg | 0084 | [File:ISO 7000 - Ref-No 0084.svg](https://commons.wikimedia.org/wiki/File:ISO_7000_-_Ref-No_0084.svg) — Public domain |
 | d_cruise.svg | 2047 | [File:ISO 7000 - Ref-No 2047.svg](https://commons.wikimedia.org/wiki/File:ISO_7000_-_Ref-No_2047.svg) — Public domain |
+| d_turtle.svg | 2639 | [File:ISO 7000 - Ref-No 2639.svg](https://commons.wikimedia.org/wiki/File:ISO_7000_-_Ref-No_2639.svg)（Limited performance mode，车辆限制功率）— Public domain，已去掉四角裁切标记并收紧 viewBox |
+
+READY 指示灯没有用图形符号：真车仪表上就是绿色的「READY」字样（GB/T 4094.2-2017 表 1「驱动系统准备就绪」），页面直接用文字呈现。

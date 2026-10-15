@@ -10,7 +10,7 @@
 |---|---|
 | 📖 考点 | 8 章 49 个考点，按考试分值排；每条标「必考 / 常考」，附一句话记忆口诀；可搜索、可勾「已掌握」 |
 | 🔢 速记 | 数字题汇总（驾驶证年限、记分、速度、距离、高速低能见度）+ 易混对比表；可「遮住答案」点开自测 |
-| ✍️ 刷题 | 384 道题（含 200 道看图题，高频 160 道）：高频必刷 / 模拟考试（随机 50 题，交卷出分）/ 全部顺序 / 按章节；答完即出解析并可跳回对应考点 |
+| ✍️ 刷题 | 380 道题（含 198 道看图题，高频 155 道）：高频必刷 / 模拟考试（随机 50 题，交卷出分）/ 全部顺序 / 按章节；答完即出解析并可跳回对应考点 |
 | 📕 错题 | 做错自动收录，按错误次数排，重做答对即移出 |
 
 学习进度、错题只存在本机浏览器（localStorage），换设备或清缓存会丢。
@@ -34,12 +34,12 @@
 
 ```
 index.html        页面骨架
-assets/data.js        考点 CHAPTERS / 数字 NUMBERS / 易混 CONFUSE / 第一批题 QUESTIONS / 基础标志 SIGNS
+assets/data.js        考点 CHAPTERS / 数字 NUMBERS / 易混 CONFUSE / 第一批题 QUESTIONS
 assets/illus.js       考点图解（记分阶梯、速度路牌、让行路口等 13 张，纯 SVG 跟随主题）
 assets/signs/         83 个国标标志原图（Wikimedia Commons，Public domain，见 LICENSE.md）
 assets/lanes/         29 张道路标线图例（裁自 GB 5768.3-2009 标准原文，见 LICENSE.md）
 assets/gest/          8 张交警手势示范照片（公安部 2007 发布，见 LICENSE.md）
-assets/dash/          24 个 ISO 7000 仪表符号（Wikimedia Commons，PD/CC0，见 LICENSE.md）
+assets/dash/          25 个 ISO 7000 仪表符号（含乌龟灯 2639）（Wikimedia Commons，PD/CC0，见 LICENSE.md）
 assets/pics.js        看图题图库：84 个标志、23 种标线、26 个仪表灯、8 个交警手势（内联 SVG）
 assets/questions2.js  看图题（按 pics.js 目录自动生成）+ 手写补充题
 assets/app.js     交互逻辑

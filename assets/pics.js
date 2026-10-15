@@ -119,7 +119,7 @@
     { key: 'g_service', name: '服务站（服务区）', cat: 'guide', svg: board(G, `<path d="M30 24 V56 M24 24 V36 Q24 42 30 42 Q36 42 36 36 V24" ${st(W, 4)}/><path d="M48 24 Q58 24 58 36 Q58 44 50 46 V56" ${st(W, 4)}/><rect x="70" y="36" width="26" height="14" rx="3" fill="${W}"/><path d="M70 50 V58 M96 50 V58" ${st(W, 4)}/>`) },
     { key: 'm_accident', name: '前方交通事故（事故管理区）', cat: 'guide', svg: board('#e8609a', `${txt('前方事故', 60, 38, 17, W)}${txt('减速慢行', 60, 62, 15, W, 500)}`) },
     { key: 'g_tourist', name: '旅游区方向', cat: 'guide', svg: board('#7a4a1d', `${txt('某某风景区', 60, 48, 18, W)}`) },
-    { key: 'g_hospital', name: '医院（告示标志）', cat: 'guide', svg: board('#2f6fbf', `<rect x="52" y="22" width="16" height="36" fill="${W}"/><rect x="42" y="32" width="36" height="16" fill="${W}"/>`) },
+    { key: 'g_hospital', name: '医院', cat: 'guide', svg: board('#2f6fbf', `<rect x="52" y="22" width="16" height="36" fill="${W}"/><rect x="42" y="32" width="36" height="16" fill="${W}"/>`) },
     // —— 补充常考 ——
     { key: 'w_narrow_l', name: '左侧变窄', cat: 'warn', svg: warn(`<path d="M66 80 V30 M30 80 L42 48 V30" ${st(K, 8)}/>`) },
     { key: 'w_icy', name: '注意路面结冰', cat: 'warn', svg: warn(`<g transform="translate(50,56)" ${st(K, 5)}><path d="M0 -26 V26 M-22 -13 L22 13 M-22 13 L22 -13"/><path d="M-7 -19 L0 -13 L7 -19 M-7 19 L0 13 L7 19 M-22 -1 L-14 -4 L-16 -13 M22 -1 L14 -4 L16 -13 M-22 1 L-14 4 L-16 13 M22 1 L14 4 L16 13"/></g>`) },
@@ -239,8 +239,8 @@
     { key: 'h_left_wait', name: '左转弯待转信号', desc: '左臂向左下方平伸与身体成 45°，掌心向下，上下摆动', svg: officer(Rr(37, 66) + L(80, 60) + swing('M91 48 L91 64') + swing('M96 66 L96 50')) },
     { key: 'h_right', name: '右转弯信号', desc: '左臂向前平伸掌心向前；右臂与手掌平直向左前方摆动', svg: officer(Lf() + Rr(8, 44) + swing('M12 51 Q30 62 48 56')) },
     { key: 'h_lane', name: '变道信号', desc: '右臂向前平伸掌心向左，右臂向左水平摆动', svg: officer(Rf() + L(63, 66) + swing('M46 50 Q58 44 74 48')) },
-    { key: 'h_slow', name: '减速慢行信号', desc: '右臂向右平伸掌心向下，右臂与手掌平直向下方摆动', svg: officer(Rr(7, 33) + L(63, 66) + swing('M12 40 L12 56')) },
-    { key: 'h_pull', name: '示意车辆靠边停车信号', desc: '左臂由前向上直伸掌心向前；右臂向前平伸掌心向左，向左水平摆动', svg: officer(limb(59, 33, 70, 16) + palm(70, 13) + Rf() + swing('M46 50 Q58 44 74 48')) },
+    { key: 'h_slow', name: '减速慢行信号', desc: '右臂向右前方平伸，掌心向下，以肩关节为轴，手掌平直向下方摆动', svg: officer(Rr(7, 33) + L(63, 66) + swing('M12 40 L12 56')) },
+    { key: 'h_pull', name: '示意车辆靠边停车信号', desc: '左臂由前向上直伸掌心向前；右臂向前下方平伸（与身体成 45°）掌心向左，向左水平摆动', svg: officer(limb(59, 33, 70, 16) + palm(70, 13) + Rf() + swing('M46 50 Q58 44 74 48')) },
   ];
 
   /* ---- 合并进 SIGNS，并导出目录 ---- */

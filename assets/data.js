@@ -5,37 +5,8 @@
  * 题目按公开题库常见题型整理改写，答案以法规原文为准。
  */
 
-/* ---------- 交通标志 / 标线小图（纯 SVG，不依赖图片） ---------- */
-const SIGNS = {
-  stop: `<svg viewBox="0 0 100 100"><polygon points="30,4 70,4 96,30 96,70 70,96 30,96 4,70 4,30" fill="#d7262b" stroke="#fff" stroke-width="3"/><text x="50" y="66" font-size="44" text-anchor="middle" fill="#fff" font-weight="700">停</text></svg>`,
-  yield: `<svg viewBox="0 0 100 100"><polygon points="4,8 96,8 50,94" fill="#fff" stroke="#d7262b" stroke-width="9" stroke-linejoin="round"/><text x="50" y="52" font-size="30" text-anchor="middle" fill="#111" font-weight="700">让</text></svg>`,
-  noEntry: `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="#d7262b"/><rect x="18" y="41" width="64" height="18" fill="#fff"/></svg>`,
-  noVehicles: `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="42" fill="#fff" stroke="#d7262b" stroke-width="9"/></svg>`,
-  noParking: `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="42" fill="#1d4fb8" stroke="#d7262b" stroke-width="9"/><line x1="22" y1="22" x2="78" y2="78" stroke="#d7262b" stroke-width="9"/><line x1="78" y1="22" x2="22" y2="78" stroke="#d7262b" stroke-width="9"/></svg>`,
-  noLongParking: `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="42" fill="#1d4fb8" stroke="#d7262b" stroke-width="9"/><line x1="22" y1="22" x2="78" y2="78" stroke="#d7262b" stroke-width="9"/></svg>`,
-  maxSpeed: `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="42" fill="#fff" stroke="#d7262b" stroke-width="9"/><text x="50" y="63" font-size="36" text-anchor="middle" fill="#111" font-weight="700">60</text></svg>`,
-  minSpeed: `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="#1d4fb8"/><text x="50" y="63" font-size="36" text-anchor="middle" fill="#fff" font-weight="700">60</text></svg>`,
-  endSpeed: `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="#fff" stroke="#888" stroke-width="3"/><text x="50" y="63" font-size="36" text-anchor="middle" fill="#999" font-weight="700">40</text><g stroke="#222" stroke-width="3"><line x1="26" y1="80" x2="80" y2="26"/><line x1="20" y1="74" x2="74" y2="20"/><line x1="32" y1="86" x2="86" y2="32"/></g></svg>`,
-  danger: `<svg viewBox="0 0 100 100"><polygon points="50,6 96,90 4,90" fill="#f5c400" stroke="#111" stroke-width="6" stroke-linejoin="round"/><rect x="45" y="34" width="10" height="32" rx="2" fill="#111"/><circle cx="50" cy="76" r="5.5" fill="#111"/></svg>`,
-  sharpLeft: `<svg viewBox="0 0 100 100"><polygon points="50,6 96,90 4,90" fill="#f5c400" stroke="#111" stroke-width="6" stroke-linejoin="round"/><path d="M58 80 V58 Q58 44 44 44 H38" fill="none" stroke="#111" stroke-width="8"/><polygon points="26,44 40,34 40,54" fill="#111"/></svg>`,
-  straight: `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="#1d4fb8"/><rect x="44" y="40" width="12" height="42" fill="#fff"/><polygon points="50,16 70,44 30,44" fill="#fff"/></svg>`,
-  guide: `<svg viewBox="0 0 120 80"><rect x="2" y="2" width="116" height="76" rx="8" fill="#127a3a" stroke="#fff" stroke-width="3"/><text x="60" y="34" font-size="18" text-anchor="middle" fill="#fff" font-weight="700">G4 京港澳</text><text x="60" y="60" font-size="14" text-anchor="middle" fill="#fff">出口 2 km</text></svg>`,
-  tourist: `<svg viewBox="0 0 120 80"><rect x="2" y="2" width="116" height="76" rx="8" fill="#7a4a1d" stroke="#fff" stroke-width="3"/><text x="60" y="48" font-size="18" text-anchor="middle" fill="#fff" font-weight="700">某某风景区</text></svg>`,
-};
-
-// 标线小图：左右各一条车道，中间画分界线
-function laneSvg(kind) {
-  const W = '#ffffff', Y = '#f5c400';
-  const dash = (x, c) => `<line x1="${x}" y1="0" x2="${x}" y2="60" stroke="${c}" stroke-width="4" stroke-dasharray="10 8"/>`;
-  const solid = (x, c) => `<line x1="${x}" y1="0" x2="${x}" y2="60" stroke="${c}" stroke-width="4"/>`;
-  const m = {
-    whiteDash: dash(60, W), whiteSolid: solid(60, W),
-    yellowDash: dash(60, Y), yellowSolid: solid(60, Y),
-    doubleYellow: solid(55, Y) + solid(65, Y),
-    yellowMix: solid(55, Y) + dash(65, Y),
-  };
-  return `<svg viewBox="0 0 120 60"><rect width="120" height="60" fill="#3d4148"/>${m[kind] || ''}</svg>`;
-}
+/* 标志图统一由 pics.js 的 SIGNS 目录提供（国标原图），考点正文用 <div class="illus" data-sign="key"> 引用 */
+const SIGNS = {};
 
 /* ---------- 考点大纲 ----------
  * hot: 2 = 必考高频，1 = 常考，0 = 了解
@@ -425,25 +396,25 @@ const CHAPTERS = [
         </ul>`, tip: '有交警听交警；红灯右转要"不妨碍"。' },
       { t: '交通标志：按颜色形状认大类', hot: 2, body: `
         <div class="sign-row">
-          <figure>${SIGNS.danger}<figcaption>警告：黄底黑边黑图案，正三角形</figcaption></figure>
-          <figure>${SIGNS.noVehicles}<figcaption>禁令：白底红圈，多为圆形</figcaption></figure>
-          <figure>${SIGNS.straight}<figcaption>指示：蓝底白图案，圆形/方形</figcaption></figure>
-          <figure>${SIGNS.guide}<figcaption>指路：高速为绿底，一般道路为蓝底</figcaption></figure>
-          <figure>${SIGNS.tourist}<figcaption>旅游区：棕色底</figcaption></figure>
+          <figure><div class="illus" data-sign="w_danger"></div><figcaption>警告：黄底黑边黑图案，正三角形</figcaption></figure>
+          <figure><div class="illus" data-sign="p_novehicles"></div><figcaption>禁令：白底红圈，多为圆形</figcaption></figure>
+          <figure><div class="illus" data-sign="i_straight"></div><figcaption>指示：蓝底白图案，圆形/方形</figcaption></figure>
+          <figure><div class="illus" data-sign="g_exit"></div><figcaption>指路：高速为绿底，一般道路为蓝底</figcaption></figure>
+          <figure><div class="illus" data-sign="g_tourist"></div><figcaption>旅游区：棕色底</figcaption></figure>
         </div>
         <p>特例：<b>停车让行</b>是红色八角形，<b>减速让行</b>是顶角朝下的倒三角形，二者都属于禁令标志。</p>
         <p>2022 年新国标（GB 5768.2-2022，2022-10-01 起）新增了一批标志，近两年题库开始出现：电动汽车充电站（蓝底指路类）、禁止电动自行车进入（红圈禁令）、<b>交通事故管理区</b>（<b>粉红色底</b>，提示前方正在处理事故，减速绕行）。</p>`, tip: '黄三角警告，红圈禁令，蓝色指示，绿色高速指路，棕色旅游，粉色事故管理区。' },
       { t: '最容易认错的几组标志', hot: 2, body: `
         <div class="sign-row">
-          <figure>${SIGNS.stop}<figcaption>停车让行：必须停车瞭望</figcaption></figure>
-          <figure>${SIGNS.yield}<figcaption>减速让行：减速或停车让干道先行</figcaption></figure>
-          <figure>${SIGNS.noEntry}<figcaption>禁止驶入（红底白横杠）</figcaption></figure>
-          <figure>${SIGNS.noVehicles}<figcaption>禁止通行（白底红圈，什么都没有）</figcaption></figure>
-          <figure>${SIGNS.noParking}<figcaption>禁止停车（蓝底红叉）</figcaption></figure>
-          <figure>${SIGNS.noLongParking}<figcaption>禁止长时停车（蓝底单斜杠）</figcaption></figure>
-          <figure>${SIGNS.maxSpeed}<figcaption>限制速度：最高 60</figcaption></figure>
-          <figure>${SIGNS.minSpeed}<figcaption>最低限速：不低于 60（蓝底）</figcaption></figure>
-          <figure>${SIGNS.endSpeed}<figcaption>解除限制速度</figcaption></figure>
+          <figure><div class="illus" data-sign="p_stop"></div><figcaption>停车让行：必须停车瞭望</figcaption></figure>
+          <figure><div class="illus" data-sign="p_yield"></div><figcaption>减速让行：减速或停车让干道先行</figcaption></figure>
+          <figure><div class="illus" data-sign="p_noentry"></div><figcaption>禁止驶入（红底白横杠）</figcaption></figure>
+          <figure><div class="illus" data-sign="p_novehicles"></div><figcaption>禁止通行（白底红圈，什么都没有）</figcaption></figure>
+          <figure><div class="illus" data-sign="p_noparking"></div><figcaption>禁止停车（蓝底红叉）</figcaption></figure>
+          <figure><div class="illus" data-sign="p_nolong"></div><figcaption>禁止长时停车（蓝底单斜杠）</figcaption></figure>
+          <figure><div class="illus" data-sign="p_speed"></div><figcaption>限制速度：最高 60</figcaption></figure>
+          <figure><div class="illus" data-sign="i_minspeed"></div><figcaption>最低限速：不低于 60（蓝底）</figcaption></figure>
+          <figure><div class="illus" data-sign="p_endspeed"></div><figcaption>解除限制速度</figcaption></figure>
         </div>`, tip: '红圈白底 = 最高限速；蓝底白字 = 最低限速；叉 = 禁止停车，一道杠 = 禁止长时停车。' },
       { t: '道路标线', hot: 2, body: `
         <div class="lane-grid">
@@ -710,7 +681,7 @@ const QUESTIONS = [
   // —— 登记 ——
   { ch: 'vehicle', hot: 0, type: 'judge', q: '尚未登记的机动车，需要临时上道路行驶的，应当取得临时通行牌证。', a: true, exp: '道交法第 8 条。' },
   { ch: 'vehicle', hot: 1, type: 'judge', q: '改变机动车车身颜色、更换发动机、车身或者车架的，应当申请变更登记。', a: true, exp: '这些都属于变更登记的情形；车辆过户是转移登记。' },
-  { ch: 'vehicle', hot: 1, type: 'single', q: '按现行政策，非营运小微型载客汽车（私家车）10 年内需要上线检验几次？', opts: ['每年 1 次', '2 次：第 6 年和第 10 年', '3 次：第 4、6、10 年', '不用上线'], a: 1, exp: '第 2、4、8 年免上线申领检验标志，第 6、10 年上线；10 年以上每年 1 次。' },
+  { ch: 'vehicle', hot: 1, type: 'single', q: '按现行政策，非营运小微型载客汽车（私家车）10 年内需要上线检验几次？', opts: ['每年 1 次', '2 次：第 6 年和第 10 年', '3 次：第 4、6、10 年', '不用上线'], a: 1, exp: '第 2、4、8 年免上线申领检验标志，第 6、10 年上线；10 年以上每年 1 次。面包车不适用这项政策。' },
   { ch: 'vehicle', hot: 0, type: 'single', q: '小型、微型非营运载客汽车 6 年以内每多长时间检验 1 次？（老题口径）', opts: ['每年', '每 2 年', '每 3 年', '每 6 个月'], a: 1, exp: '《实施条例》第 16 条原文：6 年内每 2 年 1 次。遇到这样的老题仍按它选。' },
   { ch: 'vehicle', hot: 0, type: 'judge', q: '驾驶机动车上道路行驶，未放置检验合格标志、未随车携带行驶证的，交通警察可以扣留机动车。', a: true, exp: '道交法第 95 条：可以扣留机动车，通知当事人提供相应牌证、标志或补办手续。' },
 
@@ -742,7 +713,7 @@ const QUESTIONS = [
   { ch: 'road', hot: 0, type: 'judge', q: '夜间同方向近距离跟车行驶时，后车可以使用远光灯。', a: false, exp: '同方向后车与前车近距离行驶时不得使用远光灯，会晃到前车后视镜。' },
   { ch: 'road', hot: 0, type: 'judge', q: '夜间通过没有交通信号灯控制的路口时，应当交替使用远近光灯示意。', a: true, exp: '急弯、坡路、拱桥、人行横道、无信号灯路口，夜间交替使用远近光灯。' },
   { ch: 'road', hot: 1, type: 'judge', q: '驾驶机动车行经人行横道时，遇行人正在通过人行横道，应当停车让行。', a: true, exp: '行经人行横道减速，有行人通过时停车让行，否则记 3 分。' },
-  { ch: 'road', hot: 0, type: 'single', q: '同方向只有一条机动车道，前方校车停车上下学生时，后方车辆应当怎么做？', opts: ['鸣喇叭催促', '从左侧绕行超越', '停车等待，不得超越', '减速通过'], a: 2, exp: '只有一条车道时停车等待不得超越；两条以上车道，相邻车道减速通过。' },
+  { ch: 'road', hot: 0, type: 'single', q: '同方向只有一条机动车道，前方校车停车上下学生时，后方车辆应当怎么做？', opts: ['鸣喇叭催促', '从左侧绕行超越', '停车等待，不得超越', '减速通过'], a: 2, exp: '只有一条车道时停车等待，不得超越；两条以上车道时，校车所在车道后方和相邻车道的车停车等待，其他车道减速通过（《校车安全管理条例》第 33 条）。' },
   { ch: 'road', hot: 0, type: 'judge', q: '前方机动车停车排队等候时，可以借对向车道超越。', a: false, exp: '不得借道超车、占用对面车道、穿插等候车辆，记 3 分。' },
   { ch: 'road', hot: 1, type: 'single', q: '连续驾驶机动车超过多少小时，应当停车休息且不少于 20 分钟？', opts: ['2 小时', '3 小时', '4 小时', '5 小时'], a: 2, exp: '连续驾驶不得超过 4 小时，停车休息不少于 20 分钟。' },
   { ch: 'road', hot: 0, type: 'judge', q: '驾驶机动车下陡坡时可以熄火或者空挡滑行以节省燃油。', a: false, exp: '下陡坡熄火或空挡滑行是法定禁止行为，会导致制动和转向助力失效、车速失控。' },
@@ -772,14 +743,14 @@ const QUESTIONS = [
   { ch: 'signal', hot: 0, type: 'judge', q: '绿灯亮时，转弯的车辆可以优先于被放行的直行车辆和行人通行。', a: false, exp: '绿灯时转弯车辆不得妨碍被放行的直行车辆、行人通行。' },
   { ch: 'signal', hot: 0, type: 'single', q: '路口黄灯持续闪烁时，应当怎么做？', opts: ['禁止通行', '加速通过', '注意瞭望，确认安全后通过', '停车等待绿灯'], a: 2, exp: '闪光警告信号灯为持续闪烁的黄灯，提示注意瞭望，确认安全后通过。' },
   { ch: 'signal', hot: 0, type: 'judge', q: '路口有交通警察现场指挥时，应当按照交通警察的指挥通行。', a: true, exp: '交警指挥优先于信号灯和标志标线。' },
-  { ch: 'signal', hot: 1, type: 'single', sign: 'stop', q: '这个标志是何含义？', opts: ['减速让行', '停车让行', '禁止通行', '会车让行'], a: 1, exp: '红色八角形是停车让行，必须在停止线以外停车瞭望。' },
-  { ch: 'signal', hot: 1, type: 'single', sign: 'yield', q: '这个标志是何含义？', opts: ['停车让行', '注意危险', '减速让行', '禁止驶入'], a: 2, exp: '顶角朝下的倒三角形是减速让行。' },
-  { ch: 'signal', hot: 1, type: 'single', sign: 'noEntry', q: '这个标志是何含义？', opts: ['禁止通行', '禁止驶入', '禁止停车', '限制宽度'], a: 1, exp: '红底白横杠是禁止驶入；白底红圈中间什么都没有是禁止通行。' },
-  { ch: 'signal', hot: 0, type: 'single', sign: 'noVehicles', q: '这个标志是何含义？', opts: ['禁止通行', '禁止驶入', '解除禁令', '道路封闭'], a: 0, exp: '白底红圈、中间无图案，表示禁止一切车辆和行人通行。' },
-  { ch: 'signal', hot: 1, type: 'single', sign: 'noParking', q: '这个标志是何含义？', opts: ['禁止长时停车', '禁止停车', '禁止通行', '禁止掉头'], a: 1, exp: '蓝底红圈红叉是禁止停车（临时停车也不行）；只有一道斜杠是禁止长时停车。' },
-  { ch: 'signal', hot: 0, type: 'single', sign: 'noLongParking', q: '这个标志是何含义？', opts: ['禁止停车', '禁止长时停车', '禁止驶入', '禁止左转'], a: 1, exp: '单斜杠：禁止长时停车，允许临时停车上下人员、装卸物品。' },
-  { ch: 'signal', hot: 1, type: 'single', sign: 'minSpeed', q: '这个标志是何含义？', opts: ['最高限速 60 km/h', '最低限速 60 km/h', '解除限速', '路段编号 60'], a: 1, exp: '蓝底白字为指示标志，表示最低限速；白底红圈为最高限速。' },
-  { ch: 'signal', hot: 0, type: 'single', sign: 'maxSpeed', q: '这个标志是何含义？', opts: ['最高限速 60 km/h', '最低限速 60 km/h', '建议速度 60 km/h', '限重 60 吨'], a: 0, exp: '白底红圈黑字是限制速度（最高速度）。' },
+  { ch: 'signal', hot: 1, type: 'single', sign: 'p_stop', q: '这个标志是何含义？', opts: ['减速让行', '停车让行', '禁止通行', '会车让行'], a: 1, exp: '红色八角形是停车让行，必须在停止线以外停车瞭望。' },
+  { ch: 'signal', hot: 1, type: 'single', sign: 'p_yield', q: '这个标志是何含义？', opts: ['停车让行', '注意危险', '减速让行', '禁止驶入'], a: 2, exp: '顶角朝下的倒三角形是减速让行。' },
+  { ch: 'signal', hot: 1, type: 'single', sign: 'p_noentry', q: '这个标志是何含义？', opts: ['禁止通行', '禁止驶入', '禁止停车', '限制宽度'], a: 1, exp: '红底白横杠是禁止驶入；白底红圈中间什么都没有是禁止通行。' },
+  { ch: 'signal', hot: 0, type: 'single', sign: 'p_novehicles', q: '这个标志是何含义？', opts: ['禁止通行', '禁止驶入', '解除禁令', '道路封闭'], a: 0, exp: '白底红圈、中间无图案，表示禁止一切车辆和行人通行。' },
+  { ch: 'signal', hot: 1, type: 'single', sign: 'p_noparking', q: '这个标志是何含义？', opts: ['禁止长时停车', '禁止停车', '禁止通行', '禁止掉头'], a: 1, exp: '蓝底红圈红叉是禁止停车（临时停车也不行）；只有一道斜杠是禁止长时停车。' },
+  { ch: 'signal', hot: 0, type: 'single', sign: 'p_nolong', q: '这个标志是何含义？', opts: ['禁止停车', '禁止长时停车', '禁止驶入', '禁止左转'], a: 1, exp: '单斜杠：禁止长时停车，允许临时停车上下人员、装卸物品。' },
+  { ch: 'signal', hot: 1, type: 'single', sign: 'i_minspeed', q: '这个标志是何含义？', opts: ['最高限速 60 km/h', '最低限速 60 km/h', '解除限速', '路段编号 60'], a: 1, exp: '蓝底白字为指示标志，表示最低限速；白底红圈为最高限速。' },
+  { ch: 'signal', hot: 0, type: 'single', sign: 'p_speed', q: '这个标志是何含义？', opts: ['最高限速 60 km/h', '最低限速 60 km/h', '建议速度 60 km/h', '限重 60 吨'], a: 0, exp: '白底红圈黑字是限制速度（最高速度）。' },
   { ch: 'signal', hot: 1, type: 'single', q: '警告标志的颜色和形状是？', opts: ['蓝底白图案，圆形', '白底红圈，圆形', '黄底黑边黑图案，三角形', '绿底白字，长方形'], a: 2, exp: '警告：黄三角；禁令：红圈；指示：蓝色；高速指路：绿色。' },
   { ch: 'signal', hot: 0, type: 'single', q: '高速公路的指路标志是什么颜色？', opts: ['蓝底白字', '绿底白字', '棕底白字', '黄底黑字'], a: 1, exp: '高速公路和城市快速路指路标志为绿底，一般道路为蓝底，旅游区为棕底。' },
   { ch: 'signal', hot: 0, type: 'judge', q: '路中心的黄色虚实线，实线一侧的车辆禁止越线，虚线一侧的车辆准许越线。', a: true, exp: '看靠近自己一侧的线型。' },
@@ -793,7 +764,7 @@ const QUESTIONS = [
   { ch: 'accident', hot: 1, type: 'single', q: '发生交通事故造成人员受伤时，驾驶人首先应该怎么做？', opts: ['立即离开现场找人帮忙', '立即抢救受伤人员，并迅速报警', '先与对方协商赔偿', '先移动车辆恢复交通'], a: 1, exp: '有人员伤亡：立即抢救伤员、迅速报警；因抢救变动现场的要标明位置。' },
   { ch: 'accident', hot: 1, type: 'judge', q: '发生仅造成轻微财产损失、基本事实清楚的交通事故，当事人应当先撤离现场再进行协商处理。', a: true, exp: '道交法第 70 条。拍照固定证据后撤离，避免堵车和二次事故。' },
   { ch: 'accident', hot: 0, type: 'judge', q: '因抢救受伤人员变动现场的，应当标明位置。', a: true, exp: '便于事后认定事故责任。' },
-  { ch: 'accident', hot: 1, type: 'judge', q: '发生交通事故后当事人逃逸的，逃逸的当事人承担全部责任。', a: true, exp: '逃逸或故意破坏、伪造现场、毁灭证据的，承担全部责任。' },
+  { ch: 'accident', hot: 1, type: 'judge', q: '发生交通事故后当事人逃逸的，逃逸的当事人承担全部责任。', a: true, exp: '逃逸或故意破坏、伪造现场、毁灭证据的，承担全部责任；但有证据证明对方当事人也有过错的，可以减轻责任（实施条例第 92 条）。' },
   { ch: 'accident', hot: 0, type: 'single', q: '救助昏迷的受伤人员，应采取什么体位以防窒息？', opts: ['仰卧', '侧卧', '俯卧', '坐姿'], a: 1, exp: '侧卧位，防止呕吐物、舌根后坠堵塞气道。' },
 
   // —— 安全驾驶 ——
@@ -812,8 +783,8 @@ const QUESTIONS = [
   { ch: 'safe', hot: 1, type: 'single', q: '仪表盘上红色"油壶滴油"图案的指示灯亮起，表示什么？', opts: ['燃油不足', '机油压力过低', '发动机故障', '需要更换机油滤芯'], a: 1, exp: '红色油壶 = 机油压力报警，应尽快靠边停车熄火检查；燃油不足是黄色加油机图案。' },
   { ch: 'safe', hot: 1, type: 'single', q: '仪表盘上蓝色、灯光平直射出的指示灯亮起，表示什么？', opts: ['近光灯开启', '远光灯开启', '前雾灯开启', '示廓灯开启'], a: 1, exp: '远光灯指示灯是蓝色、光线平直；近光灯为绿色、光线向下斜。' },
   { ch: 'safe', hot: 0, type: 'single', q: '仪表盘上"温度计插在水波上"的红色指示灯亮起，表示什么？', opts: ['空调故障', '冷却液温度过高', '车内温度过高', '机油温度过低'], a: 1, exp: '冷却液温度报警，应停车怠速散热，不要立即打开水箱盖以免烫伤。' },
-  { ch: 'safe', hot: 0, type: 'single', q: '正面碰撞不可避免、撞击部位靠近驾驶人座位时，驾驶人应当？', opts: ['紧握方向盘，两腿蹬直', '迅速躲离方向盘，将两脚抬起', '跳车逃生', '猛打方向'], a: 1, exp: '撞击部位不在驾驶人一侧时才是"紧握方向盘、两腿蹬直、身体后倾"。' },
-  { ch: 'safe', hot: 0, type: 'judge', q: '车辆发生侧翻时，驾驶人应紧握方向盘，两脚勾住踏板，使身体固定，随车翻转。', a: true, exp: '不要试图跳车，以免被车辆压伤。' },
+  { ch: 'safe', hot: 1, type: 'single', q: '正面碰撞不可避免、撞击部位靠近驾驶人座位时，驾驶人应当？', opts: ['紧握方向盘，两腿蹬直', '迅速躲离方向盘，将两脚抬起', '跳车逃生', '猛打方向'], a: 1, exp: '撞击部位不在驾驶人一侧时才是"紧握方向盘、两腿蹬直、身体后倾"。' },
+  { ch: 'safe', hot: 1, type: 'judge', q: '车辆发生侧翻时，驾驶人应紧握方向盘，两脚勾住踏板，使身体固定，随车翻转。', a: true, exp: '不要试图跳车，以免被车辆压伤。' },
   { ch: 'safe', hot: 0, type: 'judge', q: '长时间在高速公路上行驶，驾驶人容易低估实际车速，应多注意观察速度表。', a: true, exp: '这种现象称为"速度错觉"。' },
   { ch: 'safe', hot: 0, type: 'single', q: '夜间行车被对向来车的远光灯晃眼时，应当怎么做？', opts: ['也开远光灯回敬', '减速，目视道路右侧边缘，必要时停车', '加速驶离', '闭眼继续驾驶'], a: 1, exp: '避开强光，看右侧路边保持方向，降低车速。' },
 ];
