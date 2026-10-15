@@ -4,7 +4,7 @@
   /* ---------- 存储：只存在本机浏览器，读写失败也能正常用 ---------- */
   const KEY = 'km1.v1';
   const load = () => { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch { return {}; } };
-  const S = Object.assign({ mastered: {}, wrong: {}, stats: {}, theme: '' }, load());
+  const S = Object.assign({ mastered: {}, wrong: {}, stats: {}, theme: '', fold: {}, fc: {} }, load());
   const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch { /* 无痕模式等情况忽略 */ } };
 
   const $ = (s, el = document) => el.querySelector(s);
@@ -21,6 +21,17 @@
   // 章节头的小插图：从标志库里挑三个代表
   const CH_ART = { exam: ['p_check', 'w_slow', 'i_parking'], points: ['p_speed', 'p_nohorn', 'p_noparking'], vehicle: ['i_motor', 'p_notruck', 'g_charge'], road: ['p_yield', 'i_sr', 'i_crossing'], highway: ['g_exit', 'i_minspeed', 'p_nostraight'], signal: ['w_signal', 'p_stop', 'i_round'], accident: ['w_accident', 'm_accident', 'd_hazard'], safe: ['w_slip', 'd_abs', 'd_tpms'] };
   const chArt = (id) => `<div class="ch-art">${(CH_ART[id] || []).map((k) => SIGNS[k] || '').join('')}</div>`;
+  // 收起状态的缩略图：取正文里第一张图（图解 / 标志 / 手势）
+  function thumbOf(body) {
+    const m = body.match(/data-(illus|sign|gest)="?([^"\s>]*)/);
+    if (!m) return '';
+    if (m[1] === 'illus') { const [name, arg] = m[2].split(':'); const f = window.ILLUS && ILLUS[name]; return f ? `<div class="pt-thumb il-thumb">${f(arg)}</div>` : ''; }
+    if (m[1] === 'gest') return `<div class="pt-thumb">${SIGNS.h_stop || ''}</div>`;
+    const keys = [...body.matchAll(/data-sign="([^"]+)"/g)].map((x) => x[1]).slice(0, 2);
+    return `<div class="pt-thumb signs">${keys.map((k) => SIGNS[k] || '').join('')}</div>`;
+  }
+  // 必考默认展开；用户手动收起/展开过的按用户的来
+  const isOpen = (k, p) => (k in S.fold ? !S.fold[k] : p.hot === 2);
   // 把正文里的图解占位换成真图
   function fillIllus(root) {
     root.querySelectorAll('.illus[data-illus]').forEach((el) => { const [name, arg] = el.dataset.illus.split(':'); const f = window.ILLUS && ILLUS[name]; if (f) el.outerHTML = f(arg); });
@@ -86,11 +97,12 @@
       const pts = c.points.map((p, i) => {
         const k = ptKey(c, i), m = !!S.mastered[k];
         const tag = p.hot === 2 ? '<span class="tag h2">必考</span>' : p.hot === 1 ? '<span class="tag h1">常考</span>' : '';
-        return `<details class="pt" data-k="${k}" data-hot="${p.hot}">
+        return `<details class="pt" data-k="${k}" data-hot="${p.hot}" ${isOpen(k, p) ? 'open' : ''}>
           <summary>
             <div class="pt-title">${esc(p.t)} ${tag}${m ? '<span class="tag ok"><svg class="i"><use href="#i-check"/></svg>已掌握</span>' : ''}</div>
+            ${thumbOf(p.body)}
             <span class="caret"><svg class="i"><use href="#i-chev-r"/></svg></span>
-            ${p.tip ? `<div class="pt-tip">${esc(p.tip)}</div>` : ''}
+            ${p.tip ? `<div class="pt-tip"><i>记</i><span>${esc(p.tip)}</span></div>` : ''}
           </summary>
           <div class="pt-body"><div class="tbl-scroll">${p.body}</div>
             <div class="pt-foot">
@@ -102,7 +114,7 @@
       return `<section class="ch" id="ch-${c.id}" data-ch="${c.id}">
         <div class="ch-head"><span class="num">${String(ci + 1).padStart(2, '0')}</span>
           <h3>${esc(c.name)}${chArt(c.id)}</h3>
-          <button class="btn go" data-practice="${c.id}"><svg class="i"><use href="#i-pencil"/></svg>练这章 ${qn} 题</button>
+          <div class="go"><button class="btn ghost" data-fold-all="${c.id}">全部展开</button><button class="btn" data-practice="${c.id}"><svg class="i"><use href="#i-pencil"/></svg>练这章 ${qn} 题</button></div>
           <p>${esc(c.intro)}</p>
         </div>${pts}
         <div class="ch-nav">
@@ -138,6 +150,7 @@
       sec.hidden = q ? !any : sec.dataset.ch !== curCh;
     });
     $('#searchHint').hidden = !q;
+    CHAPTERS.forEach((c) => syncFoldBtn(c.id));
   }
   $('#search').addEventListener('input', (e) => { filt.q = e.target.value; applyFilter(); });
   $('#onlyHot').onclick = (e) => { filt.hot = !filt.hot; e.currentTarget.setAttribute('aria-pressed', filt.hot); applyFilter(); };
@@ -153,8 +166,23 @@
   });
   $('#outline-box').addEventListener('click', (e) => {
     const b = e.target.closest('[data-practice]'); if (b) return startQuiz('ch', b.dataset.practice);
-    const g = e.target.closest('[data-ch-go]'); if (g) setChapter(g.dataset.chGo);
+    const g = e.target.closest('[data-ch-go]'); if (g) return setChapter(g.dataset.chGo);
+    const f = e.target.closest('[data-fold-all]');
+    if (f) {
+      const ds = [...document.querySelectorAll(`#ch-${f.dataset.foldAll} details.pt:not([hidden])`)];
+      const open = ds.some((d) => !d.open);
+      ds.forEach((d) => { d.open = open; S.fold[d.dataset.k] = open ? 0 : 1; });
+      save(); syncFoldBtn(f.dataset.foldAll); return;
+    }
+    // 用户点标题展开/收起：记下来，下次按这个状态显示
+    const sm = e.target.closest('details.pt > summary');
+    if (sm) { const d = sm.parentElement; setTimeout(() => { S.fold[d.dataset.k] = d.open ? 0 : 1; save(); syncFoldBtn(d.closest('section.ch').dataset.ch); }, 0); }
   });
+  function syncFoldBtn(ch) {
+    const b = document.querySelector(`[data-fold-all="${ch}"]`); if (!b) return;
+    const ds = [...document.querySelectorAll(`#ch-${ch} details.pt:not([hidden])`)];
+    b.textContent = ds.length && ds.every((d) => d.open) ? '全部收起' : '全部展开';
+  }
   ['#toc', '#tocM'].forEach((sel) => $(sel).addEventListener('click', (e) => {
     const a = e.target.closest('a[data-ch]'); if (!a) return;
     e.preventDefault(); if (filt.q) { filt.q = ''; $('#search').value = ''; } setChapter(a.dataset.ch);
@@ -176,36 +204,71 @@
   });
 
   /* ---------- 数字速记 ---------- */
+  // 每条速记一个 id（问题文字哈希），翻卡"没记住"的存进 S.fc，速记页标星、可单独筛出来
+  const CARDS = [];
+  NUMBERS.forEach((g) => g.rows.forEach(([f, b]) => CARDS.push({ id: 'n' + hash(g.g + f), f: `${g.g} · ${f}`, b })));
+  CONFUSE.forEach(([k, a, b, pics]) => CARDS.push({ id: 'c' + hash(k), f: `易混：${k}`, b: `${a}  ｜  ${b}`, pics }));
+  const missN = () => CARDS.filter((c) => S.fc[c.id]).length;
+  // 看图记数字：复用考点图解，每张配一句口诀
+  const VISUAL = [
+    { t: '记分五档：12 · 9 · 6 · 3 · 1', il: 'points_ladder', tip: '酒驾、逃逸、假牌、高速逆行倒车掉头 12；高速违法停车 9；超速 20–50%（高速）6；开车打手持电话 3；高速、快速路上不系安全带 1。' },
+    { t: '不得再申领：1 · 2 · 3 · 5 · 10 · 终生', il: 'ban_years', tip: '骗、作弊 1 年，吊销 2 年，骗证吸毒 3 年，醉驾 5 年，醉驾营运 10 年，逃逸犯罪终生。' },
+    { t: '高速低能见度三档', il: 'visibility', tip: '200 米：60 / 100；100 米：40 / 50；50 米：20 走出口。' },
+    { t: '没有限速标志时的最高车速', il: 'speed_road', tip: '没中线：城 30 路 40；单车道：城 50 路 70。' },
+    { t: '高速各车道最低车速', il: 'highway_lanes', tip: '两车道左 100；三车道左 110、中 90；右侧不低于 60。' },
+  ].filter((v) => window.ILLUS && ILLUS[v.il]);
+  const fcMark = (id) => (S.fc[id] ? '<span class="miss" title="翻卡时没记住">★</span>' : '');
+  const picOf = (k) => (k && SIGNS[k] ? `<span class="cmp-pic">${SIGNS[k]}</span>` : '');
   function renderNumbers() {
-    const groups = NUMBERS.map((g) => `<div class="num-group"><h3>${esc(g.g)}</h3>
-      <table class="num-table">${g.rows.map(([k, v]) => `<tr><td>${esc(k)}</td><td>${esc(v)}</td></tr>`).join('')}</table></div>`).join('');
-    const cmp = `<div class="num-group"><h3>易混对比（最容易张冠李戴）</h3><div class="tbl-scroll">
-      <table class="cmp-table"><tr><th>考点</th><th>A</th><th>B</th></tr>
-      ${CONFUSE.map(([k, a, b]) => `<tr><td>${esc(k)}</td><td class="ans">${esc(a)}</td><td class="ans">${esc(b)}</td></tr>`).join('')}
-      </table></div></div>`;
-    $('#numbers-box').innerHTML = `<div class="num-grid">${cmp.replace('class="num-group"', 'class="num-group span2"')}${groups}</div>`;
+    const vis = `<div class="num-sec vis-sec"><h3 class="sec-h">看图记数字</h3><div class="vis-grid">${VISUAL.map((v) => `<div class="vis-card"><h4>${esc(v.t)}</h4>${ILLUS[v.il]()}<p class="tipline"><i>记</i><span>${esc(v.tip)}</span></p></div>`).join('')}</div></div>`;
+    const cmp = `<div class="num-sec"><h3 class="sec-h">易混对比 <small>最容易张冠李戴</small></h3><div class="cmp-grid">${CONFUSE.map(([k, a, b, pics]) => {
+      const id = 'c' + hash(k);
+      return `<div class="cmp-card" data-fc="${id}"><h4>${esc(k)}${fcMark(id)}</h4><div class="cmp-ab">
+        <div class="side a">${picOf(pics && pics[0])}<span class="ans">${esc(a)}</span></div>
+        <span class="vs">VS</span>
+        <div class="side b">${picOf(pics && pics[1])}<span class="ans">${esc(b)}</span></div></div></div>`;
+    }).join('')}</div></div>`;
+    const groups = `<div class="num-sec"><h3 class="sec-h">分组背数字</h3><div class="num-grid">${NUMBERS.map((g) => `<div class="num-group"><h3>${esc(g.g)}</h3>
+      ${g.tip ? `<p class="tipline"><i>记</i><span>${esc(g.tip)}</span></p>` : ''}
+      <ul class="num-list">${g.rows.map(([k, v]) => { const id = 'n' + hash(g.g + k); return `<li data-fc="${id}"><span class="k">${esc(k)}${fcMark(id)}</span><b class="ans">${esc(v)}</b></li>`; }).join('')}</ul></div>`).join('')}</div></div>`;
+    $('#numbers-box').innerHTML = vis + cmp + groups;
+    const n = missN(), mb = $('#onlyMiss');
+    mb.hidden = !n && mb.getAttribute('aria-pressed') !== 'true';
+    mb.textContent = `只看没记住 ${n}`;
+    applyMiss();
   }
-  // ---- 翻卡 ----
-  let deck = null; // { cards:[{f,b}], i, left }
+  function applyMiss() {
+    const on = $('#onlyMiss').getAttribute('aria-pressed') === 'true';
+    $('#numbers-box').classList.toggle('only-miss', on);
+    document.querySelectorAll('#numbers-box [data-fc]').forEach((el) => { el.hidden = on && !S.fc[el.dataset.fc]; });
+    document.querySelectorAll('#numbers-box .num-group, #numbers-box .num-sec').forEach((g) => { g.hidden = on && !g.querySelector('[data-fc]:not([hidden])'); });
+  }
+  $('#onlyMiss').onclick = (e) => { e.currentTarget.setAttribute('aria-pressed', e.currentTarget.getAttribute('aria-pressed') !== 'true'); applyMiss(); };
+  // ---- 翻卡：没记住的先出，"只看没记住"打开时只练这些 ----
+  let deck = null;
   function buildDeck() {
-    const cards = [];
-    NUMBERS.forEach((g) => g.rows.forEach(([f, b]) => cards.push({ f: `${g.g} · ${f}`, b })));
-    CONFUSE.forEach(([k, a, b]) => cards.push({ f: k, b: `${a}  ｜  ${b}` }));
-    return shuffle(cards);
+    const only = $('#onlyMiss').getAttribute('aria-pressed') === 'true';
+    const miss = shuffle(CARDS.filter((c) => S.fc[c.id]));
+    return only && miss.length ? miss : miss.concat(shuffle(CARDS.filter((c) => !S.fc[c.id])));
   }
   function renderCard() {
     const box = $('#flash');
     if (!deck.cards.length) { box.innerHTML = `<div class="result"><div class="score pass">全会了</div><p>这一轮 ${deck.total} 张都过了。</p><div class="acts"><button class="btn primary" id="flashAgain">再来一轮</button><button class="btn" id="flashQuit">退出翻卡</button></div></div>`; $('#flashAgain').onclick = startFlash; $('#flashQuit').onclick = stopFlash; return; }
     const c = deck.cards[0];
+    const back = c.pics ? `<div class="f-pics">${c.b.split('  ｜  ').map((t, i) => `<figure>${picOf(c.pics[i])}<figcaption>${esc(t)}</figcaption></figure>`).join('')}</div>` : `<div>${esc(c.b)}</div>`;
     box.innerHTML = `<div class="flash-head"><button class="btn ghost" id="flashQuit"><svg class="i"><use href="#i-chev-l"/></svg>退出</button><span class="grow">翻卡</span><span class="cnt">剩 ${deck.cards.length} / ${deck.total}</span></div>
-      <div class="fcard" id="fcard" tabindex="0"><div class="f-inner"><div class="f-face f-front"><small>问</small><div>${esc(c.f)}</div><em>点一下翻面</em></div><div class="f-face f-back"><small>答</small><div>${esc(c.b)}</div></div></div></div>
+      <div class="fcard" id="fcard" tabindex="0"><div class="f-inner"><div class="f-face f-front"><small>问${S.fc[c.id] ? ' · 上次没记住' : ''}</small><div>${esc(c.f)}</div><em>点一下翻面</em></div><div class="f-face f-back"><small>答</small>${back}</div></div></div>
       <div class="quiz-nav"><button class="btn" data-flash="no"><svg class="i"><use href="#i-x"/></svg>没记住</button><button class="btn primary" data-flash="ok"><svg class="i"><use href="#i-check"/></svg>记住了</button></div>`;
     $('#fcard').onclick = () => $('#fcard').classList.toggle('flipped');
     $('#flashQuit').onclick = stopFlash;
-    box.querySelectorAll('[data-flash]').forEach((b) => { b.onclick = () => { const c = deck.cards.shift(); if (b.dataset.flash === 'no') deck.cards.push(c); renderCard(); }; });
+    box.querySelectorAll('[data-flash]').forEach((b) => { b.onclick = () => {
+      const c = deck.cards.shift();
+      if (b.dataset.flash === 'no') { S.fc[c.id] = 1; deck.cards.push(c); } else delete S.fc[c.id];
+      save(); renderCard();
+    }; });
   }
-  function startFlash() { deck = { cards: buildDeck() }; deck.total = deck.cards.length; $('#numbers-box').hidden = true; $('#numTools').hidden = true; $('#flash').hidden = false; renderCard(); }
-  function stopFlash() { deck = null; $('#flash').hidden = true; $('#numbers-box').hidden = false; $('#numTools').hidden = false; }
+  function startFlash() { deck = { cards: buildDeck() }; deck.total = deck.cards.length; $('#numbers-box').hidden = true; $('#numTools').hidden = true; $('#flash').hidden = false; renderCard(); window.scrollTo(0, 0); }
+  function stopFlash() { deck = null; $('#flash').hidden = true; $('#numbers-box').hidden = false; $('#numTools').hidden = false; renderNumbers(); }
   $('#flashBtn').onclick = startFlash;
   document.addEventListener('keydown', (e) => { if (deck && !$('#flash').hidden && e.key === ' ') { e.preventDefault(); $('#fcard')?.classList.toggle('flipped'); } });
 
@@ -216,7 +279,7 @@
     document.querySelectorAll('#numbers-box .shown').forEach((x) => x.classList.remove('shown'));
   };
   $('#numbers-box').addEventListener('click', (e) => {
-    const td = e.target.closest('td'); if (td && $('#numbers-box').classList.contains('hide-ans')) td.classList.toggle('shown');
+    const t = e.target.closest('.ans'); if (t && $('#numbers-box').classList.contains('hide-ans')) t.classList.toggle('shown');
   });
 
   /* ---------- 刷题 ---------- */

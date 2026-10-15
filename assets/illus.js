@@ -314,6 +314,22 @@
         ${chip(150, 70, 150, '软连接 4–10 m · 最高 30 km/h', 'var(--amber)', '#3a2300', 9.5)}
         ${T(300, 74, '制动失效 → 硬连接', 9.5, 'font-weight:700')}`);
     },
+    /* 辟谣：网传"新版记分" vs 现行 163 号令 */
+    rumor_check() {
+      const rows = [['开车打手持电话', '9 分', '3 分'], ['高速占用应急车道行驶', '9 分 + 罚 2000', '6 分'], ['高速违法停车', '—', '9 分']];
+      const head = `${TL(4, 16, '情形', 9.5, 'opacity:.6;font-weight:700')}<rect x="168" y="4" width="88" height="18" rx="9" fill="var(--red)" fill-opacity=".14"/>${T(212, 17, '✗ 网传"新规"', 9.5, 'font-weight:700;fill:var(--red)')}<rect x="266" y="4" width="90" height="18" rx="9" fill="var(--ok)" fill-opacity=".16"/>${T(311, 17, '✓ 现行 163 号令', 9.5, 'font-weight:700;fill:var(--ok)')}`;
+      return svg(360, 112, head + rows.map(([k, a, b], i) => { const y = 34 + i * 26;
+        return `<line x1="4" y1="${y - 7}" x2="356" y2="${y - 7}" stroke="currentColor" stroke-opacity=".1"/>${TL(4, y + 10, k, 10.5, 'font-weight:600')}${T(212, y + 10, a, 10.5, 'opacity:.55')}${a !== '—' ? `<line x1="${212 - a.length * 4}" y1="${y + 6}" x2="${212 + a.length * 4}" y2="${y + 6}" stroke="var(--red)" stroke-width="1.6"/>` : ''}${T(311, y + 11, b, 13, 'font-weight:800;fill:var(--ok)')}`; }).join(''));
+    },
+    /* 事故责任与赔偿：交强险先赔 → 不足按过错；三种直接定责 */
+    liability() {
+      const step = (x, w, t, c) => `<rect x="${x}" y="8" width="${w}" height="34" rx="9" fill="${c}" fill-opacity=".14" stroke="${c}" stroke-width="1.2"/>${T(x + w / 2, 29, t, 10, 'font-weight:700')}`;
+      const arr = (x) => `<path d="M${x} 25 h12" stroke="currentColor" stroke-opacity=".4" stroke-width="2" marker-end="url(#ilah2)"/>`;
+      const rule = (y, k, v, c) => `<rect x="4" y="${y}" width="352" height="22" rx="7" fill="${c}" fill-opacity=".1"/>${TL(12, y + 15, k, 10, 'font-weight:600')}<text x="348" y="${y + 15}" font-size="10.5" text-anchor="end" font-weight="800" fill="${c}" style="${F}">${v}</text>`;
+      return svg(360, 132, `<defs><marker id="ilah2" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="currentColor" fill-opacity=".5"/></marker></defs>
+        ${step(4, 84, '事故造成损失', 'var(--ink-dim)')}${arr(92)}${step(108, 116, '交强险限额内先赔', 'var(--brand)')}${arr(228)}${step(244, 112, '不足部分按过错担', 'var(--amber)')}
+        ${rule(54, '逃逸 / 故意破坏、伪造现场', '全部责任', 'var(--red)')}${rule(80, '行人、非机动车一方没有过错', '机动车一方担责', 'var(--brand)')}${rule(106, '伤员昏迷', '侧卧防窒息 · 脊柱伤不乱搬', 'var(--ok)')}`);
+    },
   };
 
   window.ILLUS = ILLUS;
